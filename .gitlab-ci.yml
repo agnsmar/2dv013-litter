@@ -1,31 +1,48 @@
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - test
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
+build: # temp job
   stage: build
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - echo 'hello there'
 
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+build: # temp job
+  stage: build
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    - echo 'hello there'
+    
+# build:
+#   stage: build
+#   image:
+#     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
+#     entrypoint: [""]
+#   script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html                
+#     - /kaniko/executor
+#       --context "${CI_PROJECT_DIR}"  
+#       --dockerfile "${CI_PROJECT_DIR}/Dockerfile.production"
+#       --destination "${CI_REGISTRY_IMAGE}/taskit:${CI_COMMIT_TAG:-latest}"            # Tags with "latest" if untagged commit. 
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
-
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+# deploy:
+#   stage: deploy
+#   image:
+#     name: gcr.io/k8s-skaffold/skaffold:v2.0.0  # TODO: replace with a better Kubernetes image. Bitnami?
+#     entrypoint: ['']
+#   environment:
+#     name: production
+#     url: $TASKIT_URL # TODO: Set as environment variable. URL to your application. Ie HTTP://cscloud6-25.lnu.se
+#   when: manual
+#   script:
+#     - kubectl config get-contexts
+#    # Configure kubectl to use our own k8s cluster, you need to setup an Gitlab agent in you k8s kluster
+#     - kubectl config use-context $K8S_CONTEXT
+#    # Authorize the cluster to pull images from our registry. (synced against Deploy Token "gitlab-deploy-token")
+#     - kubectl delete secret regcred || true
+#     - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
+# 
+#     - kubectl apply -f ./k8s/taskit.yaml -f ./k8s/mongodb.yaml -f ./k8s/redis.yaml # We are skipping ingress for now # TODO: replace this with real services
+#     
+#    # Debugging outputs after completion
+#     - kubectl get deployments
+#     - kubectl get services
+#     - kubectl get pods
