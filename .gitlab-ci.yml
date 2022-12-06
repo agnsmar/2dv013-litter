@@ -7,10 +7,10 @@ build: # temp job
   script:
     - echo 'hello there'
 
-build: # temp job
-  stage: build
+deploy: # temp job
+  stage: deploy
   script:
-    - echo 'hello there'
+    - echo 'hello there again'
     
 # build:
 #   stage: build
