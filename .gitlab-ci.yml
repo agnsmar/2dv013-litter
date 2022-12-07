@@ -1,7 +1,8 @@
 stages:          # List of stages for jobs, and their order of execution
   - test
   - build
-  - deploy
+  - staging
+  - production
 
 test: # temp job
   stage: test
@@ -31,7 +32,7 @@ build:
     - main  
 
 # Maybe this can work? One job for each service, only run if changes are made to it's directory.
-build-client:
+build 1/5:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
@@ -46,7 +47,7 @@ build-client:
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/client/*
 
-build-api-gateway:
+build 2/5:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
@@ -62,16 +63,16 @@ build-api-gateway:
         - services/api-gateway/*
 
 # TODO - Change to Blue/Green
-deploy-staging:
-  stage: deploy
+staging:
+  stage: staging
   script:
     - echo 'deploying to staging'
   only:
     - main
 
 # TODO - Change to Blue/Green
-deploy-production:
-  stage: deploy
+production:
+  stage: production
   image:
     name: gcr.io/k8s-skaffold/skaffold:v2.0.0  # TODO - replace with a better Kubernetes image. Bitnami?
     entrypoint: ['']
