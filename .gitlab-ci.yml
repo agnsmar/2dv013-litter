@@ -1,16 +1,21 @@
 stages:          # List of stages for jobs, and their order of execution
   - build
+  - test
   - deploy
 
 build: # temp job
   stage: build
   script:
-    - echo 'hello there'
+    - echo 'building'
 
+test: # temp job
+  stage: test
+  script:
+    - echo 'testing'
 deploy: # temp job
   stage: deploy
   script:
-    - echo 'hello there again'
+    - echo 'deploying'
     
 # build:
 #   stage: build
