@@ -1,7 +1,12 @@
 stages:          # List of stages for jobs, and their order of execution
-  - build
   - test
+  - build
   - deploy
+
+test: # temp job
+  stage: test
+  script:
+    - echo 'testing'
 
 # Building all images. TODO - Figure out if we can build only if changes have occured?
 build:
@@ -18,14 +23,30 @@ build:
     #  --dockerfile "${CI_PROJECT_DIR}/services/THE_SERVICE/Dockerfile.production"
     #  --destination "${CI_REGISTRY_IMAGE}/SERVICE_NAME:${CI_COMMIT_TAG:-latest}"            
 
-test: # temp job
-  stage: test
-  script:
-    - echo 'testing'
-deploy: # temp job
+
+deploy:
   stage: deploy
+  image:
+    name: gcr.io/k8s-skaffold/skaffold:v2.0.0  # TODO - replace with a better Kubernetes image. Bitnami?
+    entrypoint: ['']
+  environment:
+    name: production
+    url: $PRODUCTION_URL # TODO - Set as environment variable. URL to your application. Ie HTTP://cscloud6-25.lnu.se
+  when: manual # TODO - Make this not manual
   script:
-    - echo 'deploying'
+    - kubectl config get-contexts
+   # Configure kubectl to use our own k8s cluster, you need to setup an Gitlab agent in you k8s kluster
+    - kubectl config use-context $K8S_CONTEXT
+   # Authorize the cluster to pull images from our registry. (synced against Deploy Token "gitlab-deploy-token")
+    - kubectl delete secret regcred || true
+    - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
+
+    # - kubectl apply -f ./k8s/taskit.yaml -f ./k8s/mongodb.yaml -f ./k8s/redis.yaml # TODO - replace this with real services
+     
+  # Debugging outputs after completion
+    - kubectl get deployments
+    - kubectl get services
+    - kubectl get pods
     
 # build:
 #   stage: build
