@@ -4,6 +4,14 @@ metadata:
   labels:
     service.name: api-gateway
   name: api-gateway
+spec:
+  type: NodePort # Using this to connect loadBalancer to in CSCloud
+  ports:
+    - name: "api-gateway-port"
+      port: 8888
+      targetPort: 8080
+  selector:
+    deployment.name: api-gateway
 ---
 apiVersion: apps/v1
 kind: Deployment
