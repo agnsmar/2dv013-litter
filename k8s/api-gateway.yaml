@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: api-gateway
-        image: api-gateway
+        image: gitlab.lnu.se:5050/2dv013/student/team-6-sphynx/litter/api-gateway:latest
         env:
         - name: PORT
           value: "8080"
