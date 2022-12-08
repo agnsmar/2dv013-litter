@@ -9,30 +9,7 @@ test: # temp job
   script:
     - echo 'testing'
 
-# Building all images. TODO - Figure out if we can build only if changes have occured?
-#build:
-#  stage: build
-#  image:
-#    name: gcr.io/kaniko-project/executor:v1.9.0-debug 
-#    entrypoint: [""]
-#  script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
-#    - /kaniko/executor
-#      --context "${CI_PROJECT_DIR}"  
-#      --dockerfile "${CI_PROJECT_DIR}/services/client/Dockerfile.production"
-#      --destination "${CI_REGISTRY_IMAGE}/client:${CI_COMMIT_TAG:-latest}"
-#    - /kaniko/executor
-#      --context "${CI_PROJECT_DIR}"  
-#      --dockerfile "${CI_PROJECT_DIR}/services/service1/Dockerfile.production"
-#      --destination "${CI_REGISTRY_IMAGE}/service1:${CI_COMMIT_TAG:-latest}"
-#    - /kaniko/executor
-#      --context "${CI_PROJECT_DIR}"  
-#      --dockerfile "${CI_PROJECT_DIR}/services/service2/Dockerfile.production"
-#      --destination "${CI_REGISTRY_IMAGE}/service2:${CI_COMMIT_TAG:-latest}"
-#  only:
-#    - main  
-
-# Maybe this can work? One job for each service, only run if changes are made to it's directory.
-build 1/5:
+build 1/6:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
@@ -47,7 +24,7 @@ build 1/5:
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/client/*
 
-build 2/5:
+build 2/6:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
@@ -61,6 +38,66 @@ build 2/5:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/api-gateway/*
+
+build 3/6:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug 
+    entrypoint: [""]
+  script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"  
+      --dockerfile "${CI_PROJECT_DIR}/services/auth/Dockerfile.production"
+      --destination "${CI_REGISTRY_IMAGE}/auth:${CI_COMMIT_TAG:-latest}"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
+        - services/auth/*
+      
+build 4/6:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug 
+    entrypoint: [""]
+  script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"  
+      --dockerfile "${CI_PROJECT_DIR}/services/profile/Dockerfile.production"
+      --destination "${CI_REGISTRY_IMAGE}/profile:${CI_COMMIT_TAG:-latest}"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
+        - services/profile/*
+
+build 5/6:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug 
+    entrypoint: [""]
+  script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"  
+      --dockerfile "${CI_PROJECT_DIR}/services/lit/Dockerfile.production"
+      --destination "${CI_REGISTRY_IMAGE}/lit:${CI_COMMIT_TAG:-latest}"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
+        - services/lit/*
+
+build 6/6:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug 
+    entrypoint: [""]
+  script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"  
+      --dockerfile "${CI_PROJECT_DIR}/services/feed/Dockerfile.production"
+      --destination "${CI_REGISTRY_IMAGE}/feed:${CI_COMMIT_TAG:-latest}"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
+        - services/feed/*
 
 # TODO - Change to Blue/Green
 staging:
@@ -88,7 +125,7 @@ production:
     - kubectl delete secret regcred || true
     - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
 
-    # - kubectl apply -f ./k8s/taskit.yaml -f ./k8s/mongodb.yaml -f ./k8s/redis.yaml # TODO - replace this with real services
+    # - kubectl apply -f ./api-gateway.yaml # TODO - replace this with real services
      
   # Debugging outputs after completion
     - kubectl get deployments
