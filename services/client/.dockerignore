@@ -6,7 +6,6 @@
 !public
 !vite.config.ts
 !.env
-!node_modules
 !index.html
 !tsconfig.json
 !tsconfig.node.json

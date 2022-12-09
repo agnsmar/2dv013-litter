@@ -1,23 +1,13 @@
-FROM node:18.10.0-bullseye-slim
+FROM node:19-bullseye-slim
 
-# Create app directory
 WORKDIR /app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
 COPY package.json .
+RUN npm i
 
-RUN npm install
-
-# Bundle app source
 COPY . .
 
-# Set the user
-USER node
-
-# Expose the Node.js port
+# EXPOSE [Port you mentioned in the vite.config file]
 EXPOSE 5173
 
-# Start the web server using the dev script
-CMD [ "npm", "run", "dev" ]
+CMD ["npm", "run", "dev"]
