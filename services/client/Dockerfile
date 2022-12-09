@@ -2,7 +2,7 @@ FROM node:19-bullseye-slim
 
 WORKDIR /app
 
-COPY package.json .
+COPY package*.json .
 RUN npm i
 
 COPY . .
