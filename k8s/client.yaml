@@ -32,6 +32,6 @@ spec:
     spec:
       containers:
       - name: client
-        image: client:latest
+        image: gitlab.lnu.se:5050/2dv013/student/team-6-sphynx/litter/client:latest
         ports:
         - containerPort: 80
