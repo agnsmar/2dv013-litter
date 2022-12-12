@@ -6,7 +6,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: cscloud7-248.lnu.se
+    - host: 194.47.177.248
       http:
         paths:
           - path: /
