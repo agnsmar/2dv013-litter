@@ -13,6 +13,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: api-gateway
+                name: client
                 port:
-                  number: 8888
+                  number: 3080
