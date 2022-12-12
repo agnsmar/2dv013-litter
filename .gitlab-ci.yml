@@ -23,6 +23,7 @@ build 1/6:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/client/*
+        - k8s/client.yaml
 
 build 2/6:
   stage: build
@@ -38,6 +39,7 @@ build 2/6:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/api-gateway/*
+        - k8s/api-gateway.yaml
 
 build 3/6:
   stage: build

@@ -1,0 +1,14 @@
+# Exclude all files and directories!
+*
+
+# Explicitly include
+!public
+!src
+!.env
+!index.html
+!nginx.conf
+!package-lock.json
+!package.json
+!tsconfig.json
+!tsconfig.node.json
+!vite.config.ts
