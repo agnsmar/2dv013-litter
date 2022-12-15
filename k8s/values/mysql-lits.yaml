@@ -1,0 +1,24 @@
+architecture: replication
+global:
+  storageClass: standard
+primary:
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  startupProbe:
+    enabled: false
+  persistence:
+    enabled: true # maybe set this to false in development
+    size: 100Mi
+secondary:
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  startupProbe:
+    enabled: false
+  persistence:
+    enabled: true # maybe set this to false in development
+    size: 100Mi
+  replicaCount: 1
