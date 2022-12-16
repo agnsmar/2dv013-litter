@@ -15,10 +15,12 @@ build:
 deploy:
   kubectl:
     manifests:
+    # Minikube specific manifests
     - ./k8s/ingress.yaml
     - ./k8s/local-storage.yaml
-    - ./k8s/client.yaml
-    - ./k8s/api-gateway.yaml
+    # Dev manifests, required in order to point to local docker container registry.
+    - ./k8s/dev/client.yaml
+    - ./k8s/dev/api-gateway.yaml
   helm:
     releases:
     - name: sphynx-lits
