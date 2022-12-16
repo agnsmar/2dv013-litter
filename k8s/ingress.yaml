@@ -14,3 +14,10 @@ spec:
                 name: client
                 port:
                   number: 80
+          - path: /graphql
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8080
