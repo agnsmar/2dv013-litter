@@ -1,0 +1,16 @@
+architecture: replication
+global:
+  storageClass: standard
+auth:
+  rootPassword: localdevpassword
+  password: localdevpassword
+  replicationPassword: localdevpassword
+primary:
+  persistence:
+    enabled: true # maybe set this to false in development
+    size: 100Mi
+secondary:
+  persistence:
+    enabled: true # maybe set this to false in development
+    size: 100Mi
+  replicaCount: 2

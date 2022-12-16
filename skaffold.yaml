@@ -1,0 +1,35 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: litter
+build:
+  artifacts:
+  - image: client
+    context: ./services/client
+    docker:
+      dockerfile: services/client/Dockerfile.production
+  - image: api-gateway
+    context: ./services/api-gateway
+    docker:
+      dockerfile: services/api-gateway/Dockerfile.production
+deploy:
+  kubectl:
+    manifests:
+    # Minikube specific manifests
+    - ./k8s/ingress.yaml
+    - ./k8s/local-storage.yaml
+    # Dev manifests, required in order to point to local docker container registry.
+    - ./k8s/dev/client.yaml
+    - ./k8s/dev/api-gateway.yaml
+  helm:
+    releases:
+    - name: sphynx-lits
+      repo: https://charts.bitnami.com/bitnami
+      remoteChart: mysql
+      valuesFiles: 
+      - ./k8s/values/mysql-lits.yaml
+    - name: sphynx-users
+      repo: https://charts.bitnami.com/bitnami
+      remoteChart: mysql
+      valuesFiles: 
+      - ./k8s/values/mysql-users.yaml
