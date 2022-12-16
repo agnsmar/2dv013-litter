@@ -1,6 +1,6 @@
 architecture: replication
 global:
-  storageClass: standard
+  storageClass: local-storage
 primary:
   livenessProbe:
     enabled: false
