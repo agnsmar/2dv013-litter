@@ -1,34 +1,38 @@
 import { ApolloServer } from '@apollo/server'
 import { startStandaloneServer } from '@apollo/server/standalone'
+import { PrismaClient } from '@prisma/client'
 import dotenv from 'dotenv'
 
 const main = async () => {
+  const prisma = new PrismaClient()
   dotenv.config()
 
   const typeDefs = `#graphql
-    type Book {
-      title: String
-      author: String
+    type User {
+      email: String
+      id: Int
+      name: String
     }
     type Query {
-      books: [Book]
+      users: [User]
     }
   `
 
-  const books = [
-    {
-      title: 'The Awakening',
-      author: 'Kate Chopin'
-    },
-    {
-      title: 'City of Glass',
-      author: 'Paul Auster'
-    }
-  ]
-
   const resolvers = {
+    Mutation: {
+      createUser: async () => {
+        await prisma.user.create({
+          data: {
+            email: 'test@test.test',
+            name: 'Bob'
+          }
+        })
+      }
+    },
     Query: {
-      books: () => books
+      users: async () => {
+        return await prisma.user.findMany({})
+      }
     }
   }
 
