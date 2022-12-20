@@ -8,6 +8,9 @@ const main = async () => {
   dotenv.config()
 
   const typeDefs = `#graphql
+    type Mutation {
+      createUser: Boolean
+    }
     type User {
       email: String
       id: Int
@@ -27,6 +30,7 @@ const main = async () => {
             name: 'Bob'
           }
         })
+        return true
       }
     },
     Query: {
