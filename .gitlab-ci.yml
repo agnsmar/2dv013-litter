@@ -101,15 +101,31 @@ build 6/6:
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/feed/*
 
-# TODO - Change to Blue/Green
 staging:
   stage: staging
+  image:
+    name: gcr.io/k8s-skaffold/skaffold:v2.0.0  # TODO - replace with a better Kubernetes image. Bitnami?
+    entrypoint: ['']
+  environment:
+    name: staging
+    url: $STAGING_URL
   script:
-    - echo 'deploying to staging'
+    - kubectl config get-contexts
+   # Configure kubectl to use our own k8s cluster, you need to setup an Gitlab agent in you k8s kluster
+    - kubectl config use-context $K8S_CONTEXT
+   # Authorize the cluster to pull images from our registry. (synced against Deploy Token "gitlab-deploy-token")
+    - kubectl delete secret regcred || true
+    - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
+
+    - kubectl apply -f ./k8s/api-gateway.yaml -f ./k8s/client.yaml -f ./k8s/nginx-ingress-staging.yaml # TODO - replace this with real services
+     
+  # Debugging outputs after completion
+    - kubectl get deployments
+    - kubectl get services
+    - kubectl get pods
   only:
     - main
 
-# TODO - Change to Blue/Green
 production:
   stage: production
   image:
@@ -117,7 +133,7 @@ production:
     entrypoint: ['']
   environment:
     name: production
-    url: $PRODUCTION_URL # TODO - Set as environment variable. URL to your application. Ie HTTP://cscloud6-25.lnu.se
+    url: $PRODUCTION_URL
   when: manual # TODO - Make this not manual
   script:
     - kubectl config get-contexts
@@ -135,4 +151,3 @@ production:
     - kubectl get pods
   only:
     - main  
-    
