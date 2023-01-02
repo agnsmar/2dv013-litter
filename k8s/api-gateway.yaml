@@ -36,6 +36,8 @@ spec:
           value: "8080"
         - name: NODE_PORT
           value: "3000"
+        - name: PROFILE_SERVICE
+          value: http://profile:8889/graphql
         ports:
           - containerPort: 8080
       imagePullSecrets:
