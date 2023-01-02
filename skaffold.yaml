@@ -12,6 +12,10 @@ build:
     context: ./services/api-gateway
     docker:
       dockerfile: services/api-gateway/Dockerfile.production
+  - image: profile
+    context: ./services/profile
+    docker:
+      dockerfile: services/profile/Dockerfile.production
 deploy:
   kubectl:
     manifests:
@@ -21,6 +25,7 @@ deploy:
     # Dev manifests, required in order to point to local docker container registry.
     - ./k8s/dev/client.yaml
     - ./k8s/dev/api-gateway.yaml
+    - ./k8s/dev/profile.yaml
   helm:
     releases:
     - name: sphynx-lits
