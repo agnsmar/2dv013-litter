@@ -127,7 +127,7 @@ production:
     - kubectl delete secret regcred || true
     - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
 
-    - kubectl apply -f ./k8s/api-gateway.yaml -f ./k8s/client.yaml -f ./k8s/nginx-ingress.yaml # TODO - replace this with real services
+    - kubectl apply -f ./k8s/api-gateway.yaml -f ./k8s/client.yaml -f ./k8s/nginx-ingress-production.yaml # TODO - replace this with real services
      
   # Debugging outputs after completion
     - kubectl get deployments
