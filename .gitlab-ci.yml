@@ -104,7 +104,7 @@ build 6/6:
 staging:
   stage: staging
   image:
-    name: bitnami/kubectl:1.24.9  # TODO - replace with a better Kubernetes image. Bitnami?
+    name: bitnami/kubectl:1.24.9
     entrypoint: ['']
   environment:
     name: staging
