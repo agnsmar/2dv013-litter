@@ -70,6 +70,7 @@ build 4/6:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/profile/*
+        - k8s/profile.yaml
 
 build 5/6:
   stage: build
