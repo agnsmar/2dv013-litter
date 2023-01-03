@@ -104,7 +104,7 @@ build 6/6:
 staging:
   stage: staging
   image:
-    name: bitnami/kubectl:1.24.9
+    name: gcr.io/k8s-skaffold/skaffold:v2.0.0
     entrypoint: ['']
   environment:
     name: staging
