@@ -28,6 +28,10 @@ build:
     context: ./services/lit-read
     docker:
       dockerfile: services/lit-read/Dockerfile.production
+  - image: lit-write
+    context: ./services/lit-write
+    docker:
+      dockerfile: services/lit-write/Dockerfile.production
 deploy:
   kubectl:
     manifests:
@@ -41,6 +45,7 @@ deploy:
     - ./k8s/dev/auth.yaml
     - ./k8s/dev/feed.yaml
     - ./k8s/dev/lit-read.yaml
+    - ./k8s/dev/lit-write.yaml
   helm:
     releases:
     - name: sphynx-lits
