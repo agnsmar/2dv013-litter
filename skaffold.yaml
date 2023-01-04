@@ -24,6 +24,10 @@ build:
     context: ./services/feed
     docker:
       dockerfile: services/feed/Dockerfile.production
+  - image: lit-read
+    context: ./services/lit-read
+    docker:
+      dockerfile: services/lit-read/Dockerfile.production
 deploy:
   kubectl:
     manifests:
@@ -36,12 +40,13 @@ deploy:
     - ./k8s/dev/profile.yaml
     - ./k8s/dev/auth.yaml
     - ./k8s/dev/feed.yaml
+    - ./k8s/dev/lit-read.yaml
   helm:
     releases:
     - name: sphynx-lits
       repo: https://charts.bitnami.com/bitnami
       remoteChart: mysql
-      valuesFiles: 
+      valuesFiles:
       - ./k8s/values/mysql-lits.yaml
     - name: sphynx-users
       repo: https://charts.bitnami.com/bitnami
