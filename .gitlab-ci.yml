@@ -9,7 +9,7 @@ test: # temp job
   script:
     - echo 'testing'
 
-build 1/6:
+build 1/9:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
@@ -25,7 +25,7 @@ build 1/6:
         - services/client/*
         - k8s/client.yaml
 
-build 2/6:
+build 2/9:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
@@ -41,7 +41,7 @@ build 2/6:
         - services/api-gateway/*
         - k8s/api-gateway.yaml
 
-build 3/6:
+build 3/9:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
@@ -56,7 +56,7 @@ build 3/6:
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/auth/*
       
-build 4/6:
+build 4/9:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
@@ -72,22 +72,66 @@ build 4/6:
         - services/profile/*
         - k8s/profile.yaml
 
-build 5/6:
+build 5/9:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
     entrypoint: [""]
   script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
     - /kaniko/executor
-      --context "${CI_PROJECT_DIR}/services/lit"  
-      --dockerfile "${CI_PROJECT_DIR}/services/lit/Dockerfile.production"
-      --destination "${CI_REGISTRY_IMAGE}/lit:${CI_COMMIT_TAG:-latest}"
+      --context "${CI_PROJECT_DIR}/services/lit-write"  
+      --dockerfile "${CI_PROJECT_DIR}/services/lit-write/Dockerfile.production"
+      --destination "${CI_REGISTRY_IMAGE}/lit-write:${CI_COMMIT_TAG:-latest}"
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
-        - services/lit/*
+        - services/lit-write/*
 
-build 6/6:
+build 6/9:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug 
+    entrypoint: [""]
+  script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/services/lit-read"  
+      --dockerfile "${CI_PROJECT_DIR}/services/lit-read/Dockerfile.production"
+      --destination "${CI_REGISTRY_IMAGE}/lit-read:${CI_COMMIT_TAG:-latest}"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
+        - services/lit-read/*
+build 7/9:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug 
+    entrypoint: [""]
+  script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/services/user-write"  
+      --dockerfile "${CI_PROJECT_DIR}/services/user-write/Dockerfile.production"
+      --destination "${CI_REGISTRY_IMAGE}/user-write:${CI_COMMIT_TAG:-latest}"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
+        - services/user-write/*
+
+build 8/9:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug 
+    entrypoint: [""]
+  script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/services/user-read"  
+      --dockerfile "${CI_PROJECT_DIR}/services/user-read/Dockerfile.production"
+      --destination "${CI_REGISTRY_IMAGE}/user-read:${CI_COMMIT_TAG:-latest}"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
+        - services/user-read/*
+
+build 9/9:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
