@@ -38,6 +38,10 @@ spec:
           value: "3000"
         - name: PROFILE_SERVICE
           value: http://profile:8889/graphql
+        - name: AUTH_SERVICE
+          value: http://auth:8890/graphql
+        - name: FEED_SERVICE
+          value: http://feed:8891/graphql
         ports:
           - containerPort: 8080
       imagePullSecrets:
