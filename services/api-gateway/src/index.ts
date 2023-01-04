@@ -5,7 +5,7 @@ import { ApolloGateway, IntrospectAndCompose } from '@apollo/gateway'
 const main = async () => {
   const gateway = new ApolloGateway({
     supergraphSdl: new IntrospectAndCompose({
-      subgraphs: [{ name: 'profile', url: process.env.PROFILE_SERVICE }]
+      subgraphs: [{ name: 'profile', url: process.env.PROFILE_SERVICE }, { name: 'auth', url: process.env.AUTH_SERVICE }]
     })
   })
 
