@@ -16,6 +16,10 @@ build:
     context: ./services/profile
     docker:
       dockerfile: services/profile/Dockerfile.production
+  - image: auth
+    context: ./services/auth
+    docker:
+      dockerfile: services/auth/Dockerfile.production
 deploy:
   kubectl:
     manifests:
@@ -26,6 +30,7 @@ deploy:
     - ./k8s/dev/client.yaml
     - ./k8s/dev/api-gateway.yaml
     - ./k8s/dev/profile.yaml
+    - ./k8s/dev/auth.yaml
   helm:
     releases:
     - name: sphynx-lits

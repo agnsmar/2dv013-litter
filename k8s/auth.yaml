@@ -2,44 +2,40 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    service.name: api-gateway
-  name: api-gateway
+    service.name: auth
+  name: auth
 spec:
   type: NodePort # Using this to connect loadBalancer to in CSCloud
   ports:
-    - name: "api-gateway-port"
-      port: 8888
+    - name: "auth-port"
+      port: 8890
       targetPort: 8080
   selector:
-    deployment.name: api-gateway
+    deployment.name: auth
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-gateway
+  name: auth
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      deployment.name: api-gateway
+      deployment.name: auth
   template:
     metadata:
       labels:
-        deployment.name: api-gateway
+        deployment.name: auth
     spec:
       containers:
-      - name: api-gateway
-        image: api-gateway:latest
+      - name: auth
+        image: gitlab.lnu.se:5050/2dv013/student/team-6-sphynx/litter/auth:latest
         env:
         - name: PORT
           value: "8080"
         - name: NODE_PORT
           value: "3000"
-        - name: PROFILE_SERVICE
-          value: http://profile:8889/graphql
-        - name: AUTH_SERVICE
-          value: http://auth:8890/graphql
         ports:
           - containerPort: 8080
       imagePullSecrets:
