@@ -9,8 +9,10 @@ const controller = new LitController()
 // Redirect to API
 router.get('/', (req, res, next) => res.redirect('/api'))
 
+const baseURL = process.env.BASE_URL
+
 // Hello World Example
-router.get('/api', (req, res, next) => controller.helloWorld(req, res, next))
+router.get(baseURL + '/', (req, res, next) => controller.helloWorld(req, res, next))
 
 // Catch loose routes, return 404.
 router.use('*', (req, res, next) => next(createError(404)))
