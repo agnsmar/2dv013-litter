@@ -3,7 +3,7 @@ import type { Resolvers } from '../generated/graphql'
 
 const resolvers: Resolvers = {
   Query: {
-    me() {
+    me(_, __, context) {
       return { username: 'user', email: 'user@user.u', id: 1 }
     }
   },
