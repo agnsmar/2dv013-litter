@@ -37,7 +37,9 @@ spec:
         - name: NODE_PORT
           value: "3000"
         - name: BASE_URL
-          value: /api/lits
+          value: /api/litswrite
+        - name: DATABASE_URL
+          value: mysql://root:localdevpassword@sphynx-lits-mysql-primary:3306/my_database
         ports:
           - containerPort: 8080
       imagePullSecrets:

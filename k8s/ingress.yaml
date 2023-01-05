@@ -21,10 +21,17 @@ spec:
                 name: api-gateway
                 port:
                   number: 8080
-          - path: /api/lits
+          - path: /api/litsread
             pathType: Prefix
             backend:
               service:
                 name: lit-read
+                port:
+                  number: 8080
+          - path: /api/litswrite
+            pathType: Prefix
+            backend:
+              service:
+                name: lit-write
                 port:
                   number: 8080
