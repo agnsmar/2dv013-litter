@@ -1,4 +1,3 @@
-// import { Prisma, PrismaClient } from '@prisma/client'
 import { Request, Response, NextFunction } from 'express'
 import express from 'express'
 import helmet from 'helmet'
@@ -7,8 +6,6 @@ import morgan from 'morgan'
 import { router } from './routes/router.js'
 
 const main = async () => {
-  // const prisma = new PrismaClient()
-  
   const app = express()
 
   app.use(helmet())
