@@ -35,3 +35,17 @@ spec:
                 name: lit-write
                 port:
                   number: 8080
+          - path: /api/usersread
+            pathType: Prefix
+            backend:
+              service:
+                name: user-read
+                port:
+                  number: 8080
+          - path: /api/userswrite
+            pathType: Prefix
+            backend:
+              service:
+                name: user-write
+                port:
+                  number: 8080
