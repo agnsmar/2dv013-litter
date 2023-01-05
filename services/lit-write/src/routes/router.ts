@@ -6,10 +6,10 @@ import { LitController } from '../controllers/lit-controller'
 export const router = express.Router()
 const controller = new LitController()
 
-// Redirect to API
-router.get('/', (req, res, next) => res.redirect('/api'))
-
 const baseURL = process.env.BASE_URL
+
+// Redirect to API
+router.get('/', (req, res, next) => res.redirect(baseURL + '/'))
 
 // Hello World Example
 router.get(baseURL + '/', (req, res, next) => controller.helloWorld(req, res, next))
