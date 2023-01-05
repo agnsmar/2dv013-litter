@@ -6,10 +6,10 @@ import { startStandaloneServer } from '@apollo/server/standalone'
 const main = async () => {
   const typeDefs = gql`
     type Query {
-      me: [User]
+      profile: [ProfileUser]
     }
 
-    type User {
+    type ProfileUser {
       id: String
       username: String
     }
@@ -17,7 +17,7 @@ const main = async () => {
 
   const resolvers = {
     Query: {
-      me() {
+      profile() {
         return [
           { id: '1', username: '@ava' },
           { id: '2', username: '@ava' },
