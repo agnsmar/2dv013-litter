@@ -1,0 +1,17 @@
+type Query {
+  me: User
+}
+
+type Mutation {
+  login: Boolean
+  register: Boolean
+}
+
+type User {
+  id: Int
+  username: String!
+  email: String!
+  password: String
+  createdAt: String
+  updatedAt: String
+}

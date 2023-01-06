@@ -6,10 +6,10 @@ import { startStandaloneServer } from '@apollo/server/standalone'
 const main = async () => {
   const typeDefs = gql`
     type Query {
-      feed: [User]
+      feed: [FeedUser]
     }
 
-    type User {
+    type FeedUser {
       id: String
       username: String
     }

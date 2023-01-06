@@ -1,39 +1,24 @@
 import { ApolloServer } from '@apollo/server'
 import { buildSubgraphSchema } from '@apollo/subgraph'
-import { gql } from 'graphql-tag'
 import { startStandaloneServer } from '@apollo/server/standalone'
+import resolvers from './resolvers/resolvers'
+import fs from 'fs/promises'
+import gql from 'graphql-tag'
+import { Context } from './context'
 
 const main = async () => {
-  const typeDefs = gql`
-    type Query {
-      you: [User]
-    }
+  const gqlSchema = await fs.readFile('./src/graphql/schema.graphql', { encoding: 'utf-8' })
+  const typeDefs = gql(gqlSchema)
 
-    type User {
-      id: String
-      username: String
-    }
-  `
-
-  const resolvers = {
-    Query: {
-      you() {
-        return [
-          { id: '1', username: '@ava' },
-          { id: '2', username: '@ava' },
-          { id: '3', username: '@ava' },
-          { id: '4', username: '@ava' }
-        ]
-      }
-    }
-  }
-
-  const server = new ApolloServer({
-    schema: buildSubgraphSchema([{ typeDefs, resolvers }])
+  const server = new ApolloServer<Context>({
+    schema: buildSubgraphSchema({ typeDefs, resolvers })
   })
 
   const { url } = await startStandaloneServer(server, {
-    listen: { port: parseInt(process.env.PORT!) }
+    listen: { port: parseInt(process.env.PORT!) },
+    context: async ({ req, res }) => ({
+      token: req.headers.authorization?.split(' ')[1]
+    })
   })
   console.log(`🚀  Server ready at ${url}`)
 }
