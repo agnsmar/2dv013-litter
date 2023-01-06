@@ -27,6 +27,6 @@ model profile {
 
 model following {
   id          Int       @id @default(autoincrement())
-  user_id_one Int
-  user_id_two Int
+  user_id     Int
+  follower_id Int
 }
