@@ -1,20 +1,69 @@
-import { ApolloServer } from '@apollo/server'
-import { startStandaloneServer } from '@apollo/server/standalone'
-import { ApolloGateway, IntrospectAndCompose } from '@apollo/gateway'
+import { ApolloServer, GraphQLRequest, GraphQLResponse } from '@apollo/server'
+import { ApolloGateway, IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway'
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
+import { expressMiddleware } from '@apollo/server/express4'
+import express from 'express'
+import http from 'http'
+import bodyParser from 'body-parser'
+import cors from 'cors'
 
 const main = async () => {
+  const app = express()
+  const httpServer = http.createServer(app)
+
   const gateway = new ApolloGateway({
+    buildService({ name, url }) {
+      return new RemoteGraphQLDataSource({
+        url,
+        didReceiveResponse({ context, request, response }) {
+          const header = response.http?.headers.get('Authorization')
+          if (header) {
+            if (context.res) {
+              context.res.cookie('token', header, {
+                secure: true,
+                sameSite: 'none',
+                maxAge: 1000 * 60 * 60 * 24 * 7
+              })
+            }
+          }
+          return response
+        },
+        willSendRequest({ context, request }) {
+          if (context.req && context.req.cookies) {
+            const cookie = context.req.cookies.token
+            if (cookie) {
+              request.http?.headers.set('Authorization', cookie)
+            }
+          }
+        }
+      })
+    },
     supergraphSdl: new IntrospectAndCompose({
-      subgraphs: [{ name: 'profile', url: process.env.PROFILE_SERVICE }, { name: 'auth', url: process.env.AUTH_SERVICE }, { name: 'feed', url: process.env.FEED_SERVICE }]
+      subgraphs: [
+        { name: 'profile', url: process.env.PROFILE_SERVICE },
+        { name: 'auth', url: process.env.AUTH_SERVICE },
+        { name: 'feed', url: process.env.FEED_SERVICE }
+      ]
     })
   })
 
-  const server = new ApolloServer({ gateway })
-
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: parseInt(process.env.PORT!) }
+  const server = new ApolloServer({
+    gateway,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
   })
-  console.log(`🚀  Server ready at ${url}`)
+
+  await server.start()
+
+  app.use(
+    '/graphql',
+    cors({ credentials: true }),
+    bodyParser.json(),
+    expressMiddleware(server, { context: async ({ req, res }) => ({ req, res }) })
+  )
+
+  httpServer.listen(process.env.PORT, () => {
+    console.log(`🚀  Server ready at http://localhost:${process.env.PORT}`)
+  })
 }
 
 main()
