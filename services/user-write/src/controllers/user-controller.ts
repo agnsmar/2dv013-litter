@@ -3,19 +3,18 @@ import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../config/prisma'
 
 export class UserController {
-  async helloWorld (req: Request, res: Response, next: NextFunction) {
+  async loadUser (req: Request, res: Response, next: NextFunction, id: number) {
     try {
-      await prisma.user.create({
-        data: {
-          email: "pretend.fella@gmail.com",
-          username: "fakeguy",
-          password: "verystrongpasswordyes"
-        }
-      })
+      const user = await prisma.user.findFirst({ where: { id }})
 
-      const result = await prisma.user.findFirst({where: {username: "fakeguy"}})
+      if (!user) {
+        next(createError(404))
+        return
+      }
 
-      res.json(result)
+      req.user = user
+
+      next()
     } catch (error) {
       next(error)
     }
