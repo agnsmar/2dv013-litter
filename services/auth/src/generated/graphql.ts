@@ -15,11 +15,16 @@ export type Scalars = {
   Float: number;
 };
 
+export type FieldError = {
+  __typename?: 'FieldError';
+  message?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   login?: Maybe<Scalars['Boolean']>;
   refreshToken?: Maybe<Scalars['Boolean']>;
-  register?: Maybe<Scalars['Boolean']>;
+  register?: Maybe<RegisterRespone>;
 };
 
 
@@ -28,9 +33,22 @@ export type MutationLoginArgs = {
   password: Scalars['String'];
 };
 
+
+export type MutationRegisterArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
+};
+
+export type RegisterRespone = {
+  __typename?: 'RegisterRespone';
+  error?: Maybe<FieldError>;
+  success?: Maybe<Scalars['Boolean']>;
 };
 
 export type User = {
@@ -113,9 +131,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  FieldError: ResolverTypeWrapper<FieldError>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  RegisterRespone: ResolverTypeWrapper<RegisterRespone>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
 };
@@ -123,21 +143,34 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  FieldError: FieldError;
   Int: Scalars['Int'];
   Mutation: {};
   Query: {};
+  RegisterRespone: RegisterRespone;
   String: Scalars['String'];
   User: User;
+};
+
+export type FieldErrorResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['FieldError'] = ResolversParentTypes['FieldError']> = {
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   login?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   refreshToken?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  register?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  register?: Resolver<Maybe<ResolversTypes['RegisterRespone']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password' | 'username'>>;
 };
 
 export type QueryResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+};
+
+export type RegisterResponeResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['RegisterRespone'] = ResolversParentTypes['RegisterRespone']> = {
+  error?: Resolver<Maybe<ResolversTypes['FieldError']>, ParentType, ContextType>;
+  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -151,8 +184,10 @@ export type UserResolvers<ContextType = IContext, ParentType extends ResolversPa
 };
 
 export type Resolvers<ContextType = IContext> = {
+  FieldError?: FieldErrorResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  RegisterRespone?: RegisterResponeResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
 

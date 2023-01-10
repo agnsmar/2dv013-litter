@@ -40,6 +40,8 @@ spec:
           value: "alocalrefreshsecret"
         - name: ACCESS_TOKEN_SECRET
           value: "alocalaccesssecret"
+        - name: USER_WRITE_SERVICE
+          value: http://user-write:8894/api/userswrite
         ports:
           - containerPort: 8080
       imagePullSecrets:

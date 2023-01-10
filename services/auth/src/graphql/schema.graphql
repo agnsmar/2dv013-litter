@@ -2,10 +2,19 @@ type Query {
   me: User
 }
 
+type FieldError {
+  message: String
+}
+
+type RegisterRespone {
+  success: Boolean
+  error: FieldError
+}
+
 type Mutation {
   refreshToken: Boolean
   login(email: String!, password: String!): Boolean
-  register: Boolean
+  register(email: String!, username: String!, password: String!): RegisterRespone
 }
 
 type User {
