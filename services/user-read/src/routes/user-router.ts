@@ -19,5 +19,3 @@ router.get('/:id', (req, res, next) => controller.findOne(req, res, next))
 
 // Find all users
 router.get('/', (req, res, next) => controller.findAll(req, res, next))
-
-
