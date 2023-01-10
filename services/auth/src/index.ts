@@ -31,12 +31,23 @@ const main = async () => {
     cors({ credentials: true }),
     bodyParser.json(),
     expressMiddleware(server, {
-      context: async ({ req, res }) => ({
-        req,
-        res,
-        token: req.headers['x-access-token'] && req.headers['x-access-token'][0],
-        ath
-      })
+      context: async ({ req, res }) => {
+        const accessToken = req.headers['x-access-token']
+        let token
+
+        if (Array.isArray(accessToken)) {
+          token = accessToken[0].split(' ')[1]
+        } else if (accessToken) {
+          token = accessToken.split(' ')[1]
+        }
+
+        return {
+          req,
+          res,
+          token,
+          ath
+        }
+      }
     })
   )
 
