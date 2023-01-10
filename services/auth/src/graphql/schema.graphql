@@ -3,6 +3,7 @@ type Query {
 }
 
 type Mutation {
+  refreshToken: Boolean
   login(email: String!, password: String!): Boolean
   register: Boolean
 }

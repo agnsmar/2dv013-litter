@@ -18,6 +18,7 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   login?: Maybe<Scalars['Boolean']>;
+  refreshToken?: Maybe<Scalars['Boolean']>;
   register?: Maybe<Scalars['Boolean']>;
 };
 
@@ -131,6 +132,7 @@ export type ResolversParentTypes = {
 
 export type MutationResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   login?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+  refreshToken?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   register?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
 };
 
