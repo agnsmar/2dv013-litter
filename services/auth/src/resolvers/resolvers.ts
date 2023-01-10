@@ -14,17 +14,54 @@ const resolvers: Resolvers = {
       const { res, token, ath } = context
 
       const decoded = ath.verifyAccessToken(token)
-      if (decoded) return false
+      if (decoded) {
+        return {
+          success: false,
+          error: {
+            message: 'User already logged in.'
+          }
+        }
+      }
 
-      // Other login logic goes here.
+      try {
+        const response = await axios({
+          url: process.env.USER_READ_SERVICE + '/users/authenticate',
+          method: 'GET',
+          data: {
+            email,
+            password
+          }
+        })
 
-      const refreshToken = ath.generateRefreshToken({ userid: '1' })
-      const accessToken = ath.generateAccessToken({ userid: '1' })
+        const userid = response.data.id
 
-      res.setHeader('x-access-token', 'Bearer ' + accessToken)
-      res.setHeader('x-refresh-token', 'Bearer ' + refreshToken)
+        const refreshToken = ath.generateRefreshToken({ userid })
+        const accessToken = ath.generateAccessToken({ userid })
+  
+        res.setHeader('x-access-token', 'Bearer ' + accessToken)
+        res.setHeader('x-refresh-token', 'Bearer ' + refreshToken)
 
-      return true
+        return {
+          success: true
+        }
+      } catch (e: unknown) {
+        if (e instanceof AxiosError) {
+          return {
+            success: false,
+            error: {
+              message: e.response!.data.message
+            }
+          }
+        } else {
+          console.error(e)
+          return {
+            error: {
+              success: false,
+              message: 'Internal server error.'
+            }
+          }
+        }
+      }
     },
     refreshToken(_, __, context) {
       const { res, req, token, ath } = context

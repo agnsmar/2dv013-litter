@@ -6,15 +6,15 @@ type FieldError {
   message: String
 }
 
-type RegisterRespone {
+type SuccessErrorResponse {
   success: Boolean
   error: FieldError
 }
 
 type Mutation {
   refreshToken: Boolean
-  login(email: String!, password: String!): Boolean
-  register(email: String!, username: String!, password: String!): RegisterRespone
+  login(email: String!, password: String!): SuccessErrorResponse
+  register(email: String!, username: String!, password: String!): SuccessErrorResponse
 }
 
 type User {
