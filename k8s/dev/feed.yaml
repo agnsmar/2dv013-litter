@@ -38,5 +38,3 @@ spec:
           value: "3000"
         ports:
           - containerPort: 8080
-      imagePullSecrets:
-      - name: regcred # Secret set as a secret in the cluster
