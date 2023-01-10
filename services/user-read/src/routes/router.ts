@@ -1,18 +1,19 @@
 import createError from 'http-errors'
 import express from 'express'
 
-import { UserController } from '../controllers/user-controller'
- 
+import { Controller } from '../controllers/controller'
+import { router as userRouter } from './user-router'
+
 export const router = express.Router()
-const controller = new UserController()
+const controller = new Controller()
 
 const baseURL = process.env.BASE_URL
 
 // Redirect to API
 router.get('/', (req, res, next) => res.redirect(baseURL + '/'))
 
-// Hello World Example
-router.get(baseURL + '/', (req, res, next) => controller.helloWorld(req, res, next))
+// Index route, nice fella
+router.get(baseURL + '/', (req, res, next) => controller.index(req, res, next))
 
-// Catch loose routes, return 404.
-router.use('*', (req, res, next) => next(createError(404)))
+// Use the user router
+router.use(baseURL + '/users', userRouter)
