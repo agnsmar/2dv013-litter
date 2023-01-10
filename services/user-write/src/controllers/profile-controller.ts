@@ -3,12 +3,12 @@ import bcrypt from 'bcrypt'
 import validator from 'validator'
 import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../config/prisma'
-const { isEmail } = validator
+const { isURL } = validator
 
 export class ProfileController {
   async loadProfile (req: Request, res: Response, next: NextFunction, id: string) {
     try {
-      const profile = await prisma.user.findFirst({ where: { id: Number(id) }})
+      const profile = await prisma.profile.findFirst({ where: { user_id: Number(id) }})
 
       if (!profile) {
         next(createError(404))
@@ -25,17 +25,37 @@ export class ProfileController {
 
   async create (req: Request, res: Response, next: NextFunction) {
     try {
+      const profiles = await prisma.profile.findMany({ where: { user_id: req.account.id }})
+
+      if(profiles.length > 0) {
+        // Conflict, this could really return whatever status code, there are many correct answers
+        next(createError(409, 'This user already has a profile'))
+        return
+      } 
+
+      // Input validation
+      if (!req.body.avatar || !isURL(req.body?.avatar)) {
+        next(createError(400, 'Invalid Avatar URL'))
+        return
+      }
+
+      if (!req.body.content || req.body?.content.length > 42) {
+        next(createError(400, 'Invalid Content'))
+        return
+      }
+
+      // Maybe we make this profile.upsert()?
       const profile = await prisma.profile.create({
         data: {
           avatar: req.body.avatar,
           content: req.body.content,
-          user_id: req.user.id
+          user_id: req.account.id
         }
       })
 
       res
         .status(201)
-        .json({ id: profile.id })
+        .json(profile)
     } catch (error) {
       next(error)
     }
@@ -43,7 +63,31 @@ export class ProfileController {
 
   async replace (req: Request, res: Response, next: NextFunction) {
     try {
-      // replace entirely
+      // Input validation
+      if (!req.body.avatar || !isURL(req.body?.avatar)) {
+        next(createError(400, 'Invalid Avatar URL'))
+        return
+      }
+
+      if (!req.body.content || req.body?.content.trim().length > 42) {
+        next(createError(400, 'Invalid Content'))
+        return
+      }
+      
+      const profile = await prisma.profile.update({
+        where: { 
+          id: req.profile.id 
+        },
+        data: {
+          avatar: req.body.avatar,
+          content: req.body.content.trim(),
+          user_id: req.account.id
+        }
+      })
+
+      res
+        .status(200)
+        .json(profile)
     } catch (error) {
       next(error)
     }
@@ -51,7 +95,32 @@ export class ProfileController {
 
   async modify (req: Request, res: Response, next: NextFunction) {
     try {
-      // modify
+      const data = {
+        avatar: req.body?.avatar,
+        content: req.body?.content.trim()
+      }
+      
+      // Validation
+      if (data.avatar && !isURL(data?.avatar)) {
+        next(createError(400, 'Invalid Avatar URL'))
+        return
+      }
+
+      if (data.content && data?.content.length > 42) {
+        next(createError(400, 'Invalid Content'))
+        return
+      }
+
+      const profile = await prisma.profile.update({
+        where: { 
+          id: req.profile.id 
+        },
+        data
+      })
+
+      res
+        .status(200)
+        .json(profile)
     } catch (error) {
       next(error)
     }
@@ -59,7 +128,11 @@ export class ProfileController {
 
   async delete (req: Request, res: Response, next: NextFunction) {
     try {
-      // delete
+      await prisma.profile.delete({ where: { id: req.profile.id }})
+
+      res
+        .status(204)
+        .send()
     } catch (error) {
       next(error)
     }
