@@ -23,6 +23,7 @@ export type FieldError = {
 export type Mutation = {
   __typename?: 'Mutation';
   login?: Maybe<SuccessErrorResponse>;
+  logout?: Maybe<Scalars['Boolean']>;
   refreshToken?: Maybe<Scalars['Boolean']>;
   register?: Maybe<SuccessErrorResponse>;
 };
@@ -54,11 +55,11 @@ export type SuccessErrorResponse = {
 export type User = {
   __typename?: 'User';
   createdAt?: Maybe<Scalars['String']>;
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   password?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['String']>;
-  username: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
 };
 
 
@@ -159,6 +160,7 @@ export type FieldErrorResolvers<ContextType = IContext, ParentType extends Resol
 
 export type MutationResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   login?: Resolver<Maybe<ResolversTypes['SuccessErrorResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+  logout?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   refreshToken?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   register?: Resolver<Maybe<ResolversTypes['SuccessErrorResponse']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password' | 'username'>>;
 };
@@ -175,11 +177,11 @@ export type SuccessErrorResponseResolvers<ContextType = IContext, ParentType ext
 
 export type UserResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

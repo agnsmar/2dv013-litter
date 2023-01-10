@@ -5,7 +5,14 @@ import axios, { AxiosError } from 'axios'
 const resolvers: Resolvers = {
   Query: {
     me(_, __, context) {
-      return { username: 'user', email: 'user@user.u' }
+      const { token, ath } = context
+
+      const decoded = ath.verifyAccessToken(token)
+      if (!decoded) return null
+
+      return {
+        id: parseInt(decoded.userid)
+      }
     }
   },
   Mutation: {
@@ -123,6 +130,11 @@ const resolvers: Resolvers = {
           }
         }
       }
+    },
+    logout(_, __, context) {
+      const { res } = context
+      res.setHeader('x-logout', 'logout')
+      return null
     }
   }
 }

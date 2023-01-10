@@ -15,12 +15,13 @@ type Mutation {
   refreshToken: Boolean
   login(email: String!, password: String!): SuccessErrorResponse
   register(email: String!, username: String!, password: String!): SuccessErrorResponse
+  logout: Boolean
 }
 
 type User {
   id: Int
-  username: String!
-  email: String!
+  username: String
+  email: String
   password: String
   createdAt: String
   updatedAt: String

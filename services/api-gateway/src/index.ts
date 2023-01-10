@@ -21,6 +21,14 @@ const main = async () => {
             return response
           }
 
+          const logoutHeader = response.http?.headers.get('x-logout')
+          if (logoutHeader) {
+            context.res.clearCookie('aid')
+            context.res.clearCookie('rid')
+
+            return response
+          }
+
           const accessToken = response.http?.headers.get('x-access-token')
           if (accessToken) {
             context.res.cookie('aid', accessToken, {
