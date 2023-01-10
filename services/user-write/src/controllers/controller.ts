@@ -27,8 +27,11 @@ export class Controller {
       self: {
         href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path
       },
-      recommendation: {
+      users: {
         href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + 'users'
+      },
+      profiles: {
+        href: req.protocol + '://' + req.get('host') + req.baseUrl + req.path + 'profiles'
       }
     }
     return links
