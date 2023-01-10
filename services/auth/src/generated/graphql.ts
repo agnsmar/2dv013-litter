@@ -23,6 +23,7 @@ export type FieldError = {
 export type Mutation = {
   __typename?: 'Mutation';
   login?: Maybe<SuccessErrorResponse>;
+  logout?: Maybe<Scalars['Boolean']>;
   refreshToken?: Maybe<Scalars['Boolean']>;
   register?: Maybe<SuccessErrorResponse>;
 };
@@ -159,6 +160,7 @@ export type FieldErrorResolvers<ContextType = IContext, ParentType extends Resol
 
 export type MutationResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   login?: Resolver<Maybe<ResolversTypes['SuccessErrorResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+  logout?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   refreshToken?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   register?: Resolver<Maybe<ResolversTypes['SuccessErrorResponse']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password' | 'username'>>;
 };

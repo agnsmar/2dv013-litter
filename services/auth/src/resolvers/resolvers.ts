@@ -123,6 +123,11 @@ const resolvers: Resolvers = {
           }
         }
       }
+    },
+    logout(_, __, context) {
+      const { res } = context
+      res.setHeader('x-logout', 'logout')
+      return null
     }
   }
 }
