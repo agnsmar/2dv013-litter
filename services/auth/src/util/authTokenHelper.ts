@@ -43,7 +43,7 @@ export class AuthTokenHelper {
    */
   generateAccessToken(payload: TTokenPayload) {
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, {
-      expiresIn: '30s'
+      expiresIn: '15m'
     })
   }
 
