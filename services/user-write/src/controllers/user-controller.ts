@@ -23,34 +23,6 @@ export class UserController {
     }
   }
 
-  /**
-   * I only exist as a sanity check :)
-   */
-  async findOne (req: Request, res: Response, next: NextFunction) {
-    try {
-      const data = {
-        user: req.user
-      }
-
-      res.json(data)
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  /**
-   * I only exist as a sanity check :)
-   */
-  async findAll (req: Request, res: Response, next: NextFunction) {
-    try {
-      const users = await prisma.user.findMany({})
-
-      res.json(users)
-    } catch (error) {
-      next(error)
-    }
-  }
-
   async register (req: Request, res: Response, next: NextFunction) {
     try {
       if (!isEmail(req.body.email)) {
@@ -81,23 +53,6 @@ export class UserController {
       }
 
       next(err)
-    }
-  }
-
-  async login (req: Request, res: Response, next: NextFunction) {
-    try {
-      const user = await prisma.user.findFirst({ where: { email: req.body.email }})
-      
-      if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
-        next(createError(401, 'Invalid email or password.'))
-        return
-      }
-
-      res
-        .status(200)
-        .json({ id: user.id})
-    } catch (error) {
-      next(error)
     }
   }
 }
