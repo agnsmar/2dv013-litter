@@ -25,6 +25,31 @@ const resolvers: Resolvers = {
 
       return true
     },
+    refreshToken(_, __, context) {
+      const { res, req, token, ath } = context
+
+      const refreshTokenHeader = req.headers['x-refresh-token'] as string | undefined
+      const refreshToken = refreshTokenHeader?.split(' ')[1]
+      const refreshDecoded = ath.verifyRefreshToken(refreshToken)
+      if (!refreshDecoded) return false
+
+      const accessDecoded = ath.verifyAccessToken(token)
+      if (!accessDecoded) {
+        const newAccessToken = ath.generateAccessToken({ userid: refreshDecoded.userid })
+        res.setHeader('x-access-token', 'Bearer ' + newAccessToken)
+      } else {
+        const timeLeft = accessDecoded.exp! - Date.now()
+        const second = 1000
+        const minute = second * 60
+
+        if (timeLeft < minute) {
+          const newAccessToken = ath.generateAccessToken({ userid: refreshDecoded.userid })
+          res.setHeader('x-access-token', 'Bearer ' + newAccessToken)
+        }
+      }
+
+      return true
+    },
     register() {
       return false
     }
