@@ -1,5 +1,6 @@
 import { GraphQLResolverMap } from '@apollo/subgraph/dist/schema-helper'
 import type { Resolvers } from '../generated/graphql'
+import axios, { AxiosError } from 'axios'
 
 const resolvers: Resolvers = {
   Query: {
@@ -50,8 +51,41 @@ const resolvers: Resolvers = {
 
       return true
     },
-    register() {
-      return false
+    async register(_, params, context) {
+      const { email, password, username } = params
+
+      try {
+        await axios({
+          url: process.env.USER_WRITE_SERVICE + '/users/register',
+          method: 'POST',
+          data: {
+            username: username,
+            email: email,
+            password: password
+          }
+        })
+
+        return {
+          success: true
+        }
+      } catch (e: unknown) {
+        if (e instanceof AxiosError) {
+          return {
+            success: false,
+            error: {
+              message: e.response!.data.message
+            }
+          }
+        } else {
+          console.error(e)
+          return {
+            error: {
+              success: false,
+              message: 'Internal server error.'
+            }
+          }
+        }
+      }
     }
   }
 }
