@@ -1,5 +1,4 @@
 import createError from 'http-errors'
-import bcrypt from 'bcrypt'
 import validator from 'validator'
 import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../config/prisma'
