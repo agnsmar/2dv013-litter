@@ -6,23 +6,6 @@ import { prisma } from '../config/prisma'
 const { isEmail } = validator
 
 export class UserController {
-  async loadUser (req: Request, res: Response, next: NextFunction, id: string) {
-    try {
-      const user = await prisma.user.findFirst({ where: { id: Number(id) }})
-
-      if (!user) {
-        next(createError(404))
-        return
-      }
-
-      req.user = user
-
-      next()
-    } catch (error) {
-      next(error)
-    }
-  }
-
   async register (req: Request, res: Response, next: NextFunction) {
     try {
       if (!isEmail(req.body.email)) {
