@@ -6,6 +6,7 @@ import { Request, Response, NextFunction } from 'express'
 import { Controller } from '../controllers/controller'
 import { router as userRouter } from './user-router'
 import { router as profileRouter } from './profile-router'
+import { TTokenPayload } from '../types/types'
 
 export const router = express.Router()
 const controller = new Controller()
@@ -27,9 +28,9 @@ export function authenticateJWT (req: Request, res: Response, next: NextFunction
   }
  
   try {
-    const payload = jwt.verify(authorization[1], process.env.ACCESS_TOKEN_SECRET!, { algorithms: ['HS256'] })
+    const payload = jwt.verify(authorization[1], process.env.ACCESS_TOKEN_SECRET!, { algorithms: ['HS256'] }) as TTokenPayload
     req.account = {
-      id: payload.sub
+      id: Number(payload.userid)
     }
     next()
   } catch (err) {
