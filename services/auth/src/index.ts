@@ -1,26 +1,58 @@
 import { ApolloServer } from '@apollo/server'
 import { buildSubgraphSchema } from '@apollo/subgraph'
-import { startStandaloneServer } from '@apollo/server/standalone'
+import { expressMiddleware } from '@apollo/server/express4'
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import resolvers from './resolvers/resolvers'
 import fs from 'fs/promises'
 import gql from 'graphql-tag'
-import { Context } from './context'
+import { IContext } from './context'
+import express from 'express'
+import cors from 'cors'
+import http from 'http'
+import bodyParser from 'body-parser'
+import { AuthTokenHelper } from './util/authTokenHelper'
 
 const main = async () => {
+  const app = express()
+  const httpServer = http.createServer(app)
   const gqlSchema = await fs.readFile('./src/graphql/schema.graphql', { encoding: 'utf-8' })
   const typeDefs = gql(gqlSchema)
 
-  const server = new ApolloServer<Context>({
-    schema: buildSubgraphSchema({ typeDefs, resolvers })
+  const server = new ApolloServer<IContext>({
+    schema: buildSubgraphSchema({ typeDefs, resolvers }),
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
   })
 
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: parseInt(process.env.PORT!) },
-    context: async ({ req, res }) => ({
-      token: req.headers.authorization?.split(' ')[1]
+  await server.start()
+  const ath = new AuthTokenHelper()
+
+  app.use(
+    '/graphql',
+    cors({ credentials: true }),
+    bodyParser.json(),
+    expressMiddleware(server, {
+      context: async ({ req, res }) => {
+        const accessToken = req.headers['x-access-token']
+        let token
+
+        if (Array.isArray(accessToken)) {
+          token = accessToken[0].split(' ')[1]
+        } else if (accessToken) {
+          token = accessToken.split(' ')[1]
+        }
+
+        return {
+          req,
+          res,
+          token,
+          ath
+        }
+      }
     })
-  })
-  console.log(`🚀  Server ready at ${url}`)
+  )
+
+  await new Promise<void>((resolve) => httpServer.listen({ port: process.env.PORT }, resolve))
+  console.log(`🚀  Server ready at http://localhost:${process.env.PORT}`)
 }
 
 main()

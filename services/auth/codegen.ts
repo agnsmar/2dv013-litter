@@ -7,7 +7,7 @@ const config = {
     'src/generated/graphql.ts': {
       plugins: ['typescript', 'typescript-resolvers'],
       config: {
-        contextType: '../context#Context'
+        contextType: '../context#IContext'
       }
     }
   }

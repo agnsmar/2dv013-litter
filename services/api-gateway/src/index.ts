@@ -1,4 +1,4 @@
-import { ApolloServer, GraphQLRequest, GraphQLResponse } from '@apollo/server'
+import { ApolloServer } from '@apollo/server'
 import { ApolloGateway, IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
@@ -6,6 +6,7 @@ import express from 'express'
 import http from 'http'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 const main = async () => {
   const app = express()
@@ -16,23 +17,40 @@ const main = async () => {
       return new RemoteGraphQLDataSource({
         url,
         didReceiveResponse({ context, request, response }) {
-          const header = response.http?.headers.get('Authorization')
-          if (header) {
-            if (context.res) {
-              context.res.cookie('token', header, {
-                secure: true,
-                sameSite: 'none',
-                maxAge: 1000 * 60 * 60 * 24 * 7
-              })
-            }
+          if (!context.res) {
+            return response
           }
+
+          const accessToken = response.http?.headers.get('x-access-token')
+          if (accessToken) {
+            context.res.cookie('aid', accessToken, {
+              secure: true,
+              sameSite: 'none',
+              maxAge: 1000 * 60 * 60 * 24
+            })
+          }
+
+          const refreshToken = response.http?.headers.get('x-refresh-token')
+          if (refreshToken) {
+            context.res.cookie('rid', refreshToken, {
+              secure: true,
+              sameSite: 'none',
+              maxAge: 1000 * 60 * 60 * 24 * 7
+            })
+          }
+
           return response
         },
         willSendRequest({ context, request }) {
           if (context.req && context.req.cookies) {
-            const cookie = context.req.cookies.token
-            if (cookie) {
-              request.http?.headers.set('Authorization', cookie)
+            const accessToken = context.req.cookies.aid
+            if (accessToken) {
+              request.http?.headers.set('x-access-token', accessToken)
+            }
+
+            const refreshToken = context.req.cookies.rid
+            if (refreshToken) {
+              request.http?.headers.set('x-refresh-token', refreshToken)
             }
           }
         }
@@ -58,6 +76,7 @@ const main = async () => {
     '/graphql',
     cors({ credentials: true }),
     bodyParser.json(),
+    cookieParser(),
     expressMiddleware(server, { context: async ({ req, res }) => ({ req, res }) })
   )
 
