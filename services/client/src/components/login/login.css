@@ -9,6 +9,18 @@
     transform: translate(-50%, -50%);
 }
 
+.logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+  }
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #fbb023);
+  }
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em #fbb023);
+  }
+
 .login-form {
     border: rgb(83, 83, 83) solid 1px;
     width: 30vw;
@@ -41,7 +53,7 @@
     width: 100%;
     outline: none;
     padding: 10px;
-    border: rgb(83, 83, 83) solid 1px;
+    border: rgb(134, 133, 133) solid 1px;
 }
 
 .form-input:focus+.form-label,
@@ -57,8 +69,13 @@
     height: 30px;
 }
 
+.text-container {
+    text-align: center;
+}
+
 .submit-button {
-    width: 100%;
+    width: 90%;
+    margin: 0 auto;
     cursor: pointer;
     padding: 10px;
     background-color: #fbb023;
