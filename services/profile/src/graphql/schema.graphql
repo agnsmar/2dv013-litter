@@ -1,0 +1,16 @@
+type Query {
+  profile(userid: String!): Profile
+}
+
+type Profile {
+  username: String!
+  content: String
+  avatar: String!
+  lits: [Lit]
+}
+
+type Lit {
+  content: String!
+  createdAt: String!
+  updatedAt: String!
+}
