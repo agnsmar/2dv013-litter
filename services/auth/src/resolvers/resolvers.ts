@@ -9,7 +9,7 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     async login(_, params, context) {
-      const { email, password, username } = params
+      const { email, password } = params
       const { res, token, ath } = context
 
       const decoded = ath.verifyAccessToken(token)

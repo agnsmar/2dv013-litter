@@ -25,7 +25,6 @@ export type Mutation = {
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
-  username: Scalars['String'];
 };
 
 export type Query = {
@@ -131,7 +130,7 @@ export type ResolversParentTypes = {
 };
 
 export type MutationResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  login?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password' | 'username'>>;
+  login?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   register?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
 };
 
