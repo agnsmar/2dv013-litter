@@ -1,10 +1,6 @@
 import { JwtPayload } from 'jsonwebtoken'
 
-export type TTokenPayload = {
-  userid: string
-}
-
-export type RESTTokenPayload = {
+export interface IJwtRestPayload extends JwtPayload {
   id: number
 }
 
