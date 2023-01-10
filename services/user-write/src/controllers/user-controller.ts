@@ -50,7 +50,7 @@ export class UserController {
       next(error)
     }
   }
-  
+
   async register (req: Request, res: Response, next: NextFunction) {
     try {
       if (!isEmail(req.body.email)) {
@@ -93,11 +93,9 @@ export class UserController {
         return
       }
 
-      // TODO: What should happen here?
-
       res
         .status(200)
-        .json('you did it yay') //
+        .json({ id: user.id})
     } catch (error) {
       next(error)
     }
