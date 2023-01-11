@@ -18,7 +18,7 @@ export class UserController {
         data: {
           email: req.body.email,
           username: req.body.username,
-          password: await bcrypt.hash(req.body.password, 10),
+          password: await bcrypt.hash(req.body.password, 10)
         }
       })
 
