@@ -22,6 +22,9 @@ export class ProfileController {
     }
   }
 
+  /**
+   * Not useful in current iteration of Litter.
+   */
   async create (req: Request, res: Response, next: NextFunction) {
     try {
       const preProfile = await prisma.profile.findFirst({ where: { user_id: req.account.id }})
@@ -124,6 +127,9 @@ export class ProfileController {
     }
   }
 
+  /**
+   * Not useful in current iteration of Litter.
+   */
   async delete (req: Request, res: Response, next: NextFunction) {
     try {
       await prisma.profile.delete({ where: { id: req.profile.id }})
