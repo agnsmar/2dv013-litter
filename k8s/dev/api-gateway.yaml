@@ -44,5 +44,3 @@ spec:
           value: http://feed:8891/graphql
         ports:
           - containerPort: 8080
-      imagePullSecrets:
-      - name: regcred # Secret set as a secret in the cluster

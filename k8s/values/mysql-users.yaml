@@ -13,4 +13,4 @@ secondary:
   persistence:
     enabled: true # maybe set this to false in development
     size: 100Mi
-  replicaCount: 2
+  replicaCount: 1

@@ -1,3 +1,4 @@
+# This file exists for minikube tunnel to work, the exposed services within are not exposed on production
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
