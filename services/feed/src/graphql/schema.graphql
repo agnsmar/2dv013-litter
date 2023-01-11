@@ -1,0 +1,15 @@
+type Query {
+  feed: [Feed]
+}
+
+type Mutation {
+  addLit(content: String!): Boolean
+}
+
+type Feed {
+  userId: Int!
+  username: String!
+  content: String!
+  createdAt: String!
+  updatedAt: String
+}
