@@ -10,22 +10,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id          Int       @id @default(autoincrement())
   email       String    @unique(map: "email_UNIQUE")
   username    String    @unique(map: "username_UNIQUE")
   password    String
+  profile     Profile?  
   created_at  DateTime  @default(now()) @db.DateTime(0)
 }
 
-model profile {
+model Profile {
   id          Int       @id @default(autoincrement())
-  user_id     Int
+  owner       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     Int       @unique
   content     String?   @default("")
   avatar      String?   @default("https://i.imgur.com/VAIIdrg.png")
 }
 
-model following {
+model Following {
   id          Int       @id @default(autoincrement())
   user_id     Int
   follower_id Int
