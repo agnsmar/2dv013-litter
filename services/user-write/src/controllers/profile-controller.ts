@@ -24,16 +24,16 @@ export class ProfileController {
 
   async create (req: Request, res: Response, next: NextFunction) {
     try {
-      const profiles = await prisma.profile.findMany({ where: { user_id: req.account.id }})
+      const preProfile = await prisma.profile.findFirst({ where: { user_id: req.account.id }})
 
-      if(profiles.length > 0) {
+      if(preProfile) {
         // Conflict, this could really return whatever status code, there are many correct answers
         next(createError(409, 'This user already has a profile'))
         return
       } 
 
       // Input validation
-      if (!req.body.avatar || !isURL(req.body?.avatar)) {
+      if (req.body.avatar && !isURL(req.body.avatar)) {
         next(createError(400, 'Invalid Avatar URL'))
         return
       }
@@ -63,7 +63,7 @@ export class ProfileController {
   async replace (req: Request, res: Response, next: NextFunction) {
     try {
       // Input validation
-      if (!req.body.avatar || !isURL(req.body?.avatar)) {
+      if (req.body.avatar && !isURL(req.body.avatar)) {
         next(createError(400, 'Invalid Avatar URL'))
         return
       }
