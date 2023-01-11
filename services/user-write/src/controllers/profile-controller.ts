@@ -5,6 +5,23 @@ import { prisma } from '../config/prisma'
 const { isURL } = validator
 
 export class ProfileController {
+  async loadProfile (req: Request, res: Response, next: NextFunction) {
+    try {
+      const profile = await prisma.profile.findFirst({ where: { user_id: req.account.id }})
+
+      if (!profile) {
+        next(createError(404))
+        return
+      }
+
+      req.profile = profile
+
+      next()
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async create (req: Request, res: Response, next: NextFunction) {
     try {
       const preProfile = await prisma.profile.findFirst({ where: { user_id: req.account.id }})
@@ -94,7 +111,7 @@ export class ProfileController {
 
       const profile = await prisma.profile.update({
         where: { 
-          id: req.account.id 
+          id: req.profile.id 
         },
         data
       })
@@ -109,7 +126,7 @@ export class ProfileController {
 
   async delete (req: Request, res: Response, next: NextFunction) {
     try {
-      await prisma.profile.delete({ where: { id: req.account.id }})
+      await prisma.profile.delete({ where: { id: req.profile.id }})
 
       res
         .status(204)
