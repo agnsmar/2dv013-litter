@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import validator from 'validator'
 import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../config/prisma'
+
 const { isEmail } = validator
 
 export class UserController {
@@ -18,6 +19,14 @@ export class UserController {
           email: req.body.email,
           username: req.body.username,
           password: await bcrypt.hash(req.body.password, 10),
+        }
+      })
+
+      await prisma.profile.create({
+        data: {
+          avatar: undefined!,
+          content: undefined!,
+          user_id: user.id
         }
       })
 
