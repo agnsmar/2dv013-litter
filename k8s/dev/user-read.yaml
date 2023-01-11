@@ -40,6 +40,8 @@ spec:
           value: /api/usersread
         - name: DATABASE_URL
           value: mysql://root:localdevpassword@sphynx-users-mysql-secondary:3306/my_database
+        - name: ACCESS_TOKEN_SECRET
+          value: "alocalaccesssecret"
         ports:
           - containerPort: 8080
       imagePullSecrets:
