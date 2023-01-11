@@ -1,41 +1,40 @@
 import { ApolloServer } from '@apollo/server'
 import { buildSubgraphSchema } from '@apollo/subgraph'
-import { gql } from 'graphql-tag'
-import { startStandaloneServer } from '@apollo/server/standalone'
+import { expressMiddleware } from '@apollo/server/express4'
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
+import resolvers from './resolvers/resolvers'
+import fs from 'fs/promises'
+import gql from 'graphql-tag'
+import { IContext } from './context'
+import express from 'express'
+import cors from 'cors'
+import http from 'http'
+import bodyParser from 'body-parser'
 
 const main = async () => {
-  const typeDefs = gql`
-    type Query {
-      feed: [FeedUser]
-    }
+  const app = express()
+  const httpServer = http.createServer(app)
+  const gqlSchema = await fs.readFile('./src/graphql/schema.graphql', { encoding: 'utf-8' })
+  const typeDefs = gql(gqlSchema)
 
-    type FeedUser {
-      id: String
-      username: String
-    }
-  `
-
-  const resolvers = {
-    Query: {
-      feed() {
-        return [
-          { id: '1', username: '@ava' },
-          { id: '2', username: '@ava' },
-          { id: '3', username: '@ava' },
-          { id: '4', username: '@ava' }
-        ]
-      }
-    }
-  }
-
-  const server = new ApolloServer({
-    schema: buildSubgraphSchema([{ typeDefs, resolvers }])
+  const server = new ApolloServer<IContext>({
+    schema: buildSubgraphSchema({ typeDefs, resolvers }),
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
   })
 
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: parseInt(process.env.PORT!) }
-  })
-  console.log(`🚀  Server ready at ${url}`)
+  await server.start()
+
+  app.use(
+    '/graphql',
+    cors({ credentials: true }),
+    bodyParser.json(),
+    expressMiddleware(server, {
+      context: async ({ req, res }) => ({ req, res })
+    })
+  )
+
+  await new Promise<void>((resolve) => httpServer.listen({ port: process.env.PORT }, resolve))
+  console.log(`🚀  Server ready at http://localhost:${process.env.PORT}`)
 }
 
 main()
