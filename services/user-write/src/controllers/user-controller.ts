@@ -24,8 +24,6 @@ export class UserController {
 
       await prisma.profile.create({
         data: {
-          avatar: undefined!,
-          content: undefined!,
           user_id: user.id
         }
       })
