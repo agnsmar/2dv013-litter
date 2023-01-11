@@ -179,11 +179,11 @@ staging:
     - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
 
     - >-
-      kubectl apply 
-      -f ./k8s/client.yaml -f ./k8s/api-gateway.yaml 
-      -f ./k8s/auth.yaml -f ./k8s/profile.yaml -f ./k8s/feed.yaml 
-      -f ./k8s/lit-write.yaml -f ./k8s/lit-read.yaml 
-      -f ./k8s/user-write.yaml -f ./k8s/user-read.yaml 
+      kubectl apply
+      -f ./k8s/client.yaml -f ./k8s/api-gateway.yaml
+      -f ./k8s/auth.yaml -f ./k8s/profile.yaml -f ./k8s/feed.yaml
+      -f ./k8s/lit-write.yaml -f ./k8s/lit-read.yaml
+      -f ./k8s/user-write.yaml -f ./k8s/user-read.yaml
       -f ./k8s/nginx-ingress-staging.yaml
      
   # Debugging outputs after completion
@@ -211,12 +211,12 @@ production:
     - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
 
     - >-
-      kubectl apply 
-      -f ./k8s/client.yaml -f ./k8s/api-gateway.yaml 
-      -f ./k8s/auth.yaml -f ./k8s/profile.yaml -f ./k8s/feed.yaml 
-      -f ./k8s/lit-write.yaml -f ./k8s/lit-read.yaml 
-      -f ./k8s/user-write.yaml -f ./k8s/user-read.yaml 
-      -f ./k8s/nginx-ingress-production.yaml 
+      kubectl apply
+      -f ./k8s/client.yaml -f ./k8s/api-gateway.yaml
+      -f ./k8s/auth.yaml -f ./k8s/profile.yaml -f ./k8s/feed.yaml
+      -f ./k8s/lit-write.yaml -f ./k8s/lit-read.yaml
+      -f ./k8s/user-write.yaml -f ./k8s/user-read.yaml
+      -f ./k8s/nginx-ingress-production.yaml
      
   # Debugging outputs after completion
     - kubectl get deployments
