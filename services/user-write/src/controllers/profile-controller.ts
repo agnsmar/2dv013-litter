@@ -26,7 +26,6 @@ export class ProfileController {
         return
       }
 
-      // Maybe we make this profile.upsert()?
       const profile = await prisma.profile.create({
         data: {
           avatar: req.body.avatar,
