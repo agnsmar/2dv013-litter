@@ -21,7 +21,7 @@ model user {
 model profile {
   id          Int       @id @default(autoincrement())
   user_id     Int
-  content     String
+  content     String    @default("")
   avatar      String    @default("https://i.imgur.com/VAIIdrg.png")
 }
 
