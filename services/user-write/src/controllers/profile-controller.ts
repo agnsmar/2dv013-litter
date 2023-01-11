@@ -5,23 +5,6 @@ import { prisma } from '../config/prisma'
 const { isURL } = validator
 
 export class ProfileController {
-  async loadProfile (req: Request, res: Response, next: NextFunction) {
-    try {
-      const profile = await prisma.profile.findFirst({ where: { user_id: req.account.id }})
-
-      if (!profile) {
-        next(createError(404))
-        return
-      }
-
-      req.profile = profile
-
-      next()
-    } catch (error) {
-      next(error)
-    }
-  }
-
   /**
    * Not useful in current iteration of Litter.
    */
@@ -77,7 +60,7 @@ export class ProfileController {
       
       const profile = await prisma.profile.update({
         where: { 
-          id: req.account.id 
+          user_id: req.account.id 
         },
         data: {
           avatar: req.body.avatar,
@@ -114,7 +97,7 @@ export class ProfileController {
 
       const profile = await prisma.profile.update({
         where: { 
-          id: req.profile.id 
+          user_id: req.account.id 
         },
         data
       })
@@ -132,7 +115,7 @@ export class ProfileController {
    */
   async delete (req: Request, res: Response, next: NextFunction) {
     try {
-      await prisma.profile.delete({ where: { id: req.profile.id }})
+      await prisma.profile.delete({ where: { user_id: req.account.id }})
 
       res
         .status(204)
