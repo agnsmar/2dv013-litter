@@ -1,11 +1,11 @@
-import { profile, user } from "@prisma/client"
+import { Profile, User } from "@prisma/client"
 import { IJwtRestPayload } from "./types"
 
 declare global {
   namespace Express {
     interface Request {
-      user: user
-      profile: profile
+      user: User
+      profile: Profile
       account: IJwtRestPayload
     }
   }
