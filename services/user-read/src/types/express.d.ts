@@ -6,7 +6,6 @@ declare global {
     interface Request {
       user: User
       profile: Profile
-      account: IJwtRestPayload
     }
   }
 }
