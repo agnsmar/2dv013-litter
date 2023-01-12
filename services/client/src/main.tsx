@@ -5,7 +5,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import './index.css'
 
 const client = new ApolloClient({
-  uri: 'http://api-gateway:8888/graphql', // Change to env?
+  uri: 'http://localhost/graphql', // Change to env?
   cache: new InMemoryCache(),
   credentials: 'include'
 })
