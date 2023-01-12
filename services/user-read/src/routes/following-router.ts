@@ -1,11 +1,11 @@
 import createError from 'http-errors'
 import express from 'express'
 import { Request, Response, NextFunction } from 'express'
-import { ProfileController } from '../controllers/profile-controller'
+import { FollowingController } from '../controllers/following-controller'
 import { authenticateJWT } from './router'
 
 export const router = express.Router()
-const controller = new ProfileController()
+const controller = new FollowingController()
 
 // Find all followings of the authenticated user
 router.get('/',
