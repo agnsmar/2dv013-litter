@@ -201,7 +201,7 @@ production:
   environment:
     name: production
     url: $PRODUCTION_URL
-  when: manual # TODO - Make this not manual
+  when: manual
   script:
     - kubectl config get-contexts
    # Configure kubectl to use our own k8s cluster, you need to setup an Gitlab agent in you k8s kluster
