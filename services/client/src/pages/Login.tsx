@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { MeDocument, useLoginMutation, useMeQuery } from '../generated/graphql'
 
 export const Login = () => {
-  const { data, loading } = useMeQuery()
+  const { data, loading } = useMeQuery({ fetchPolicy: 'no-cache' })
   const [login] = useLoginMutation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
