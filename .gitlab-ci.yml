@@ -196,7 +196,7 @@ staging:
 production:
   stage: production
   image:
-    name: gcr.io/k8s-skaffold/skaffold:v2.0.0  # TODO - replace with a better Kubernetes image. Bitnami?
+    name: gcr.io/k8s-skaffold/skaffold:v2.0.0
     entrypoint: ['']
   environment:
     name: production
