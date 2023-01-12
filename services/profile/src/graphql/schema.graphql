@@ -1,5 +1,14 @@
 type Query {
-  profile(userid: String!): Profile
+  profile(userid: String!): ProfileRespone
+}
+
+type ProfileError {
+  message: String!
+}
+
+type ProfileRespone {
+  profile: Profile
+  error: ProfileError
 }
 
 type Profile {
