@@ -55,3 +55,6 @@ router.use(baseURL + '/profiles', profileRouter)
 
 // Use the following router
 router.use(baseURL + '/followings', followingRouter)
+
+// Catch loose routes, return 404.
+router.use('*', (req, res, next) => next(createError(404)))

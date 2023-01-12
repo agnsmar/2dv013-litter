@@ -51,3 +51,6 @@ router.use(baseURL + '/users', userRouter)
 
 // Use the user router
 router.use(baseURL + '/profiles', profileRouter)
+
+// Catch loose routes, return 404.
+router.use('*', (req, res, next) => next(createError(404)))
