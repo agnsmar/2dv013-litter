@@ -46,7 +46,7 @@ build 2/9:
 # Auth
 build 3/9:
   tags:
-    - gitlab-runner-docker
+    - docker
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug 
