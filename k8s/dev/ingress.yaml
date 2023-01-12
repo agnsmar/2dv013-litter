@@ -17,21 +17,21 @@ spec:
               service:
                 name: client
                 port:
-                  number: 80
+                  number: 3080
           - path: /error-500
             pathType: Prefix
             backend:
               service:
                 name: client
                 port:
-                  number: 80
+                  number: 3080
           - path: /login
             pathType: Prefix
             backend:
               service:
                 name: client
                 port:
-                  number: 80
+                  number: 3080
 ---
 # This ingress exposes the services that we want to mess around with in development, they are not exposed in production
 apiVersion: networking.k8s.io/v1
