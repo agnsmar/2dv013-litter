@@ -3,6 +3,16 @@ import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../config/prisma'
 
 export class LitController {
+  async prepQuery (req: Request, res: Response, next: NextFunction, id: string) {
+    try {
+      req.body.user_ids = [Number(id)]
+
+      next()
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async findAll(req: Request, res: Response, next: NextFunction) {
     try {
       // Pagination Parameters
