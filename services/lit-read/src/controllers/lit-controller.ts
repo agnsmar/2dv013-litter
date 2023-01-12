@@ -3,11 +3,12 @@ import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../config/prisma'
 
 export class LitController {
-  async helloWorld(req: Request, res: Response, next: NextFunction) {
+  async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await prisma.lit.findFirst({ where: { user_id: 1 } })
+      const user_id = Number(req.params.id)
+      const result = await prisma.lit.findMany({ where: { user_id } })
 
-      res.json(result)
+      res.json(user_id)
     } catch (error) {
       next(error)
     }
