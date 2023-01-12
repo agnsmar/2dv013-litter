@@ -16,8 +16,8 @@ export class LitController {
         return
       }
 
-      if(skip < 0 || take < 0) {
-        next(createError(400, 'Pagination must be positive'))
+      if(skip < 0 || take < 0 || cursor < 0) {
+        next(createError(400, 'Pagination parameters must be positive numbers'))
         return
       }
 
