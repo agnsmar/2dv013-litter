@@ -3,16 +3,6 @@ import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../config/prisma'
 
 export class LitController {
-  async prepQuery (req: Request, res: Response, next: NextFunction, id: string) {
-    try {
-      req.query.user_ids = `[${id}]`
-
-      next()
-    } catch (error) {
-      next(error)
-    }
-  }
-
   async findAll(req: Request, res: Response, next: NextFunction) {
     try {
       // Pagination Parameters
@@ -21,7 +11,7 @@ export class LitController {
       const cursor = req.query.cursor ? Number(req.query.cursor) : false
 
       // User ID:s to fetch lits from
-      const user_ids: number[] = req.query.user_ids ? JSON.parse(String(req.query.user_ids)) : []
+      const user_ids: number[] = req.body.user_ids ?? []
 
       if (!user_ids.every(id => !isNaN(id))) {
         next(createError(400, 'ID must be a number'))
@@ -37,9 +27,7 @@ export class LitController {
 
       res.json(lits)
     } catch (error) {
-      let err: any = error
-      if (err.message.includes('Unexpected token')) err = createError(400, 'Error parsing query param \'user_ids\'')
-      next(err)
+      next(error)
     }
   }
 
