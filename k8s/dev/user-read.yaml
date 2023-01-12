@@ -43,7 +43,10 @@ spec:
         - name: MYSQL_USERNAME
           value: root
         - name: MYSQL_PASSWORD
-          value: localdevpassword
+          valueFrom: 
+            secretKeyRef:
+              name: sphynx-users-mysql
+              key: mysql-root-password
         - name: DATABASE_URL
           value: mysql://$(MYSQL_USERNAME):$(MYSQL_PASSWORD)@sphynx-users-mysql-secondary:3306/my_database
         ports:

@@ -38,6 +38,15 @@ spec:
           value: "3000"
         - name: BASE_URL
           value: /api
+        - name: MYSQL_USERNAME
+          value: root
+        - name: MYSQL_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: sphynx-users-mysql
+              key: mysql-root-password
+        - name: DATABASE_URL
+          value: mysql://$(MYSQL_USERNAME):$(MYSQL_PASSWORD)@sphynx-users-mysql-secondary:3306/my_database
         ports:
           - containerPort: 8080
       imagePullSecrets:
