@@ -1,8 +1,11 @@
-# This file exists for minikube tunnel to work, the exposed services within are not exposed on production
+# This Ingress exposes all routes served by the client router, this shouldn't have to exist but for some reason it does.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
     - host: localhost
@@ -15,6 +18,33 @@ spec:
                 name: client
                 port:
                   number: 80
+          - path: /error-500
+            pathType: Prefix
+            backend:
+              service:
+                name: client
+                port:
+                  number: 80
+          - path: /login
+            pathType: Prefix
+            backend:
+              service:
+                name: client
+                port:
+                  number: 80
+---
+# This ingress exposes the services that we want to mess around with in development, they are not exposed in production
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-dev
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
           - path: /graphql
             pathType: Prefix
             backend:
