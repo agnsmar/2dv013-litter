@@ -30,9 +30,20 @@ export type Profile = {
   username: Scalars['String'];
 };
 
+export type ProfileError = {
+  __typename?: 'ProfileError';
+  message: Scalars['String'];
+};
+
+export type ProfileResponse = {
+  __typename?: 'ProfileResponse';
+  error?: Maybe<ProfileError>;
+  profile?: Maybe<Profile>;
+};
+
 export type Query = {
   __typename?: 'Query';
-  profile?: Maybe<Profile>;
+  profile?: Maybe<ProfileResponse>;
 };
 
 
@@ -112,6 +123,8 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Lit: ResolverTypeWrapper<Lit>;
   Profile: ResolverTypeWrapper<Profile>;
+  ProfileError: ResolverTypeWrapper<ProfileError>;
+  ProfileResponse: ResolverTypeWrapper<ProfileResponse>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
 };
@@ -121,6 +134,8 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Lit: Lit;
   Profile: Profile;
+  ProfileError: ProfileError;
+  ProfileResponse: ProfileResponse;
   Query: {};
   String: Scalars['String'];
 };
@@ -140,13 +155,26 @@ export type ProfileResolvers<ContextType = IContext, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ProfileErrorResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['ProfileError'] = ResolversParentTypes['ProfileError']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProfileResponseResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['ProfileResponse'] = ResolversParentTypes['ProfileResponse']> = {
+  error?: Resolver<Maybe<ResolversTypes['ProfileError']>, ParentType, ContextType>;
+  profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'userid'>>;
+  profile?: Resolver<Maybe<ResolversTypes['ProfileResponse']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'userid'>>;
 };
 
 export type Resolvers<ContextType = IContext> = {
   Lit?: LitResolvers<ContextType>;
   Profile?: ProfileResolvers<ContextType>;
+  ProfileError?: ProfileErrorResolvers<ContextType>;
+  ProfileResponse?: ProfileResponseResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
 
