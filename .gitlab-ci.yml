@@ -54,7 +54,11 @@ build 3/9:
       --context "${CI_PROJECT_DIR}/services/auth"  
       --dockerfile "${CI_PROJECT_DIR}/services/auth/Dockerfile.production"
       --destination "${CI_REGISTRY_IMAGE}/auth:${CI_COMMIT_TAG:-latest}"
-  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
+        - services/auth/*
+        - k8s/auth.yaml
 
 # Profile    
 build 4/9:
@@ -157,3 +161,66 @@ build 9/9:
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/user-read/*
         - k8s/user-read.yaml
+
+staging:
+  stage: staging
+  image:
+    name: gcr.io/k8s-skaffold/skaffold:v2.0.0
+    entrypoint: ['']
+  environment:
+    name: staging
+    url: $STAGING_URL
+  script:
+    - kubectl config get-contexts
+   # Configure kubectl to use our own k8s cluster, you need to setup an Gitlab agent in you k8s kluster
+    - kubectl config use-context $K8S_CONTEXT_STAGING
+   # Authorize the cluster to pull images from our registry. (synced against Deploy Token "gitlab-deploy-token")
+    - kubectl delete secret regcred || true
+    - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
+
+    - >-
+      kubectl apply
+      -f ./k8s/client.yaml -f ./k8s/api-gateway.yaml
+      -f ./k8s/auth.yaml -f ./k8s/profile.yaml -f ./k8s/feed.yaml
+      -f ./k8s/lit-write.yaml -f ./k8s/lit-read.yaml
+      -f ./k8s/user-write.yaml -f ./k8s/user-read.yaml
+      -f ./k8s/nginx-ingress-staging.yaml
+     
+  # Debugging outputs after completion
+    - kubectl get deployments
+    - kubectl get services
+    - kubectl get pods
+  only:
+    - main
+
+production:
+  stage: production
+  image:
+    name: gcr.io/k8s-skaffold/skaffold:v2.0.0
+    entrypoint: ['']
+  environment:
+    name: production
+    url: $PRODUCTION_URL
+  when: manual
+  script:
+    - kubectl config get-contexts
+   # Configure kubectl to use our own k8s cluster, you need to setup an Gitlab agent in you k8s kluster
+    - kubectl config use-context $K8S_CONTEXT
+   # Authorize the cluster to pull images from our registry. (synced against Deploy Token "gitlab-deploy-token")
+    - kubectl delete secret regcred || true
+    - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
+
+    - >-
+      kubectl apply
+      -f ./k8s/client.yaml -f ./k8s/api-gateway.yaml
+      -f ./k8s/auth.yaml -f ./k8s/profile.yaml -f ./k8s/feed.yaml
+      -f ./k8s/lit-write.yaml -f ./k8s/lit-read.yaml
+      -f ./k8s/user-write.yaml -f ./k8s/user-read.yaml
+      -f ./k8s/nginx-ingress-production.yaml
+     
+  # Debugging outputs after completion
+    - kubectl get deployments
+    - kubectl get services
+    - kubectl get pods
+  only:
+    - main  
