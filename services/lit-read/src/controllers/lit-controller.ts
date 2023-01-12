@@ -1,17 +1,29 @@
 import createError from 'http-errors'
 import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../config/prisma'
-import { Prisma } from '@prisma/client'
 
 export class LitController {
+  async prepQuery (req: Request, res: Response, next: NextFunction, id: string) {
+    try {
+      req.body.user_ids = [Number(id)]
+
+      next()
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const user_id = Number(req.params.id)
+      // Pagination Parameters
       const skip = req.query.skip ? Number(req.query.skip) : 0
       const take = req.query.take ? Number(req.query.take) : 20
       const cursor = req.query.cursor ? Number(req.query.cursor) : false
 
-      if(isNaN(user_id)) {
+      // User ID:s to fetch lits from
+      const user_ids: number[] = req.body.user_ids ?? []
+
+      if (!user_ids.every(id => !isNaN(id))) {
         next(createError(400, 'ID must be a number'))
         return
       }
@@ -21,7 +33,7 @@ export class LitController {
         return
       }
 
-      const lits = cursor ? await this.#findManyCursor(cursor, take, user_id) : await this.#findManyOffset(skip, take, user_id)
+      const lits = cursor ? await this.#findManyCursor(cursor, take, user_ids) : await this.#findManyOffset(skip, take, user_ids)
 
       res.json(lits)
     } catch (error) {
@@ -29,12 +41,12 @@ export class LitController {
     }
   }
 
-  async #findManyOffset(skip: number, take: number, user_id: number) {
+  async #findManyOffset(skip: number, take: number, user_ids: number[]) {
     return await prisma.lit.findMany({
       take,
       skip,
       where: {
-        user_id
+        user_id: { in: user_ids }
       },
       orderBy: {
         created_at: 'desc'
@@ -42,7 +54,7 @@ export class LitController {
     })
   }
 
-  async #findManyCursor(cursor: number, take: number, user_id: number) {
+  async #findManyCursor(cursor: number, take: number, user_ids: number[]) {
     return await prisma.lit.findMany({
       take,
       skip: 1, // Skip the cursor
@@ -50,7 +62,7 @@ export class LitController {
         id: cursor
       },
       where: {
-        user_id
+        user_id: { in: user_ids }
       },
       orderBy: {
         created_at: 'desc'
