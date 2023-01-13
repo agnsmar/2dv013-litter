@@ -66,6 +66,8 @@ export class FollowingController {
   async delete (req: Request, res: Response, next: NextFunction) {
     try {
       const followee_id: number = req.body.id
+
+      // This is not best practice, but the schema does not handle uniqueness right now :(
       await prisma.following.deleteMany({
         where: {
           followee_id: followee_id,
