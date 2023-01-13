@@ -30,9 +30,9 @@ model Profile {
 }
 
 model Following {
-  follower      User    @relation("follower", fields: [follower_id], references: [id], onDelete: Cascade)
+  follower      User    @relation("follower", fields: [follower_id], references: [id])
   follower_id   Int
-  followee      User    @relation("followee", fields: [followee_id], references: [id], onDelete: Cascade)
+  followee      User    @relation("followee", fields: [followee_id], references: [id])
   followee_id   Int
 
   @@id([follower_id, followee_id])
