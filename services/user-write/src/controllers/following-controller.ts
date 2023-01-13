@@ -36,6 +36,18 @@ export class FollowingController {
         return
       }
 
+      const preFollowing = await prisma.following.findFirst({ 
+        where: {
+          followee_id: followee_id,
+          follower_id: req.account.id
+        }
+      })
+
+      if (preFollowing) {
+        next(createError(409, 'Already following this user'))
+        return
+      }
+
       const following = await prisma.following.create({ 
         data: {
           followee_id: followee_id,
