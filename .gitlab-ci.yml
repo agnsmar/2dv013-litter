@@ -43,6 +43,8 @@ build 2/9:
       --dockerfile "${CI_PROJECT_DIR}/services/api-gateway/Dockerfile.production"
       --destination "${CI_REGISTRY_IMAGE}/api-gateway:${CI_COMMIT_TAG:-latest}"
   rules:
+    - if: $ALLOW_MANUAL_JOBS == "true"
+      when: manual
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/api-gateway/*
@@ -60,6 +62,8 @@ build 3/9:
       --dockerfile "${CI_PROJECT_DIR}/services/auth/Dockerfile.production"
       --destination "${CI_REGISTRY_IMAGE}/auth:${CI_COMMIT_TAG:-latest}"
   rules:
+    - if: $ALLOW_MANUAL_JOBS == "true"
+      when: manual
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/auth/*
@@ -77,6 +81,8 @@ build 4/9:
       --dockerfile "${CI_PROJECT_DIR}/services/profile/Dockerfile.production"
       --destination "${CI_REGISTRY_IMAGE}/profile:${CI_COMMIT_TAG:-latest}"
   rules:
+    - if: $ALLOW_MANUAL_JOBS == "true"
+      when: manual
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/profile/*
@@ -94,6 +100,8 @@ build 5/9:
       --dockerfile "${CI_PROJECT_DIR}/services/feed/Dockerfile.production"
       --destination "${CI_REGISTRY_IMAGE}/feed:${CI_COMMIT_TAG:-latest}"
   rules:
+    - if: $ALLOW_MANUAL_JOBS == "true"
+      when: manual
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/feed/*
@@ -111,6 +119,8 @@ build 6/9:
       --dockerfile "${CI_PROJECT_DIR}/services/lit-write/Dockerfile.production"
       --destination "${CI_REGISTRY_IMAGE}/lit-write:${CI_COMMIT_TAG:-latest}"
   rules:
+    - if: $ALLOW_MANUAL_JOBS == "true"
+      when: manual
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/lit-write/*
@@ -128,6 +138,8 @@ build 7/9:
       --dockerfile "${CI_PROJECT_DIR}/services/lit-read/Dockerfile.production"
       --destination "${CI_REGISTRY_IMAGE}/lit-read:${CI_COMMIT_TAG:-latest}"
   rules:
+    - if: $ALLOW_MANUAL_JOBS == "true"
+      when: manual
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/lit-read/*
@@ -145,6 +157,8 @@ build 8/9:
       --dockerfile "${CI_PROJECT_DIR}/services/user-write/Dockerfile.production"
       --destination "${CI_REGISTRY_IMAGE}/user-write:${CI_COMMIT_TAG:-latest}"
   rules:
+    - if: $ALLOW_MANUAL_JOBS == "true"
+      when: manual
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/user-write/*
@@ -162,6 +176,8 @@ build 9/9:
       --dockerfile "${CI_PROJECT_DIR}/services/user-read/Dockerfile.production"
       --destination "${CI_REGISTRY_IMAGE}/user-read:${CI_COMMIT_TAG:-latest}"
   rules:
+    - if: $ALLOW_MANUAL_JOBS == "true"
+      when: manual
     - if: $CI_COMMIT_BRANCH == "main"
       changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
         - services/user-read/*
