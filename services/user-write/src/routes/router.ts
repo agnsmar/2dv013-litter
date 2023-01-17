@@ -6,6 +6,7 @@ import { Request, Response, NextFunction } from 'express'
 import { Controller } from '../controllers/controller'
 import { router as userRouter } from './user-router'
 import { router as profileRouter } from './profile-router'
+import { router as followingRouter } from './following-router'
 import { IJwtCustomPayload } from '../types/types'
 
 export const router = express.Router()
@@ -51,3 +52,9 @@ router.use(baseURL + '/users', userRouter)
 
 // Use the user router
 router.use(baseURL + '/profiles', profileRouter)
+
+// Use the user router
+router.use(baseURL + '/followings', followingRouter)
+
+// Catch loose routes, return 404.
+router.use('*', (req, res, next) => next(createError(404)))
