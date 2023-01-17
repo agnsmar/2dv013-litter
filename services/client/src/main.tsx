@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { AppRouter } from './components/router'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import './index.css'
+import './css/index.css'
 
 const client = new ApolloClient({
   uri: 'http://localhost/graphql', // Change to env?
