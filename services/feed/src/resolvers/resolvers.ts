@@ -43,10 +43,7 @@ const resolvers: Resolvers = {
         const feed = lits.map((lit: any) => {
           return {
             username: userMap.get(lit.user_id),
-            userId: lit.user_id,
-            content: lit.content,
-            createdAt: lit.created_at,
-            updatedAt: lit.updated_at
+            ...lit
           }
         })
 
