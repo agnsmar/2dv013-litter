@@ -20,7 +20,7 @@ export type Feed = {
   content: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
-  userId: Scalars['Int'];
+  user_id: Scalars['Int'];
   username: Scalars['String'];
 };
 
@@ -37,6 +37,12 @@ export type MutationAddLitArgs = {
 export type Query = {
   __typename?: 'Query';
   feed?: Maybe<Array<Maybe<Feed>>>;
+};
+
+
+export type QueryFeedArgs = {
+  offset: Scalars['Int'];
+  take: Scalars['Int'];
 };
 
 
@@ -130,7 +136,7 @@ export type FeedResolvers<ContextType = IContext, ParentType extends ResolversPa
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  user_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -140,7 +146,7 @@ export type MutationResolvers<ContextType = IContext, ParentType extends Resolve
 };
 
 export type QueryResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  feed?: Resolver<Maybe<Array<Maybe<ResolversTypes['Feed']>>>, ParentType, ContextType>;
+  feed?: Resolver<Maybe<Array<Maybe<ResolversTypes['Feed']>>>, ParentType, ContextType, RequireFields<QueryFeedArgs, 'offset' | 'take'>>;
 };
 
 export type Resolvers<ContextType = IContext> = {
