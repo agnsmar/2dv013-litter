@@ -1,5 +1,5 @@
 type Query {
-  feed: [Feed]
+  feed(offset: Int!, take: Int!): [Feed]
 }
 
 type Mutation {
@@ -7,7 +7,7 @@ type Mutation {
 }
 
 type Feed {
-  userId: Int!
+  user_id: Int!
   username: String!
   content: String!
   createdAt: String!

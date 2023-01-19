@@ -3,17 +3,21 @@ import { Request, Response, NextFunction } from 'express'
 import { prisma } from '../config/prisma'
 
 export class FollowingController {
-  async findAll (req: Request, res: Response, next: NextFunction) {
+  async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const followings = await prisma.following.findMany({ where: { follower_id: req.account.id }})
-
-      const followee_ids: number[] = []
-
-      followings.forEach(following => {
-        followee_ids.push(following.followee_id)
+      const followings = await prisma.following.findMany({
+        where: { follower_id: req.account.id },
+        include: { followee: true }
       })
 
-      res.json(followee_ids)
+      const followees = followings.map((following) => {
+        return {
+          username: following.followee.username,
+          id: following.followee_id
+        }
+      })
+
+      res.json(followees)
     } catch (error) {
       next(error)
     }

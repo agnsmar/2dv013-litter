@@ -1,11 +1,57 @@
 import { GraphQLResolverMap } from '@apollo/subgraph/dist/schema-helper'
 import { Resolvers } from '../generated/graphql'
+import axios from 'axios'
 
 const resolvers: Resolvers = {
   Query: {
-    feed(_, params, context) {
+    async feed(_, params, context) {
+      const { req } = context
+      const { offset, take } = params
 
-      return null
+      try {
+        const { data: following } = await axios({
+          url: `${process.env.USER_READ_SERVICE}/followings`,
+          method: 'GET',
+          headers: {
+            'Authorization': req.headers['x-access-token'] || ''
+          },
+          responseType: 'json'
+        })
+
+        const followingIds = following.map((user: any) => {
+          return user.id
+        })
+
+        const { data: lits } = await axios({
+          url: `${process.env.LIT_READ_SERVICE}/lits`,
+          method: 'GET',
+          data: {
+            user_ids: followingIds || []
+          },
+          params: {
+            skip: offset,
+            take
+          },
+          responseType: 'json'
+        })
+
+        const userMap = new Map()
+        for (const follower of following) {
+          userMap.set(follower.id, follower.username)
+        }
+
+        const feed = lits.map((lit: any) => {
+          return {
+            username: userMap.get(lit.user_id),
+            ...lit
+          }
+        })
+
+        return feed
+      } catch (e) {
+        console.error(e)
+        return null
+      }
     }
   },
   Mutation: {
