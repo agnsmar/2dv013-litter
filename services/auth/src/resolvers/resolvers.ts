@@ -5,13 +5,11 @@ import axios, { AxiosError } from 'axios'
 const resolvers: Resolvers = {
   Query: {
     me(_, __, context) {
-      const { token, ath } = context
-
-      const decoded = ath.verifyAccessToken(token)
-      if (!decoded) return null
+      const { token } = context
+      if (!token) return null
 
       return {
-        id: parseInt(decoded.userid)
+        id: parseInt(token.userid)
       }
     }
   },
@@ -20,8 +18,7 @@ const resolvers: Resolvers = {
       const { email, password } = params
       const { res, token, ath } = context
 
-      const decoded = ath.verifyAccessToken(token)
-      if (decoded) {
+      if (token) {
         return {
           success: false,
           error: {
@@ -78,12 +75,11 @@ const resolvers: Resolvers = {
       const refreshDecoded = ath.verifyRefreshToken(refreshToken)
       if (!refreshDecoded) return false
 
-      const accessDecoded = ath.verifyAccessToken(token)
-      if (!accessDecoded) {
+      if (!token) {
         const newAccessToken = ath.generateAccessToken({ userid: refreshDecoded.userid })
         res.setHeader('x-access-token', 'Bearer ' + newAccessToken)
       } else {
-        const timeLeft = accessDecoded.exp! - Date.now()
+        const timeLeft = token.exp! - Date.now()
         const second = 1000
         const minute = second * 60
 
