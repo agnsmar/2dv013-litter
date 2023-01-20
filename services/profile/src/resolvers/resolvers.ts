@@ -8,30 +8,30 @@ const resolvers: Resolvers = {
       const { userid } = params
 
       try {
-        const { data: userData } = await axios({
-          url: `${process.env.USER_READ_SERVICE}/users/${userid}`,
-          method: 'GET',
-          responseType: 'json'
-        })
-
-        const { data: profileData } = await axios({
-          url: `${process.env.USER_READ_SERVICE}/profiles/${userid}`,
-          method: 'GET',
-          responseType: 'json'
-        })
-
-        const { data: litsData } = await axios({
-          url: `${process.env.LIT_READ_SERVICE}/lits/${userid}`,
-          method: 'GET',
-          responseType: 'json'
-        })
-
+        const [user, profile, lits] = await Promise.all([
+          axios({
+            url: `${process.env.USER_READ_SERVICE}/users/${userid}`,
+            method: 'GET',
+            responseType: 'json'
+          }),
+          axios({
+            url: `${process.env.USER_READ_SERVICE}/profiles/${userid}`,
+            method: 'GET',
+            responseType: 'json'
+          }),
+          axios({
+            url: `${process.env.LIT_READ_SERVICE}/lits/${userid}`,
+            method: 'GET',
+            responseType: 'json'
+          })
+        ])
+        
         return {
           profile: {
-            avatar: profileData.profile.avatar,
-            username: userData.user.username,
-            content: profileData.profile.content,
-            lits: litsData
+            avatar: profile.data.profile.avatar,
+            username: user.data.user.username,
+            content: profile.data.profile.content,
+            lits: lits.data
           }
         }
 
