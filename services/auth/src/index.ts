@@ -32,14 +32,8 @@ const main = async () => {
     bodyParser.json(),
     expressMiddleware(server, {
       context: async ({ req, res }) => {
-        const accessToken = req.headers['x-access-token']
-        let token
-
-        if (Array.isArray(accessToken)) {
-          token = accessToken[0].split(' ')[1]
-        } else if (accessToken) {
-          token = accessToken.split(' ')[1]
-        }
+        const accessToken = req.headers['x-access-token'] as string | undefined
+        const token = ath.verifyAccessToken(accessToken?.split(' ')[1])
 
         return {
           req,

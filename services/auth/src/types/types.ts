@@ -4,6 +4,4 @@ export type TTokenPayload = {
   userid: string
 }
 
-export interface IJwtCustomPayload extends JwtPayload {
-  userid: string
-}
+export interface IJwtCustomPayload extends JwtPayload, TTokenPayload {}
