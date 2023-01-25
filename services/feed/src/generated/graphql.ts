@@ -15,6 +15,12 @@ export type Scalars = {
   Float: number;
 };
 
+export type AddLitResponse = {
+  __typename?: 'AddLitResponse';
+  error?: Maybe<LitError>;
+  success: Scalars['Boolean'];
+};
+
 export type Feed = {
   __typename?: 'Feed';
   content: Scalars['String'];
@@ -24,9 +30,14 @@ export type Feed = {
   username: Scalars['String'];
 };
 
+export type LitError = {
+  __typename?: 'LitError';
+  message?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  addLit?: Maybe<Scalars['Boolean']>;
+  addLit: AddLitResponse;
 };
 
 
@@ -114,9 +125,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  AddLitResponse: ResolverTypeWrapper<AddLitResponse>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Feed: ResolverTypeWrapper<Feed>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  LitError: ResolverTypeWrapper<LitError>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -124,12 +137,20 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  AddLitResponse: AddLitResponse;
   Boolean: Scalars['Boolean'];
   Feed: Feed;
   Int: Scalars['Int'];
+  LitError: LitError;
   Mutation: {};
   Query: {};
   String: Scalars['String'];
+};
+
+export type AddLitResponseResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['AddLitResponse'] = ResolversParentTypes['AddLitResponse']> = {
+  error?: Resolver<Maybe<ResolversTypes['LitError']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type FeedResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Feed'] = ResolversParentTypes['Feed']> = {
@@ -141,8 +162,13 @@ export type FeedResolvers<ContextType = IContext, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type LitErrorResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['LitError'] = ResolversParentTypes['LitError']> = {
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addLit?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationAddLitArgs, 'content'>>;
+  addLit?: Resolver<ResolversTypes['AddLitResponse'], ParentType, ContextType, RequireFields<MutationAddLitArgs, 'content'>>;
 };
 
 export type QueryResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -150,7 +176,9 @@ export type QueryResolvers<ContextType = IContext, ParentType extends ResolversP
 };
 
 export type Resolvers<ContextType = IContext> = {
+  AddLitResponse?: AddLitResponseResolvers<ContextType>;
   Feed?: FeedResolvers<ContextType>;
+  LitError?: LitErrorResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
