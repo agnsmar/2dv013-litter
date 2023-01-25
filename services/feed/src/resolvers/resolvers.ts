@@ -55,8 +55,44 @@ const resolvers: Resolvers = {
     }
   },
   Mutation: {
-    addLit(_, params, context) {
-      return false
+    async addLit(_, params, context) {
+      const { content } = params
+      const { conn, token } = context
+
+      if (!token) {
+        return {
+          success: false,
+          error: {
+            message: 'Unauthorized'
+          }
+        }
+      }
+
+      const maxContentLength = 42
+      if (content.length > maxContentLength) {
+        return {
+          success: false,
+          error: {
+            message: `Lit must be less than ${maxContentLength} characters`
+          }
+        }
+      } else if (content.length === 0) {
+        return {
+          success: false,
+          error: {
+            message: 'Lit cannot be empty'
+          }
+        }
+      }
+
+      const queue = 'lit-create'
+      const ch = await conn.createChannel()
+      await ch.assertQueue(queue)
+      ch.sendToQueue(queue, Buffer.from(JSON.stringify({ content, user_id: token.userid })))
+
+      return {
+        success: true
+      }
     }
   }
 }
