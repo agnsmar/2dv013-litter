@@ -3,7 +3,16 @@ type Query {
 }
 
 type Mutation {
-  addLit(content: String!): Boolean
+  addLit(content: String!): AddLitResponse!
+}
+
+type AddLitResponse {
+  success: Boolean!
+  error: LitError
+}
+
+type LitError {
+  message: String
 }
 
 type Feed {
