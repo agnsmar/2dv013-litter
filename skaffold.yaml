@@ -67,3 +67,8 @@ deploy:
       remoteChart: mysql
       valuesFiles: 
       - ./k8s/values/mysql-users.yaml
+    - name: sphynx-queue
+      repo: https://charts.bitnami.com/bitnami
+      remoteChart: rabbitmq
+      valuesFiles: 
+      - ./k8s/values/rabbitmq.yaml
