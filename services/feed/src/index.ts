@@ -10,12 +10,15 @@ import express from 'express'
 import cors from 'cors'
 import http from 'http'
 import bodyParser from 'body-parser'
+import amqlib from 'amqplib'
+import { AuthTokenHelper } from './util/authTokenHelper'
 
 const main = async () => {
   const app = express()
   const httpServer = http.createServer(app)
   const gqlSchema = await fs.readFile('./src/graphql/schema.graphql', { encoding: 'utf-8' })
   const typeDefs = gql(gqlSchema)
+  const ath = new AuthTokenHelper()
 
   const server = new ApolloServer<IContext>({
     schema: buildSubgraphSchema({ typeDefs, resolvers }),
@@ -24,14 +27,30 @@ const main = async () => {
 
   await server.start()
 
-  app.use(
-    '/graphql',
-    cors({ credentials: true }),
-    bodyParser.json(),
-    expressMiddleware(server, {
-      context: async ({ req, res }) => ({ req, res })
-    })
-  )
+  try {
+    const conn = await amqlib.connect(process.env.RABBITMQ_CONNECTION_STRING!)
+
+    app.use(
+      '/graphql',
+      cors({ credentials: true }),
+      bodyParser.json(),
+      expressMiddleware(server, {
+        context: async ({ req, res }) => {
+          const accessToken = req.headers['x-access-token'] as string | undefined
+          const token = ath.verifyAccessToken(accessToken)
+
+          return {
+            req,
+            res,
+            conn,
+            token
+          }
+        }
+      })
+    )
+  } catch (e) {
+    console.error(e)
+  }
 
   await new Promise<void>((resolve) => httpServer.listen({ port: process.env.PORT }, resolve))
   console.log(`🚀  Server ready at http://localhost:${process.env.PORT}`)
