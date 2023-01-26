@@ -22,6 +22,8 @@ export class UserController {
         }
       })
 
+      console.log(user)
+
       await prisma.profile.create({
         data: {
           user_id: user.id

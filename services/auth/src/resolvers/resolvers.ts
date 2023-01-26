@@ -59,8 +59,8 @@ const resolvers: Resolvers = {
         } else {
           console.error(e)
           return {
+            success: false,
             error: {
-              success: false,
               message: 'Internal server error.'
             }
           }
