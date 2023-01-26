@@ -93,6 +93,28 @@ const resolvers: Resolvers = {
       return {
         success: true
       }
+    },
+    async removeLit(_, params, context) {
+      const { id } = params
+      const { conn, token } = context
+
+      if (!token) {
+        return {
+          success: false,
+          error: {
+            message: 'Unauthorized'
+          }
+        }
+      }
+
+      const queue = 'lit-delete'
+      const ch = await conn.createChannel()
+      await ch.assertQueue(queue)
+      ch.sendToQueue(queue, Buffer.from(JSON.stringify({ lit_id: id, user_id: token.userid })))
+
+      return {
+        success: true
+      }
     }
   }
 }

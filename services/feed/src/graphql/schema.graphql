@@ -4,6 +4,12 @@ type Query {
 
 type Mutation {
   addLit(content: String!): AddLitResponse!
+  removeLit(id: Int!): RemoveLitResponse!
+}
+
+type RemoveLitResponse {
+  success: Boolean!
+  error: LitError
 }
 
 type AddLitResponse {

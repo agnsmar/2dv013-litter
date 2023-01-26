@@ -38,11 +38,17 @@ export type LitError = {
 export type Mutation = {
   __typename?: 'Mutation';
   addLit: AddLitResponse;
+  removeLit: RemoveLitResponse;
 };
 
 
 export type MutationAddLitArgs = {
   content: Scalars['String'];
+};
+
+
+export type MutationRemoveLitArgs = {
+  id: Scalars['Int'];
 };
 
 export type Query = {
@@ -54,6 +60,12 @@ export type Query = {
 export type QueryFeedArgs = {
   offset: Scalars['Int'];
   take: Scalars['Int'];
+};
+
+export type RemoveLitResponse = {
+  __typename?: 'RemoveLitResponse';
+  error?: Maybe<LitError>;
+  success: Scalars['Boolean'];
 };
 
 
@@ -132,6 +144,7 @@ export type ResolversTypes = {
   LitError: ResolverTypeWrapper<LitError>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  RemoveLitResponse: ResolverTypeWrapper<RemoveLitResponse>;
   String: ResolverTypeWrapper<Scalars['String']>;
 };
 
@@ -144,6 +157,7 @@ export type ResolversParentTypes = {
   LitError: LitError;
   Mutation: {};
   Query: {};
+  RemoveLitResponse: RemoveLitResponse;
   String: Scalars['String'];
 };
 
@@ -169,10 +183,17 @@ export type LitErrorResolvers<ContextType = IContext, ParentType extends Resolve
 
 export type MutationResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addLit?: Resolver<ResolversTypes['AddLitResponse'], ParentType, ContextType, RequireFields<MutationAddLitArgs, 'content'>>;
+  removeLit?: Resolver<ResolversTypes['RemoveLitResponse'], ParentType, ContextType, RequireFields<MutationRemoveLitArgs, 'id'>>;
 };
 
 export type QueryResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   feed?: Resolver<Maybe<Array<Maybe<ResolversTypes['Feed']>>>, ParentType, ContextType, RequireFields<QueryFeedArgs, 'offset' | 'take'>>;
+};
+
+export type RemoveLitResponseResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['RemoveLitResponse'] = ResolversParentTypes['RemoveLitResponse']> = {
+  error?: Resolver<Maybe<ResolversTypes['LitError']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = IContext> = {
@@ -181,5 +202,6 @@ export type Resolvers<ContextType = IContext> = {
   LitError?: LitErrorResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  RemoveLitResponse?: RemoveLitResponseResolvers<ContextType>;
 };
 
