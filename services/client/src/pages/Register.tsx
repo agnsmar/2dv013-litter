@@ -107,10 +107,8 @@ export const Register = () => {
           >
             register
           </button>
-          <p className='small'>
-            Don't have an account?
-            <Link to='/register'>Register</Link>
-          </p>
+          <p className='small'>Already have an account?</p>
+          <p><Link to='/login'>Login</Link></p>
         </div>
       </form>
     </div>
