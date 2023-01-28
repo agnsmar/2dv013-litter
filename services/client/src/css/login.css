@@ -10,6 +10,7 @@
 }
 
 .logo {
+    cursor: pointer;
     height: 6em;
     padding: 1.5em;
     will-change: filter;
@@ -21,7 +22,7 @@
     filter: drop-shadow(0 0 2em #fbb023);
   }
 
-.login-form {
+.login-form, .register-form {
     border: rgb(83, 83, 83) solid 1px;
     width: 30vw;
     margin: 20px auto;
@@ -52,7 +53,7 @@
 .form-input {
     width: 100%;
     outline: none;
-    padding: 10px;
+    padding: 20px;
     border: rgb(134, 133, 133) solid 1px;
 }
 
