@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { MeDocument,/* useRegisterMutation*/ useMeQuery } from '../generated/graphql'
+import { MeDocument, useRegisterMutation, useMeQuery } from '../generated/graphql'
 
 export const Register = () => {
   const { data, loading } = useMeQuery({ fetchPolicy: 'no-cache' })
-  // const [register] = useRegisterMutation()
+  const [register] = useRegisterMutation()
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confPassword, setConfPassword] = useState('')
@@ -17,19 +18,20 @@ export const Register = () => {
       console.log('TODO: Flash message...')
     } else {
 
-    // const result = await register({
-    //   variables: {
-    //     email,
-    //     password
-    //   },
-    //   refetchQueries: [{ query: MeDocument }]
-    // })
+    const result = await register({
+      variables: {
+        username,
+        email,
+        password
+      },
+      refetchQueries: [{ query: MeDocument }]
+    })
     
-    // if (result.data?.register?.success) {
-    //   navigate('/')
-    // } else {
-    //   setError(result.data?.register?.error?.message || 'Something went wrong')
-    // }
+    if (result.data?.register?.success) {
+      navigate('/')
+    } else {
+      setError(result.data?.register?.error?.message || 'Something went wrong')
+    }
     }
   }
 
@@ -51,6 +53,23 @@ export const Register = () => {
         onSubmit={handleSubmit}
       >
         <h1>Register new user</h1>
+        <div className='field-holder'>
+          <span>{error}</span>
+          <input
+            type='text'
+            id='username'
+            className='form-input'
+            required
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+          />
+          <label
+            className='form-label'
+            htmlFor='email'
+          >
+            Username
+          </label>
+        </div>
         <div className='field-holder'>
           <span>{error}</span>
           <input
