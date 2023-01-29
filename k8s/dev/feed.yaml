@@ -41,6 +41,6 @@ spec:
         - name: LIT_READ_SERVICE
           value: "http://lit-read:8892/api/litsread"
         - name: RABBITMQ_CONNECTION_STRING
-          value: "amqp://rabbitmq:5672"
+          value: "amqp://admin:password@sphynx-queue-rabbitmq:5672"
         ports:
           - containerPort: 8080
