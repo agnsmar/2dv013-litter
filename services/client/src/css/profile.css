@@ -1,0 +1,17 @@
+.profile-container {
+  border: red solid;
+  display: grid;
+  grid-template-columns: 20vw 60vw 20vw;
+  grid-template-rows: 40vh auto;
+
+}
+
+.info-container {
+  background-color: aqua;
+  grid-column: 2;
+}
+
+.lits-container {
+  background-color: aquamarine;
+  grid-column: 2;
+}
