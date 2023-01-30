@@ -1,3 +1,7 @@
+auth:
+  password: password
+  username: admin
+  securePassword: false
 persistence:
   enabled: false
   size: 100Mi
