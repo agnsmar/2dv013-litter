@@ -86,6 +86,41 @@ const resolvers: Resolvers = {
           }
         }
       }
+    },
+    async unfollow(_, params, context) {
+      const { req } = context
+      const { followeeId } = params
+
+      try {
+        await axios({
+          url: `${process.env.USER_WRITE_SERVICE}/followings/${followeeId}`,
+          method: 'DELETE',
+          headers: {
+            'Authorization': req.headers['x-access-token'] || ''
+          },
+          responseType: 'json'
+        })
+
+        return {
+          success: true
+        }
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          return {
+            success: false,
+            error: {
+              message: e.response!.data.message
+            }
+          }
+        } else {
+          return {
+            success: false,
+            error: {
+              message: 'Internal server error'
+            }
+          }
+        }
+      }
     }
   }
 }
