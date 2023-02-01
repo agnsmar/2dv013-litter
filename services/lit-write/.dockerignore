@@ -1,0 +1,6 @@
+# Exclude all files and directories!
+*
+
+# Explicitly include
+!main.py
+!requirements.txt
