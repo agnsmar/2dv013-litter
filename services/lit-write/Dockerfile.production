@@ -1,12 +1,7 @@
-FROM python:3.8-slim-buster
-
-WORKDIR /app
-
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
-
+FROM node:18.10.0-bullseye-slim
+WORKDIR /usr/src/app
+COPY package*.json .
+RUN npm i
 COPY . .
-
 EXPOSE 5672
-
-CMD [ "python3", "main.py"]
+CMD ["npm", "run", "start:prod"]
