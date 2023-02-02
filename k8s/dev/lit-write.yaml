@@ -36,5 +36,14 @@ spec:
           value: admin
         - name: RABBIT_PASSWORD
           value: password
+        - name: MYSQL_USERNAME
+          value: root
+        - name: MYSQL_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: sphynx-lits-mysql
+              key: mysql-root-password
+        - name: DATABASE_URL
+          value: mysql://$(MYSQL_USERNAME):$(MYSQL_PASSWORD)@sphynx-lits-mysql-primary:3306/my_database
         ports:
           - containerPort: 8080
