@@ -8,7 +8,7 @@ spec:
   type: NodePort # Using this to connect loadBalancer to in CSCloud
   ports:
     - name: "lit-write-port"
-      port: 8893
+      port: 8896
       targetPort: 8080
   selector:
     deployment.name: lit-write
@@ -32,13 +32,21 @@ spec:
       - name: lit-write
         image: gitlab.lnu.se:5050/2dv013/student/team-6-sphynx/litter/lit-write:latest
         env:
-        - name: PORT
-          value: "8080"
-        - name: NODE_PORT
-          value: "3000"
-        - name: BASE_URL
-          value: /api
+        - name: RABBIT_USER
+          value: user
+        - name: RABBIT_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: sphynx-queue-rabbitmq
+              key: rabbitmq-password
+        - name: MYSQL_USERNAME
+          value: root
+        - name: MYSQL_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: sphynx-lits-mysql
+              key: mysql-root-password
+        - name: DATABASE_URL
+          value: mysql://$(MYSQL_USERNAME):$(MYSQL_PASSWORD)@sphynx-lits-mysql-primary:3306/my_database
         ports:
           - containerPort: 8080
-      imagePullSecrets:
-      - name: regcred # Secret set as a secret in the cluster

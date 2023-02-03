@@ -42,7 +42,7 @@ const main = async () => {
     expressMiddleware(server, {
       context: async ({ req, res }) => {
         const accessToken = req.headers['x-access-token'] as string | undefined
-        const token = ath.verifyAccessToken(accessToken)
+        const token = ath.verifyAccessToken(accessToken?.split(' ')[1])
 
         return {
           req,

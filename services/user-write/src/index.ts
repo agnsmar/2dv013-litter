@@ -7,8 +7,6 @@ import morgan from 'morgan'
 import { router } from './routes/router.js'
 
 const main = async () => {
-  // const prisma = new PrismaClient()
-  
   const app = express()
 
   app.use(helmet())
