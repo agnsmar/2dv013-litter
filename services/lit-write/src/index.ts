@@ -33,9 +33,10 @@ const main = async () => {
     if(message !== null) {
       channel.ack(message)
       const lit = JSON.parse(message.content.toString())
-      await prisma.lit.delete({
+      await prisma.lit.deleteMany({
         where: {
-          id: lit.lit_id
+          id: lit.lit_id,
+          user_id: lit.user_id
         }
       })
     }
