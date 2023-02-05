@@ -1,5 +1,6 @@
 import { prisma } from './config/prisma'
 import amqplib from 'amqplib'
+import { createLit, deleteLit } from './db'
 
 const main = async () => {
   let connection: amqplib.Connection
@@ -18,14 +19,8 @@ const main = async () => {
   channel.consume('lit-create', async (message) => {
     if(message !== null) {
       channel.ack(message)
-
       const lit = JSON.parse(message.content.toString())
-      await prisma.lit.create({
-        data: {
-          content: lit.content,
-          user_id: lit.user_id
-        }
-      })
+      await createLit(lit.content, lit.user_id)
     }
   })
 
@@ -33,12 +28,7 @@ const main = async () => {
     if(message !== null) {
       channel.ack(message)
       const lit = JSON.parse(message.content.toString())
-      await prisma.lit.deleteMany({
-        where: {
-          id: lit.lit_id,
-          user_id: lit.user_id
-        }
-      })
+      await deleteLit(lit.lit_id, lit.user_id)
     }
   })
 
