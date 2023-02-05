@@ -1,4 +1,3 @@
-import { prisma } from './config/prisma'
 import amqplib from 'amqplib'
 import { createLit, deleteLit } from './db'
 
