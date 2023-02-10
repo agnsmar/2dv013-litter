@@ -2,6 +2,20 @@ type Query {
   profile(userid: String!): ProfileResponse
 }
 
+type Mutation {
+  follow(followeeId: String!): FollowResponse!
+  unfollow(followeeId: String!): FollowResponse!
+}
+
+type FollowResponse {
+  success: Boolean!
+  error: FollowError
+}
+
+type FollowError {
+  message: String!
+}
+
 type ProfileError {
   message: String!
 }

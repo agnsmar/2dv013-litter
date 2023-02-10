@@ -87,7 +87,7 @@ const resolvers: Resolvers = {
 
       const queue = 'lit-create'
       const ch = await conn.createChannel()
-      await ch.assertQueue(queue)
+      await ch.assertQueue(queue, { durable: false})
       ch.sendToQueue(queue, Buffer.from(JSON.stringify({ content, user_id: token.userid })))
 
       return {
@@ -109,7 +109,7 @@ const resolvers: Resolvers = {
 
       const queue = 'lit-delete'
       const ch = await conn.createChannel()
-      await ch.assertQueue(queue)
+      await ch.assertQueue(queue, { durable: false})
       ch.sendToQueue(queue, Buffer.from(JSON.stringify({ lit_id: id, user_id: token.userid })))
 
       return {

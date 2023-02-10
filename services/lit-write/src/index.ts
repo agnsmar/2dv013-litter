@@ -1,52 +1,47 @@
-// import { Prisma, PrismaClient } from '@prisma/client'
-import { Request, Response, NextFunction } from 'express'
-import express from 'express'
-import helmet from 'helmet'
-import morgan from 'morgan'
-
-import { router } from './routes/router.js'
+import { prisma } from './config/prisma'
+import amqplib from 'amqplib'
 
 const main = async () => {
-  // const prisma = new PrismaClient()
-  
-  const app = express()
+  let connection: amqplib.Connection
 
-  app.use(helmet())
-  app.use(morgan('dev'))
-  app.use(express.json({limit: '100kb'}))
-  app.use('/', router)
+  try {
+    connection = await amqplib.connect(`amqp://${process.env.RABBIT_USER}:${process.env.RABBIT_PASSWORD}@sphynx-queue-rabbitmq:5672?heartbeat=10`);
+  } catch (e) {
+    console.error(e)
+    process.exit(1)
+  }
 
-  // Error handler.
-  app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
-    err.status = err.status || 500
+  const channel = await connection.createChannel()
+  await channel.assertQueue('lit-create', { durable: false })
+  await channel.assertQueue('lit-delete', { durable: false })
 
-    if (req.app.get('env') !== 'development') {
-      res
-        .status(err.status)
-        .json({
-          status: err.status,
-          message: err.message
-        })
-      
-    } else {
-      res
-        .status(err.status)
-        .json({
-          status: err.status,
-          message: err.message,
-          innerException: err.innerException,
-          stack: err.stack
-        })
+  channel.consume('lit-create', async (message) => {
+    if(message !== null) {
+      channel.ack(message)
+
+      const lit = JSON.parse(message.content.toString())
+      await prisma.lit.create({
+        data: {
+          content: lit.content,
+          user_id: lit.user_id
+        }
+      })
     }
-
-    next()
   })
 
-  // Starts the HTTP server listening for connections.
-  app.listen(process.env.PORT, () => {
-    console.log(`Server running at http://localhost:${process.env.PORT}`)
-    console.log('Press Ctrl-C to terminate...')
+  channel.consume('lit-delete', async (message) => {
+    if(message !== null) {
+      channel.ack(message)
+      const lit = JSON.parse(message.content.toString())
+      await prisma.lit.deleteMany({
+        where: {
+          id: lit.lit_id,
+          user_id: lit.user_id
+        }
+      })
+    }
   })
+
 }
 
 main().catch(console.error)

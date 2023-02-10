@@ -26,31 +26,33 @@ const main = async () => {
   })
 
   await server.start()
+  let conn: amqlib.Connection
 
   try {
-    const conn = await amqlib.connect(process.env.RABBITMQ_CONNECTION_STRING!)
-
-    app.use(
-      '/graphql',
-      cors({ credentials: true }),
-      bodyParser.json(),
-      expressMiddleware(server, {
-        context: async ({ req, res }) => {
-          const accessToken = req.headers['x-access-token'] as string | undefined
-          const token = ath.verifyAccessToken(accessToken)
-
-          return {
-            req,
-            res,
-            conn,
-            token
-          }
-        }
-      })
-    )
+    conn = await amqlib.connect(process.env.RABBITMQ_CONNECTION_STRING!)
   } catch (e) {
     console.error(e)
+    process.exit(1)
   }
+
+  app.use(
+    '/graphql',
+    cors({ credentials: true }),
+    bodyParser.json(),
+    expressMiddleware(server, {
+      context: async ({ req, res }) => {
+        const accessToken = req.headers['x-access-token'] as string | undefined
+        const token = ath.verifyAccessToken(accessToken?.split(' ')[1])
+
+        return {
+          req,
+          res,
+          conn,
+          token
+        }
+      }
+    })
+  )
 
   await new Promise<void>((resolve) => httpServer.listen({ port: process.env.PORT }, resolve))
   console.log(`🚀  Server ready at http://localhost:${process.env.PORT}`)

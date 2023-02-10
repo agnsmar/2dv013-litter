@@ -25,7 +25,7 @@ const resolvers: Resolvers = {
             responseType: 'json'
           })
         ])
-        
+
         return {
           profile: {
             avatar: profile.data.profile.avatar,
@@ -34,7 +34,6 @@ const resolvers: Resolvers = {
             lits: lits.data
           }
         }
-
       } catch (e) {
         if (e instanceof AxiosError) {
           return {
@@ -44,6 +43,78 @@ const resolvers: Resolvers = {
           }
         } else {
           return {
+            error: {
+              message: 'Internal server error'
+            }
+          }
+        }
+      }
+    }
+  },
+  Mutation: {
+    async follow(_, params, context) {
+      const { req } = context
+      const { followeeId } = params
+
+      try {
+        await axios({
+          url: `${process.env.USER_WRITE_SERVICE}/followings/${followeeId}`,
+          method: 'POST',
+          headers: {
+            'Authorization': req.headers['x-access-token'] || ''
+          },
+          responseType: 'json'
+        })
+
+        return {
+          success: true
+        }
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          return {
+            success: false,
+            error: {
+              message: e.response!.data.message
+            }
+          }
+        } else {
+          return {
+            success: false,
+            error: {
+              message: 'Internal server error'
+            }
+          }
+        }
+      }
+    },
+    async unfollow(_, params, context) {
+      const { req } = context
+      const { followeeId } = params
+
+      try {
+        await axios({
+          url: `${process.env.USER_WRITE_SERVICE}/followings/${followeeId}`,
+          method: 'DELETE',
+          headers: {
+            'Authorization': req.headers['x-access-token'] || ''
+          },
+          responseType: 'json'
+        })
+
+        return {
+          success: true
+        }
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          return {
+            success: false,
+            error: {
+              message: e.response!.data.message
+            }
+          }
+        } else {
+          return {
+            success: false,
             error: {
               message: 'Internal server error'
             }
