@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Error500 } from '../pages/Error500'
 import { Home } from '../pages/Home'
 import { Login } from '../pages/Login'
+import { Register } from '../pages/Register'
+import { Profile } from '../pages/Profile'
 
 export const AppRouter = () => {
   return (
@@ -10,6 +12,8 @@ export const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route path="/error-500" element={<Error500 />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   )

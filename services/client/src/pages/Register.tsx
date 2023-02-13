@@ -1,29 +1,37 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { MeDocument, useLoginMutation, useMeQuery } from '../generated/graphql'
+import { MeDocument, useRegisterMutation, useMeQuery } from '../generated/graphql'
 
-export const Login = () => {
+export const Register = () => {
   const { data, loading } = useMeQuery({ fetchPolicy: 'no-cache' })
-  const [login] = useLoginMutation()
+  const [register] = useRegisterMutation()
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confPassword, setConfPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const result = await login({
+    if (password !== confPassword) {
+      console.log('TODO: Flash message...')
+    } else {
+
+    const result = await register({
       variables: {
+        username,
         email,
         password
       },
       refetchQueries: [{ query: MeDocument }]
     })
     
-    if (result.data?.login?.success) {
+    if (result.data?.register?.success) {
       navigate('/')
     } else {
-      setError(result.data?.login?.error?.message || 'Something went wrong')
+      setError(result.data?.register?.error?.message || 'Something went wrong')
+    }
     }
   }
 
@@ -33,7 +41,7 @@ export const Login = () => {
   }
 
   return (
-    <div className='login-container'>
+    <div className='register-container'>
       <img
         src='/litter.png'
         alt='litter'
@@ -41,10 +49,27 @@ export const Login = () => {
         onClick={() => navigate('/')}
       />
       <form
-        className='login-form'
+        className='register-form'
         onSubmit={handleSubmit}
       >
-        <h1>Login</h1>
+        <h1>Register new user</h1>
+        <div className='field-holder'>
+          <span>{error}</span>
+          <input
+            type='text'
+            id='username'
+            className='form-input'
+            required
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+          />
+          <label
+            className='form-label'
+            htmlFor='email'
+          >
+            Username
+          </label>
+        </div>
         <div className='field-holder'>
           <span>{error}</span>
           <input
@@ -78,15 +103,31 @@ export const Login = () => {
             Password
           </label>
         </div>
+        <div className='field-holder'>
+          <input
+            type='password'
+            id='psw'
+            className='form-input'
+            required
+            value={confPassword}
+            onChange={e => setConfPassword(e.target.value)}
+          />
+          <label
+            className='form-label'
+            htmlFor='psw'
+          >
+            Confirm password
+          </label>
+        </div>
         <div className='text-container'>
           <button
             type='submit'
             className='submit-button'
           >
-            Login
+            register
           </button>
-          <p className='small'>Don't have an account?</p>
-          <p className='small'><Link to='/register'>Register</Link></p>
+          <p className='small'>Already have an account?</p>
+          <p><Link to='/login'>Login</Link></p>
         </div>
       </form>
     </div>

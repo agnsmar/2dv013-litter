@@ -1,0 +1,39 @@
+.profile-container {
+  border: red solid;
+  display: grid;
+  grid-template-columns: 20vw 60vw 20vw;
+  grid-template-rows: 40vh auto;
+  text-align: center;
+}
+
+.info-container {
+  display: grid;
+  grid-template-columns: 10vw auto;
+  grid-column: 2;
+}
+
+.image {
+  grid-column: 1;
+  margin: 30px;
+  width: 200px;
+  height: 200px;
+  border: black 0.5px solid;
+  border-radius: 50%;
+}
+
+img {
+  width: 140px;
+  height: 140px;
+  margin: 25px auto;
+}
+
+.text-container {
+  grid-column: 2;
+}
+
+
+
+.lits-container {
+  background-color: aquamarine;
+  grid-column: 2;
+}
