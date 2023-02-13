@@ -1,14 +1,15 @@
 .nav-container {
-  display: grid;
-  grid-template-columns: 20vw 40vw 20vw 20vw;
-  grid-template-rows: 10vh;
+  grid-column: 1;
+  grid-row: 1;
 }
 
-.search {
-  grid-column: 2;
-  margin: 10px;
+.header a .logo {
+  height: 80px;
 }
 
-.links {
-  grid-column: 3;
+.link-item {
+  display: block;
+  margin: 50px;
+  color: white;
+  text-decoration: none;
 }

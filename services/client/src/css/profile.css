@@ -1,5 +1,8 @@
 .profile-container {
   border: red solid;
+}
+/* .profile-container {
+  border: red solid;
   display: grid;
   grid-template-columns: 20vw 60vw 20vw;
   grid-template-rows: 40vh auto;
@@ -36,4 +39,4 @@ img {
 .lits-container {
   background-color: aquamarine;
   grid-column: 2;
-}
+} */
