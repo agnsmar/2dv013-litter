@@ -16,11 +16,13 @@ export const Lit: React.FC<LitProps> = (props) => {
     const handleLike = () => {
         isLiked ? setLike(false) : setLike(true)
     }
-    
+
   return (
     <div className="lit-container">
       <div className="lit-image">
-        <img src={props.image} alt="profile image" />
+        <a href={link} className="username">
+            <img src={props.image} alt="profile image" />
+        </a>
       </div>
       <div className="lit-text-container">
         <a href={link} className="username">{props.username}</a>
