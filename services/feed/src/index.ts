@@ -12,8 +12,9 @@ import http from 'http'
 import bodyParser from 'body-parser'
 import amqlib from 'amqplib'
 import { AuthTokenHelper } from './util/authTokenHelper'
+import dotenv from 'dotenv'
 
-const main = async () => {
+export const createApolloServer = async () => {
   const app = express()
   const httpServer = http.createServer(app)
   const gqlSchema = await fs.readFile('./src/graphql/schema.graphql', { encoding: 'utf-8' })
@@ -54,8 +55,15 @@ const main = async () => {
     })
   )
 
-  await new Promise<void>((resolve) => httpServer.listen({ port: process.env.PORT }, resolve))
-  console.log(`🚀  Server ready at http://localhost:${process.env.PORT}`)
+  return httpServer
+}
+
+const main = async () => {
+  dotenv.config()
+  const PORT = process.env.PORT ?? 3003
+  const server = await createApolloServer()
+  await new Promise<void>((resolve) => server.listen({ port: PORT }, resolve))
+  console.log(`🚀  Server ready at http://localhost:${PORT}`)
 }
 
 main()
