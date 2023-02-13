@@ -33,5 +33,8 @@ spec:
       containers:
       - name: client
         image: client:latest
+        env:
+        - name: REACT_APP_GATEWAY_SERVICE
+          value: http://localhost/graphql
         ports:
         - containerPort: 80
