@@ -31,7 +31,15 @@ spec:
         deployment.name: client
     spec:
       containers:
-      - name: client
-        image: client:latest
+      - name: client-staging
+        image: gitlab.lnu.se:5050/2dv013/student/team-6-sphynx/litter/client-staging:latest
+        env:
+        - name: REACT_APP_GATEWAY_SERVICE
+          valueFrom: 
+            secretKeyRef:
+              name: graphql-gateway
+              key: endpoint
         ports:
         - containerPort: 80
+      imagePullSecrets:
+      - name: regcred # Secret set as a secret in the cluster

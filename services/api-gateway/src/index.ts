@@ -33,7 +33,7 @@ const main = async () => {
           if (accessToken) {
             context.res.cookie('aid', accessToken, {
               secure: false,
-              sameSite: 'none',
+              sameSite: 'lax',
               maxAge: 1000 * 60 * 60 * 24
             })
           }
@@ -42,7 +42,7 @@ const main = async () => {
           if (refreshToken) {
             context.res.cookie('rid', refreshToken, {
               secure: false,
-              sameSite: 'none',
+              sameSite: 'lax',
               maxAge: 1000 * 60 * 60 * 24 * 7
             })
           }

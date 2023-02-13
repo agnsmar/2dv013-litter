@@ -1,5 +1,7 @@
 # First build the React App
 FROM node:19-bullseye-slim AS builder
+ARG GATEWAY_SERVICE="http://localhost/graphql"
+ENV VITE_GATEWAY_SERVICE=$GATEWAY_SERVICE
 WORKDIR /app
 COPY package*.json .
 RUN npm i

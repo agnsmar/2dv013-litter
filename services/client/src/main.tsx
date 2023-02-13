@@ -13,8 +13,8 @@ import {
 import './css/index.css'
 import axios from 'axios'
 
-const GATEWAY_URL = 'http://cscloud6-119.lnu.se/graphql'
-console.log(GATEWAY_URL)
+const GATEWAY_URL = import.meta.env.VITE_GATEWAY_SERVICE
+console.log(GATEWAY_URL) //bada bing bada bombombomasdhuiahudsiaduhisadhusi
 const httpLink = new HttpLink({ uri: GATEWAY_URL })
 const refreshToken = new ApolloLink((operation, forward) => {
   return fromPromise(
