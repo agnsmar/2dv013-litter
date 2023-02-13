@@ -47,7 +47,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-    - host: localhost
+    - host: cscloud7-248.lnu.se
       http:
         paths:
           - path: /graphql
