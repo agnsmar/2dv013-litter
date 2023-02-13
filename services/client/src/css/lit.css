@@ -1,0 +1,39 @@
+.lit-container {
+    margin: 10px 0;
+    width: 100%;
+    border: red solid;
+    display: grid;
+    grid-template-columns: 60px auto;
+}
+
+.lit-image {
+    display: flex;
+    align-items: center;
+}
+
+.lit-image img {
+    height: 50px;
+    width: 50px;
+    margin: 0;
+}
+
+.lit-text-container {
+    margin: 5px 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.lit-text-container >* {
+    width: 100%;
+}
+
+.lit-text-container .username {
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.lit-text-container .lit-text {
+    border: red solid;
+}

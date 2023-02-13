@@ -1,4 +1,10 @@
 import { Navigation } from './Navigation'
+import { Lit } from '../components/Lit'
+
+const litter = '../../public/litter.png'
+
+// TODO: hämta lits
+// const lits
 
 export const Profile = () => {
   return ( 
@@ -7,29 +13,35 @@ export const Profile = () => {
       <div className="profile-container">
         <div className="info-container">
           <div className="profile-image">
-            <img src="../../public/litter.png" alt="profile"/>
+            <img src={litter} alt="profile"/>
           </div>
-          <div className="profile-info">
-            Profile
+          <div className="profile-info-container">
+            <p className="username">testuser</p>
+            <div className="profile-info">
+              <div className="lits-nmr">
+                <p>123 lits</p>
+              </div>
+              <div className="followers">
+                <p>123 followers</p>
+              </div>
+              <div className="following">
+                <p>123 following</p>
+              </div>
+            </div>
+            <div className="text-container">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!
+
+            </div>
+
           </div>
         </div>
         <div className="lits-container">
-          Lits
+          {/* TODO: lits.map */}
+          <Lit image={litter} username="testuser" text="text1" />
+          <Lit image={litter} username="testuser" text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!" />
         </div>
-        {/* <div className="info-container">
-          <div className="image">
-            <img src="../../public/litter.png" alt="profile"></img>
-          </div>
-          <div className="text-container">
-            <p>Username</p>
-            <p>Description</p>
-          </div>
-          <div className="followers-container">
-            Followers
-          </div>
-        </div>
-        <div className="lits-container">Lits</div> */}
       </div>
     </div>
+    
   )
 }
