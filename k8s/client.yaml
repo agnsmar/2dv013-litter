@@ -33,6 +33,12 @@ spec:
       containers:
       - name: client
         image: gitlab.lnu.se:5050/2dv013/student/team-6-sphynx/litter/client:latest
+        env:
+        - name: REACT_APP_GATEWAY_SERVICE
+          valueFrom: 
+            secretKeyRef:
+              name: graphql-gateway
+              key: endpoint
         ports:
         - containerPort: 80
       imagePullSecrets:
