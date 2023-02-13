@@ -1,6 +1,39 @@
 .profile-container {
-  border: red solid;
+  display: grid;
+  grid-template-rows: 25vh auto;
+  background-color: rgb(33, 32, 32);
 }
+
+.info-container {
+  display: flex;
+  border-bottom: black 1px solid;
+}
+
+.profile-image {
+  width: 20vw;
+  margin: 10px;
+}
+
+.profile-image img {
+  background-color: rgb(76, 75, 75);
+  margin: auto;
+  display: block;
+  width: 150px;
+  height: 150px;
+  border: black 0.5px solid;
+  border-radius: 50%;
+}
+
+.profile-info {
+  
+
+}
+
+
+.lits-container {
+
+}
+
 /* .profile-container {
   border: red solid;
   display: grid;

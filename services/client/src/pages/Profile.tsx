@@ -5,7 +5,17 @@ export const Profile = () => {
     <div className="home-container">
       <Navigation />
       <div className="profile-container">
-        profile
+        <div className="info-container">
+          <div className="profile-image">
+            <img src="../../public/litter.png" alt="profile"/>
+          </div>
+          <div className="profile-info">
+            Profile
+          </div>
+        </div>
+        <div className="lits-container">
+          Lits
+        </div>
         {/* <div className="info-container">
           <div className="image">
             <img src="../../public/litter.png" alt="profile"></img>
