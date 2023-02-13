@@ -42,5 +42,7 @@ spec:
           value: http://auth:8890/graphql
         - name: FEED_SERVICE
           value: http://feed:8891/graphql
+        - name: REACT_APP_GATEWAY_SERVICE
+          value: http://localhost/graphql
         ports:
           - containerPort: 8080
