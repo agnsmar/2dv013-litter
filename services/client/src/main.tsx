@@ -13,7 +13,8 @@ import {
 import './css/index.css'
 import axios from 'axios'
 
-const GATEWAY_URL = process.env.REACT_APP_GATEWAY_SERVICE ?? 'http://localhost/graphql'
+const GATEWAY_URL = 'http://cscloud6-119.lnu.se/graphql'
+console.log(GATEWAY_URL)
 const httpLink = new HttpLink({ uri: GATEWAY_URL })
 const refreshToken = new ApolloLink((operation, forward) => {
   return fromPromise(
