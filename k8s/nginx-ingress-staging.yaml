@@ -31,3 +31,17 @@ spec:
                 name: client
                 port:
                   number: 3080
+          - path: /register
+            pathType: Prefix
+            backend:
+              service:
+                name: client
+                port:
+                  number: 3080
+          - path: /graphql
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8080
