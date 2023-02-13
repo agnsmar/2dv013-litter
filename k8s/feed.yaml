@@ -53,8 +53,8 @@ spec:
         - name: RABBITMQ_PASSWORD
           valueFrom: 
             secretKeyRef:
-              name: sphynx-lits-mysql
-              key: mysql-root-password
+              name: sphynx-queue-rabbitmq
+              key: rabbitmq-password
         - name: RABBITMQ_CONNECTION_STRING
           value: "amqp://user:$(RABBITMQ_PASSWORD)@sphynx-queue-rabbitmq:5672?heartbeat=10"
         ports:
