@@ -32,7 +32,7 @@ const main = async () => {
           const accessToken = response.http?.headers.get('x-access-token')
           if (accessToken) {
             context.res.cookie('aid', accessToken, {
-              secure: true,
+              secure: false,
               sameSite: 'none',
               maxAge: 1000 * 60 * 60 * 24
             })
@@ -41,7 +41,7 @@ const main = async () => {
           const refreshToken = response.http?.headers.get('x-refresh-token')
           if (refreshToken) {
             context.res.cookie('rid', refreshToken, {
-              secure: true,
+              secure: false,
               sameSite: 'none',
               maxAge: 1000 * 60 * 60 * 24 * 7
             })
