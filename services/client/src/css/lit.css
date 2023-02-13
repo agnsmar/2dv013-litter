@@ -34,6 +34,12 @@
     font-weight: bold;
 }
 
-.lit-text-container .lit-text {
-    border: red solid;
+
+.action-container .like {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.action-container .liked {
+    cursor: pointer;
 }

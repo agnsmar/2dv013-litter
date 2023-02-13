@@ -37,8 +37,8 @@ export const Profile = () => {
         </div>
         <div className="lits-container">
           {/* TODO: lits.map */}
-          <Lit image={litter} username="testuser" text="text1" />
-          <Lit image={litter} username="testuser" text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!" />
+          <Lit isLiked={false} image={litter} username="testuser" text="text1"/>
+          <Lit isLiked={true} image={litter} username="testuser" text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!" />
         </div>
       </div>
     </div>
