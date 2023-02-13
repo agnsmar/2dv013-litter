@@ -22,9 +22,6 @@ build 1/9:
       --destination "${CI_REGISTRY_IMAGE}/client:${CI_COMMIT_TAG:-latest}"
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
-      changes:  # Include the job and set to when:manual if any of the follow paths match a modified file.
-        - services/client/*
-        - k8s/client.yaml
 
 # API Gateway
 build 2/9:
