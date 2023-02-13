@@ -82,7 +82,7 @@ const main = async () => {
 
   app.use(
     '/graphql',
-    cors({ origin: ['http://cscloud7-248.lnu.se/', 'http://cscloud6-119.lnu.se/'], credentials: true }),
+    cors({ origin: '*', credentials: true }),
     bodyParser.json(),
     cookieParser(),
     expressMiddleware(server, { context: async ({ req, res }) => ({ req, res }) })
