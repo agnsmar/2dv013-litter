@@ -28,7 +28,7 @@ describe('GET /api/profiles/1234567', () => {
 
   it('Should return a specific user', async () => {
     expect(response.body.profile.user_id).toBe(1234567)
-    expect(response.body.user.content).toBe('test content')
-    expect(response.body.user.avatar).toBe('https://i.imgur.com/VAIIdrg.png')
+    expect(response.body.profile.content).toBe('test content')
+    expect(response.body.profile.avatar).toBe('https://i.imgur.com/VAIIdrg.png')
   })
 })
