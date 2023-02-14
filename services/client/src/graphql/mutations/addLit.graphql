@@ -1,0 +1,8 @@
+mutation AddLit($content: String!) {
+  addLit (content: $content) {
+    error {
+      message
+    }
+    success
+  }
+} 

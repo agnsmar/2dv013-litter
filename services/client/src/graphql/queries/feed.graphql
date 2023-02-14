@@ -1,0 +1,9 @@
+query Feed($offset: Int!, $take: Int!) {
+  feed(offset: $offset, take: $take) {
+    content
+    createdAt
+    updatedAt
+    user_id
+    username
+  }
+}

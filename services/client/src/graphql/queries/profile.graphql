@@ -1,0 +1,17 @@
+query Profile($userid: String!) {
+  profile(userid: $userid) {
+    error {
+      message
+    }
+    profile {
+      avatar
+      content
+      lits {
+        content
+        createdAt
+        updatedAt
+      }
+      username
+    }
+  }
+}

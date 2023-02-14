@@ -1,0 +1,8 @@
+mutation RemoveLit($id: Int!) {
+  removeLit(id: $id) {
+    error {
+      message
+    }
+    success
+  }
+}
