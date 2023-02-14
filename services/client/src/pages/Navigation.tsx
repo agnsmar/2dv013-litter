@@ -1,7 +1,8 @@
 import React from 'react'
 
 interface NavProps {
-  isOnline: boolean
+  isOnline: boolean,
+  id: string
 }
 
 export const Navigation: React.FC<NavProps> = (props) => {
@@ -16,8 +17,7 @@ export const Navigation: React.FC<NavProps> = (props) => {
       </div>
       <div className="link-container">
         <a className="link-item" href="/">Home</a>
-        <a className="link-item" href="/">Search</a>
-        <a className="link-item" href="/profile">Profile</a>
+        <a className="link-item" href={`/profile/${props.id}`}>Profile</a>
         {props.isOnline ? '' :  <a className="link-item" href="/login">Login</a>}
       </div>
 

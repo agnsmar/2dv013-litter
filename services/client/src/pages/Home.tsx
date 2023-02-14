@@ -28,7 +28,7 @@ export const Home = () => {
   const following = getFollowing(onlineId)
   return (
     <div className="home-container">
-      <Navigation isOnline={isOnline}/>
+      <Navigation isOnline={isOnline} id={onlineId}/>
       <div className="lits-container">
         {following.map(user => user.lits.map(lit => 
           <Lit 

@@ -58,7 +58,7 @@ export const Profile = () => {
 
   return ( 
     <div className="home-container">
-      <Navigation isOnline={isOnline}/>
+      <Navigation isOnline={isOnline} id={onlineUser.id}/>
       <div className="profile-container">
         <div className="info-container">
           <div className="profile-image">
