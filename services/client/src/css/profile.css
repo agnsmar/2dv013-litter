@@ -1,39 +1,56 @@
 .profile-container {
-  border: red solid;
   display: grid;
-  grid-template-columns: 20vw 60vw 20vw;
-  grid-template-rows: 40vh auto;
-  text-align: center;
+  grid-template-rows: 200px auto;
+  background-color: rgb(33, 32, 32);
 }
 
 .info-container {
-  display: grid;
-  grid-template-columns: 10vw auto;
-  grid-column: 2;
+  display: flex;
+  border-bottom: black 1px solid;
 }
 
-.image {
-  grid-column: 1;
-  margin: 30px;
-  width: 200px;
-  height: 200px;
+.profile-image {
+  width: 20vw;
+  margin: 10px;
+}
+
+.profile-image img, .lit-image img  {
+  background-color: rgb(76, 75, 75);
+  margin: auto;
+  display: block;
+  width: 150px;
+  height: 150px;
   border: black 0.5px solid;
   border-radius: 50%;
 }
 
-img {
-  width: 140px;
-  height: 140px;
-  margin: 25px auto;
+.profile-info-container {
+  width: 55vw;
+  margin: 10px;
+}
+
+.profile-info-container .username {
+  font-size: 20px;
+}
+
+.profile-info-container .follow-button {
+  width: 100px;
+  margin: 0 auto;
+  cursor: pointer;
+  padding: 5px;
+  background-color: #fbb023;
+  border: #fbb023 1px;
+  border-radius: 10px;
+  color: white;
+}
+
+.profile-info {
+  display: flex;
+  gap: 10px;
 }
 
 .text-container {
-  grid-column: 2;
+  text-align: left;
+  min-height: 50px;
 }
 
-
-
-.lits-container {
-  background-color: aquamarine;
-  grid-column: 2;
-}
