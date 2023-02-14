@@ -48,12 +48,14 @@
     display: flex;
     justify-content: center;
     transition: .3s ease-in-out;
+    color: black;
 }
 
 .form-input {
     width: 100%;
     outline: none;
     padding: 20px;
+    border: red solid;
     border: rgb(134, 133, 133) solid 1px;
 }
 
