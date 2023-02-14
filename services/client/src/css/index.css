@@ -1,6 +1,22 @@
 @import './login.css';
 @import './profile.css';
 @import './navigation.css';
-@tailwind base;
+@import './lit.css';
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+
+.home-container {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 20vw auto;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100%;
+    margin: 0;
+    background-color: rgb(22, 22, 22);
+    color: white;
+}
