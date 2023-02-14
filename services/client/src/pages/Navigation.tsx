@@ -20,8 +20,6 @@ export const Navigation: React.FC<NavProps> = (props) => {
         <a className="link-item" href={`/profile/${props.id}`}>Profile</a>
         {props.isOnline ? '' :  <a className="link-item" href="/login">Login</a>}
       </div>
-
-
     </div>
   )
 }
