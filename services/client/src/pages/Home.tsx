@@ -24,10 +24,11 @@ const getFollowing = (onlineId: string) => {
 
 export const Home = () => {
   const onlineId = '1'
+  const isOnline = true // TODO: kolla om är online
   const following = getFollowing(onlineId)
   return (
     <div className="home-container">
-      <Navigation/>
+      <Navigation isOnline={isOnline}/>
       <div className="lits-container">
         {following.map(user => user.lits.map(lit => 
           <Lit 

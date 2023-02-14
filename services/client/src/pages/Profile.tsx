@@ -48,6 +48,7 @@ export const Profile = () => {
     id = ''
   }
   const user = getUser(id)
+  const isOnline = true // TODO: kolla om är online
   let [isFollowing, setIsFollowing] = useState(onlineUser.following.includes(user.id))
 
   const handleFollow = () => {
@@ -57,7 +58,7 @@ export const Profile = () => {
 
   return ( 
     <div className="home-container">
-      <Navigation />
+      <Navigation isOnline={isOnline}/>
       <div className="profile-container">
         <div className="info-container">
           <div className="profile-image">

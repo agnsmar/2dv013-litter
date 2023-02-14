@@ -1,4 +1,10 @@
-export const Navigation = () => {
+import React from 'react'
+
+interface NavProps {
+  isOnline: boolean
+}
+
+export const Navigation: React.FC<NavProps> = (props) => {
   return ( 
     <div className="nav-container">
       <div className="header">
@@ -12,7 +18,7 @@ export const Navigation = () => {
         <a className="link-item" href="/">Home</a>
         <a className="link-item" href="/">Search</a>
         <a className="link-item" href="/profile">Profile</a>
-        <a className="link-item" href="/login">Login</a>
+        {props.isOnline ? '' :  <a className="link-item" href="/login">Login</a>}
       </div>
 
 
