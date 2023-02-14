@@ -5,6 +5,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://cscloud7-248.lnu.se"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
 spec:
   rules:
     - host: cscloud7-248.lnu.se
@@ -31,3 +35,33 @@ spec:
                 name: client
                 port:
                   number: 3080
+          - path: /register
+            pathType: Prefix
+            backend:
+              service:
+                name: client
+                port:
+                  number: 3080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-graphql
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://cscloud7-248.lnu.se"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+spec:
+  rules:
+    - host: cscloud7-248.lnu.se
+      http:
+        paths:
+          - path: /graphql
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8080

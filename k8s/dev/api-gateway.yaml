@@ -42,5 +42,7 @@ spec:
           value: http://auth:8890/graphql
         - name: FEED_SERVICE
           value: http://feed:8891/graphql
+        - name: ORIGIN
+          value: http://localhost
         ports:
           - containerPort: 8080

@@ -42,6 +42,11 @@ spec:
           value: http://auth:8890/graphql
         - name: FEED_SERVICE
           value: http://feed:8891/graphql
+        - name: ORIGIN
+          valueFrom: 
+            secretKeyRef:
+              name: graphql-gateway
+              key: origin
         ports:
           - containerPort: 8080
       imagePullSecrets:

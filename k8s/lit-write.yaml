@@ -50,3 +50,5 @@ spec:
           value: mysql://$(MYSQL_USERNAME):$(MYSQL_PASSWORD)@sphynx-lits-mysql-primary:3306/my_database
         ports:
           - containerPort: 8080
+      imagePullSecrets:
+        - name: regcred # Secret set as a secret in the cluster
