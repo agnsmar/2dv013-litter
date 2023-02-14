@@ -12,6 +12,7 @@ export const Navigation = () => {
         <a className="link-item" href="/">Home</a>
         <a className="link-item" href="/">Search</a>
         <a className="link-item" href="/profile">Profile</a>
+        <a className="link-item" href="/login">Login</a>
       </div>
 
 
