@@ -13,7 +13,7 @@ export const AppRouter = () => {
         <Route path="/error-500" element={<Error500 />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Routes>
     </Router>
   )
