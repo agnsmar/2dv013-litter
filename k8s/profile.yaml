@@ -40,6 +40,16 @@ spec:
           value: "http://user-read:8895/api"
         - name: LIT_READ_SERVICE
           value: "http://lit-read:8892/api"
+        - name: REFRESH_TOKEN_SECRET
+          valueFrom: 
+            secretKeyRef:
+              name: jwt-secret
+              key: refresh-token
+        - name: ACCESS_TOKEN_SECRET
+          valueFrom: 
+            secretKeyRef:
+              name: jwt-secret
+              key: access-token
         ports:
           - containerPort: 8080
       imagePullSecrets:

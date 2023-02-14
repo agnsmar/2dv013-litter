@@ -40,5 +40,9 @@ spec:
           value: "http://user-read:8895/api/usersread"
         - name: LIT_READ_SERVICE
           value: "http://lit-read:8892/api/litsread"
+        - name: REFRESH_TOKEN_SECRET
+          value: "alocalrefreshsecret"
+        - name: ACCESS_TOKEN_SECRET
+          value: "alocalaccesssecret"
         ports:
           - containerPort: 8080
