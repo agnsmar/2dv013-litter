@@ -2,16 +2,42 @@ import { Navigation } from './Navigation'
 import { Lit } from '../components/Lit'
 
 const litter = '../../public/litter.png'
-// TODO: hämta followers lits
+
+const getFollowing = (onlineId: string) => {
+  // TODO: hämta following lits 
+  return [{
+  username: 'testuser',
+  id: '1',
+  profile_img: litter,
+  lits: [{
+    id: 1,
+    text: 'test1'
+  }, {
+    id: 2,
+    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
+  }],
+  followers: ['1', '2', '3'],
+  following: ['1', '2', '3'],
+  description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
+  }]
+}
 
 export const Home = () => {
+  const onlineId = '1'
+  const following = getFollowing(onlineId)
   return (
     <div className="home-container">
       <Navigation/>
       <div className="lits-container">
-          {/* TODO: lits.map */}
-          <Lit isLiked={false} image={litter} username="testuser" text="text1"/>
-          <Lit isLiked={true} image={litter} username="testuser" text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!" />
+        {following.map(user => user.lits.map(lit => 
+          <Lit 
+            isLiked={false}
+            image={user.profile_img}
+            username={user.username}
+            text={lit.text}
+            key={lit.id}
+          />
+        ))}
         </div>
     </div>
   )

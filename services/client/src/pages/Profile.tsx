@@ -5,29 +5,30 @@ import { useParams } from 'react-router-dom'
 
 const litter = '../../public/litter.png'
 
-// TODO: hämta lits
-// const lits
 // TODO: hämta user
-const user = {
-  username: 'testuser',
-  id: 123,
-  profile_img: litter,
-  lits: [{
-    id: 1,
-    text: 'test1'
-  }, {
-    id: 2,
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-  }],
-  followers: 123,
-  following: 123,
-  description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-}
+const getUser = (id: string) => {
+  // Get the user info
+  return {
+    username: 'testuser',
+    id: id,
+    profile_img: litter,
+    lits: [{
+      id: 1,
+      text: 'test1'
+    }, {
+      id: 2,
+      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
+    }],
+    followers: ['1', '2', '3'],
+    following: ['1', '2', '3'],
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
+  }
+} 
 
 // TODO: hämta inloggad user
 const onlineUser = {
   username: 'testuser',
-  id: 123,
+  id: '1',
   profile_img: litter,
   lits: [{
     id: 1,
@@ -36,16 +37,18 @@ const onlineUser = {
     id: 2,
     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
   }],
-  followers: 123,
-  following: 123,
+  followers: ['1', '2', '3'],
+  following: ['1', '2', '3'],
   description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
 }
-// TODO: hämta om följer user
-// Mappa igenom de users som inloggad user följer
 
 export const Profile = () => {
-  let [isFollowing, setIsFollowing] = useState(false)
-  const { id } = useParams()
+  let { id } = useParams() 
+  if (id === undefined) {
+    id = ''
+  }
+  const user = getUser(id)
+  let [isFollowing, setIsFollowing] = useState(onlineUser.following.includes(user.id))
 
   const handleFollow = () => {
     // TODO: ändra followers i DB
