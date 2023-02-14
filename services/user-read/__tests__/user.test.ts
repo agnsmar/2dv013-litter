@@ -15,3 +15,20 @@ describe('GET /api/users', () => {
     expect(Array.isArray(response.body)).toBe(true)
   })
 })
+
+describe('GET /api/users/1234567', () => {
+  let response: any
+  beforeAll(async () => {
+    response = await request(baseURL).get('/users/1234567')
+  })
+
+  it('Should return a 200', async () => {
+    expect(response.statusCode).toBe(200)
+  })
+
+  it('Should return a specific user', async () => {
+    expect(response.body.user.id).toBe(1234567)
+    expect(response.body.user.email).toBe('dinkleberg2452@example.com')
+    expect(response.body.user.username).toBe('dinkleberg2452')
+  })
+})
