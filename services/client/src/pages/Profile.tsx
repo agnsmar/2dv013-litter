@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Navigation } from './Navigation'
 import { Lit } from '../components/Lit'
 
@@ -5,8 +6,22 @@ const litter = '../../public/litter.png'
 
 // TODO: hämta lits
 // const lits
+// TODO: hämta user
+
+// TODO: vilken är den inloggade usern?
+const onlineUser = ''
+// TODO: hämta om följer user
 
 export const Profile = () => {
+  let [isFollowing, setIsFollowing] = useState(false)
+  const urlSearchParams = new URLSearchParams(window.location.search)
+  const user = urlSearchParams.get("user")
+
+  const handleFollow = () => {
+    // TODO: ändra followers i DB
+    isFollowing ? setIsFollowing(false) : setIsFollowing(true)
+  }
+
   return ( 
     <div className="home-container">
       <Navigation />
@@ -16,7 +31,16 @@ export const Profile = () => {
             <img src={litter} alt="profile"/>
           </div>
           <div className="profile-info-container">
-            <p className="username">testuser</p>
+            <p className="username">{user}</p>
+            <div className="follow">
+              {onlineUser === user ? '' : 
+                <button 
+                  className="follow-button"
+                  onClick={() => handleFollow()}
+                > 
+                {isFollowing ? 'following' : 'follow' }
+                </button>}
+            </div>
             <div className="profile-info">
               <div className="lits-nmr">
                 <p>123 lits</p>

@@ -33,6 +33,17 @@
   font-size: 20px;
 }
 
+.profile-info-container .follow-button {
+  width: 100px;
+  margin: 0 auto;
+  cursor: pointer;
+  padding: 5px;
+  background-color: #fbb023;
+  border: #fbb023 1px;
+  border-radius: 10px;
+  color: white;
+}
+
 .profile-info {
   display: flex;
   gap: 10px;
