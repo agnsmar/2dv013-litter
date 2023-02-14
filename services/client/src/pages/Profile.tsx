@@ -8,16 +8,44 @@ const litter = '../../public/litter.png'
 // TODO: hämta lits
 // const lits
 // TODO: hämta user
-const username = 'tesuser'
+const user = {
+  username: 'testuser',
+  id: 123,
+  profile_img: litter,
+  lits: [{
+    id: 1,
+    text: 'test1'
+  }, {
+    id: 2,
+    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
+  }],
+  followers: 123,
+  following: 123,
+  description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
+}
 
-// TODO: vilken är den inloggade usern?
-const onlineUser = ''
+// TODO: hämta inloggad user
+const onlineUser = {
+  username: 'testuser',
+  id: 123,
+  profile_img: litter,
+  lits: [{
+    id: 1,
+    text: 'test1'
+  }, {
+    id: 2,
+    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
+  }],
+  followers: 123,
+  following: 123,
+  description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
+}
 // TODO: hämta om följer user
+// Mappa igenom de users som inloggad user följer
 
 export const Profile = () => {
   let [isFollowing, setIsFollowing] = useState(false)
   const { id } = useParams()
-  console.log(id)
 
   const handleFollow = () => {
     // TODO: ändra followers i DB
@@ -30,12 +58,12 @@ export const Profile = () => {
       <div className="profile-container">
         <div className="info-container">
           <div className="profile-image">
-            <img src={litter} alt="profile"/>
+            <img src={user.profile_img} alt="profile"/>
           </div>
           <div className="profile-info-container">
-            <p className="username">{username}</p>
+            <p className="username">{user.username}</p>
             <div className="follow">
-              {onlineUser === id ? '' : 
+              {onlineUser.id === user.id ? '' : 
                 <button 
                   className="follow-button"
                   onClick={() => handleFollow()}
@@ -45,26 +73,27 @@ export const Profile = () => {
             </div>
             <div className="profile-info">
               <div className="lits-nmr">
-                <p>123 lits</p>
+                <p>{user.lits.length} lits</p>
               </div>
               <div className="followers">
-                <p>123 followers</p>
+                <p>{user.followers} followers</p>
               </div>
               <div className="following">
-                <p>123 following</p>
+                <p>{user.following} following</p>
               </div>
             </div>
-            <div className="text-container">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!
-
-            </div>
-
+            <div className="text-container">{user.description}</div>
           </div>
         </div>
         <div className="lits-container">
-          {/* TODO: lits.map */}
-          <Lit isLiked={false} image={litter} username="testuser" text="text1"/>
-          <Lit isLiked={true} image={litter} username="testuser" text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!" />
+          {user.lits.map(lit => 
+            <Lit 
+              isLiked={false}
+              image={user.profile_img}
+              username={user.username}
+              text={lit.text}
+              key={lit.id}
+            />)}
         </div>
       </div>
     </div>
