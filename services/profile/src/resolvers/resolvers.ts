@@ -1,6 +1,7 @@
 import { GraphQLResolverMap } from '@apollo/subgraph/dist/schema-helper'
 import { Resolvers } from '../generated/graphql'
 import axios, { AxiosError } from 'axios'
+import { AuthTokenHelper } from '../util/authTokenHelper'
 
 const resolvers: Resolvers = {
   Query: {
@@ -47,6 +48,42 @@ const resolvers: Resolvers = {
               message: 'Internal server error'
             }
           }
+        }
+      }
+    },
+    async checkFollowing(_, params, context) {
+      const { followeeId } = params
+      const ath = new AuthTokenHelper()
+      const accessToken = context.req.headers['x-access-token'] as string | undefined
+      const token = ath.verifyAccessToken(accessToken)
+
+      try {
+        const { data: followers } = await axios({
+          url: `${process.env.USER_READ_SERVICE}/followings/${followeeId}`,
+          method: 'GET',
+          headers: {
+            'Authorization': accessToken ?? ''
+          },
+          responseType: 'json'
+        })
+
+        for (const follower of followers) {
+          if (follower.id === token?.userid) {
+            return {
+              followerCount: followers.length,
+              isFollowing: true
+            }
+          }
+        }
+
+        return {
+          followerCount: followers.length,
+          isFollowing: false
+        }
+      } catch (e) {
+        return {
+          followerCount: 0,
+          isFollowing: false
         }
       }
     }
