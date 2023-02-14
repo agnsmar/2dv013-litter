@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "tsc && node ./dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "keywords": [],
@@ -26,6 +26,8 @@
     "@graphql-codegen/cli": "^2.16.3",
     "@graphql-codegen/typescript": "^2.8.7",
     "@graphql-codegen/typescript-resolvers": "^2.7.12",
-    "@types/cors": "^2.8.13"
+    "@types/cors": "^2.8.13",
+    "@types/jest": "^29.4.0",
+    "ts-jest": "^29.0.5"
   }
 }
