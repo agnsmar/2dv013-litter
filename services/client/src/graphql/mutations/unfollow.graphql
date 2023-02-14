@@ -1,0 +1,8 @@
+mutation Unfollow($followeeId: String!) {
+  unfollow(followeeId: $followeeId) {
+    error {
+      message
+    }
+    success
+  }
+}
