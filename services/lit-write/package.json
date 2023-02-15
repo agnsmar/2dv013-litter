@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node ./dist/src/index.js",
     "start:prod": "prisma db push --accept-data-loss && prisma db seed && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "prisma db push --accept-data-loss && npx jest"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
