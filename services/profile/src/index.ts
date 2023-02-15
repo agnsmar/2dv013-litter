@@ -40,8 +40,9 @@ export const createApolloServer = async () => {
 const main = async () => {
   dotenv.config()
   const server = await createApolloServer()
-  await new Promise<void>((resolve) => server.listen({ port: process.env.PORT }, resolve))
-  console.log(`🚀  Server ready at http://localhost:${process.env.PORT}`)
+  const PORT = process.env.PORT ?? '0'
+  await new Promise<void>((resolve) => server.listen({ port: PORT }, resolve))
+  console.log(`🚀  Server ready at http://localhost:${PORT}`)
 }
 
 main()

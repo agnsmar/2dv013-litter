@@ -1,7 +1,7 @@
 import { createApolloServer } from '..'
 import request from 'supertest'
+import { TServer } from '../types/types'
 
-type TServer = Awaited<ReturnType<typeof createApolloServer>>
 const TESTUSER_ID = '1234567'
 
 describe('profile tests', () => {
