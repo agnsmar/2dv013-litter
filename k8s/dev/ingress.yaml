@@ -73,13 +73,6 @@ spec:
                 name: lit-read
                 port:
                   number: 8080
-          - path: /api/litswrite
-            pathType: Prefix
-            backend:
-              service:
-                name: lit-write
-                port:
-                  number: 8080
           - path: /api/usersread
             pathType: Prefix
             backend:
