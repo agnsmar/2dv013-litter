@@ -1,73 +1,63 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigation } from './Navigation'
 import { Lit } from '../components/Lit'
 import { useParams } from 'react-router-dom'
-
-const litter = '../../public/litter.png'
-
-// TODO: hämta user
-const getUser = (id: string) => {
-  // Get the user info
-  return {
-    username: 'testuser',
-    id: id,
-    profile_img: litter,
-    lits: [{
-      id: 1,
-      text: 'test1'
-    }, {
-      id: 2,
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-    }],
-    followers: ['1', '2', '3'],
-    following: ['1', '2', '3'],
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-  }
-} 
-
-// TODO: hämta inloggad user
-const onlineUser = {
-  username: 'testuser',
-  id: '1',
-  profile_img: litter,
-  lits: [{
-    id: 1,
-    text: 'test1'
-  }, {
-    id: 2,
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-  }],
-  followers: ['1', '2', '3'],
-  following: ['1', '2', '3'],
-  description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-}
+import { useCheckFollowingQuery, useFollowMutation, useMeQuery, useProfileQuery, useUnfollowMutation } from '../generated/graphql'
 
 export const Profile = () => {
+  const { data: onlineUser, loading: isMeLoading } = useMeQuery({ fetchPolicy: 'no-cache'})
+  const [isLoading, setLoading] = useState(false)
   let { id } = useParams() 
-  if (id === undefined) {
+
+  if (!id) {
     id = ''
   }
-  const user = getUser(id)
-  const isOnline = true // TODO: kolla om är online
-  let [isFollowing, setIsFollowing] = useState(onlineUser.following.includes(user.id))
+  const { data: profile, loading: isProfileLoading } = useProfileQuery({ variables: { userid: id }})
+  const [follow] = useFollowMutation()
+  const [unfollow] = useUnfollowMutation()
+  const { data: followingData, loading: isFollowingLoading } = useCheckFollowingQuery({ variables: { followeeId: id }})
+  const [isFollowing, setIsFollowing] = useState(false)
 
-  const handleFollow = () => {
-    // TODO: ändra followers i DB
-    isFollowing ? setIsFollowing(false) : setIsFollowing(true)
+  useEffect(() => {
+    followingData?.checkFollowing && setIsFollowing(followingData.checkFollowing.isFollowing)
+  }, [followingData])
+
+  const handleFollow = async () => {
+    setLoading(true)
+    if (isFollowing) {
+      const result = await unfollow({ variables: { followeeId: id  || '' }})
+      if (result.data?.unfollow.success) {
+        setIsFollowing(false)
+      }
+    } else {
+      const result = await follow({ variables: { followeeId: id  || '' }})
+      if (result.data?.follow.success) {
+        setIsFollowing(true)
+      }
+    }
+    setLoading(false)
   }
 
+  if (isMeLoading || isProfileLoading || isFollowingLoading) {
+    return <div className="loading">Loading...</div>
+  } 
+  
+  if (!profile || !followingData || !onlineUser) {
+    return <div>Something went wrong...</div>
+  }
   return ( 
     <div className="home-container">
-      <Navigation isOnline={isOnline} id={onlineUser.id}/>
+      <Navigation/>
       <div className="profile-container">
         <div className="info-container">
           <div className="profile-image">
-            <img src={user.profile_img} alt="profile"/>
+            <img src={profile?.profile?.profile?.avatar} alt="profile"/>
           </div>
           <div className="profile-info-container">
-            <p className="username">{user.username}</p>
+            <p className="username">{profile?.profile?.profile?.username}</p>
             <div className="follow">
-              {onlineUser.id === user.id ? '' : 
+              {onlineUser.me?.id?.toString() === id ? '' : 
+                isLoading ? <div className="loading">Loading...</div> :
                 <button 
                   className="follow-button"
                   onClick={() => handleFollow()}
@@ -77,26 +67,24 @@ export const Profile = () => {
             </div>
             <div className="profile-info">
               <div className="lits-nmr">
-                <p>{user.lits.length} lits</p>
+                <p>{profile.profile?.profile?.lits ? profile.profile?.profile?.lits.length : 0 } lits</p>
               </div>
               <div className="followers">
-                <p>{user.followers} followers</p>
-              </div>
-              <div className="following">
-                <p>{user.following} following</p>
+                <p>{followingData.checkFollowing?.followerCount} followers</p>
               </div>
             </div>
-            <div className="text-container">{user.description}</div>
+            <div className="text-container">{profile.profile?.profile?.content}</div>
           </div>
         </div>
         <div className="lits-container">
-          {user.lits.map(lit => 
+          {profile.profile?.profile?.lits && profile.profile?.profile?.lits.map((lit, i) => 
             <Lit 
-              isLiked={false}
-              image={user.profile_img}
-              username={user.username}
-              text={lit.text}
-              key={lit.id}
+              image={profile?.profile?.profile?.avatar || ''}
+              username={profile?.profile?.profile?.username || ''}
+              text={lit?.content || ''}
+              createdAt={lit?.createdAt || ''}
+              userid={id || ''}
+              key={i}
             />)}
         </div>
       </div>
