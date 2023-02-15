@@ -1,11 +1,9 @@
-import React from 'react'
+import { useLogoutMutation, useMeQuery } from '../generated/graphql'
 
-interface NavProps {
-  isOnline: boolean,
-  id: string
-}
-
-export const Navigation: React.FC<NavProps> = (props) => {
+export const Navigation = () => {
+  const { data: onlineUser, loading: isMeLoading } = useMeQuery({ fetchPolicy: 'no-cache'})
+  const [logout] = useLogoutMutation()
+  
   return ( 
     <div className="nav-container">
       <div className="header">
@@ -17,8 +15,14 @@ export const Navigation: React.FC<NavProps> = (props) => {
       </div>
       <div className="link-container">
         <a className="link-item" href="/">Home</a>
-        <a className="link-item" href={`/profile/${props.id}`}>Profile</a>
-        {props.isOnline ? '' :  <a className="link-item" href="/login">Login</a>}
+        {isMeLoading ? <div className="loading">Loading...</div> : 
+        onlineUser ? (
+          <>
+            <a className="link-item" href={`/profile/${onlineUser.me?.id}`}>Profile</a>
+            <a className="link-item" onClick={() => logout()} href="/login">Logout</a>
+          </>
+        ) : <a className="link-item" href="/login">Login</a>
+        }
       </div>
     </div>
   )
