@@ -3,28 +3,43 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  const username = 'dinkleberg2452'
-  const user = await prisma.user.upsert({
+  const username1 = 'dinkleberg2452'
+  const user1 = await prisma.user.upsert({
     where: {
-      username
+      username: username1
     },
     update: {},
     create: {
-      email: username + '@example.com',
-      password: username,
-      username,
+      email: username1 + '@example.com',
+      password: username1,
+      username: username1,
       id: 1_234_567
     }
   })
-  console.log({ user })
+  console.log({ user1 })
 
-  const profile = await prisma.profile.upsert({
+  const username2 = 'dinkleberg2453'
+  const user2 = await prisma.user.upsert({
     where: {
-      user_id: user.id
+      username: username2
     },
     update: {},
     create: {
-      user_id: user.id,
+      email: username2 + '@example.com',
+      password: username2,
+      username: username2,
+      id: 1_234_568
+    }
+  })
+  console.log({ user2 })
+
+  const profile = await prisma.profile.upsert({
+    where: {
+      user_id: user1.id
+    },
+    update: {},
+    create: {
+      user_id: user1.id,
       content: 'test content'
     }
   })
