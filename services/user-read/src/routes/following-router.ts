@@ -7,8 +7,8 @@ import { authenticateJWT } from './router'
 export const router = express.Router()
 const controller = new FollowingController()
 
-// Find all followings of the authenticated user
-router.get('/',
-  (req, res, next) => authenticateJWT(req, res, next),
-  (req, res, next) => controller.findAll(req, res, next)
-)
+// Provide id to the route if :id exists in the route path.
+router.param('id', (req, res, next, id) => controller.prepQuery(req, res, next, id))
+
+// Find all followings of the given user id
+router.get('/:id', (req, res, next) => controller.findAll(req, res, next))
