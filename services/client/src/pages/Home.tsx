@@ -58,6 +58,9 @@ export const Home = () => {
   useEffect(() => {
     if (feedData && feedData.feed) {
       setFeed([...feedData.feed])
+      if (feedData.feed.length === 0) {
+        setHasMore(false)
+      }
     }
   }, [isFeedLoading, feedData])
 
