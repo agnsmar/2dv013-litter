@@ -38,7 +38,7 @@ async function main() {
   })
   console.log({ user2 })
 
-  const profile = await prisma.profile.upsert({
+  const profile1 = await prisma.profile.upsert({
     where: {
       user_id: user1.id
     },
@@ -48,7 +48,19 @@ async function main() {
       content: 'test content'
     }
   })
-  console.log({ profile })
+  console.log({ profile1 })
+
+  const profile2 = await prisma.profile.upsert({
+    where: {
+      user_id: user2.id
+    },
+    update: {},
+    create: {
+      user_id: user2.id,
+      content: 'test content'
+    }
+  })
+  console.log({ profile2 })
 }
 
 main()
