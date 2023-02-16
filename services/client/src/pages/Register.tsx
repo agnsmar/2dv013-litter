@@ -106,7 +106,7 @@ export const Register = () => {
         <div className='field-holder'>
           <input
             type='password'
-            id='psw'
+            id='confirm_psw'
             className='form-input'
             required
             value={confPassword}
@@ -114,7 +114,7 @@ export const Register = () => {
           />
           <label
             className='form-label'
-            htmlFor='psw'
+            htmlFor='confirm_psw'
           >
             Confirm password
           </label>
