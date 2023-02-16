@@ -1,9 +1,11 @@
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
 
 async function main() {
   const username1 = 'dinkleberg2452'
+  const pw1 = await bcrypt.hash(username1, 10)
   const id1 = 1_234_567
   const user1 = await prisma.user.upsert({
     where: {
@@ -12,7 +14,7 @@ async function main() {
     update: {},
     create: {
       email: username1 + '@example.com',
-      password: username1,
+      password: pw1,
       username: username1,
       id: id1
     }
@@ -20,6 +22,7 @@ async function main() {
   console.log({ user1 })
 
   const username2 = 'dinkleberg2453'
+  const pw2 = await bcrypt.hash(username2, 10)
   const id2 = 1_234_568
   const user2 = await prisma.user.upsert({
     where: {
@@ -28,7 +31,7 @@ async function main() {
     update: {},
     create: {
       email: username2 + '@example.com',
-      password: username2,
+      password: pw2,
       username: username2,
       id: id2
     }
