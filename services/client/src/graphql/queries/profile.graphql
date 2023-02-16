@@ -8,8 +8,8 @@ query Profile($userid: String!) {
       content
       lits {
         content
-        createdAt
-        updatedAt
+        created_at
+        updated_at
       }
       username
     }
