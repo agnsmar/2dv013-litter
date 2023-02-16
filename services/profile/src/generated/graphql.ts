@@ -15,12 +15,6 @@ export type Scalars = {
   Float: number;
 };
 
-export type CheckFollowingResponse = {
-  __typename?: 'CheckFollowingResponse';
-  followerCount: Scalars['Int'];
-  isFollowing: Scalars['Boolean'];
-};
-
 export type FollowError = {
   __typename?: 'FollowError';
   message: Scalars['String'];
@@ -76,13 +70,13 @@ export type ProfileResponse = {
 
 export type Query = {
   __typename?: 'Query';
-  checkFollowing?: Maybe<CheckFollowingResponse>;
+  isFollowing: Scalars['Boolean'];
   profile?: Maybe<ProfileResponse>;
 };
 
 
-export type QueryCheckFollowingArgs = {
-  followeeId: Scalars['String'];
+export type QueryIsFollowingArgs = {
+  userid: Scalars['String'];
 };
 
 
@@ -160,10 +154,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  CheckFollowingResponse: ResolverTypeWrapper<CheckFollowingResponse>;
   FollowError: ResolverTypeWrapper<FollowError>;
   FollowResponse: ResolverTypeWrapper<FollowResponse>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   Lit: ResolverTypeWrapper<Lit>;
   Mutation: ResolverTypeWrapper<{}>;
   Profile: ResolverTypeWrapper<Profile>;
@@ -176,10 +168,8 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
-  CheckFollowingResponse: CheckFollowingResponse;
   FollowError: FollowError;
   FollowResponse: FollowResponse;
-  Int: Scalars['Int'];
   Lit: Lit;
   Mutation: {};
   Profile: Profile;
@@ -187,12 +177,6 @@ export type ResolversParentTypes = {
   ProfileResponse: ProfileResponse;
   Query: {};
   String: Scalars['String'];
-};
-
-export type CheckFollowingResponseResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['CheckFollowingResponse'] = ResolversParentTypes['CheckFollowingResponse']> = {
-  followerCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  isFollowing?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type FollowErrorResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['FollowError'] = ResolversParentTypes['FollowError']> = {
@@ -238,12 +222,11 @@ export type ProfileResponseResolvers<ContextType = IContext, ParentType extends 
 };
 
 export type QueryResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  checkFollowing?: Resolver<Maybe<ResolversTypes['CheckFollowingResponse']>, ParentType, ContextType, RequireFields<QueryCheckFollowingArgs, 'followeeId'>>;
+  isFollowing?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryIsFollowingArgs, 'userid'>>;
   profile?: Resolver<Maybe<ResolversTypes['ProfileResponse']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'userid'>>;
 };
 
 export type Resolvers<ContextType = IContext> = {
-  CheckFollowingResponse?: CheckFollowingResponseResolvers<ContextType>;
   FollowError?: FollowErrorResolvers<ContextType>;
   FollowResponse?: FollowResponseResolvers<ContextType>;
   Lit?: LitResolvers<ContextType>;
