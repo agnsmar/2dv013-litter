@@ -24,8 +24,8 @@ export type AddLitResponse = {
 export type Feed = {
   __typename?: 'Feed';
   content: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
+  created_at: Scalars['String'];
+  updated_at?: Maybe<Scalars['String']>;
   user_id: Scalars['Int'];
   username: Scalars['String'];
 };
@@ -169,8 +169,8 @@ export type AddLitResponseResolvers<ContextType = IContext, ParentType extends R
 
 export type FeedResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Feed'] = ResolversParentTypes['Feed']> = {
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  created_at?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updated_at?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   user_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -25,6 +25,6 @@ type Feed {
   user_id: Int!
   username: String!
   content: String!
-  createdAt: String!
-  updatedAt: String
+  created_at: String!
+  updated_at: String
 }
