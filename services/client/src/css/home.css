@@ -41,6 +41,10 @@
     width: 200px;
 }
 
+.lits-container {
+    overflow: auto;
+    height: 200px;
+}
 
 
 body {
