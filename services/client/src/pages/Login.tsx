@@ -34,6 +34,8 @@ export const Login = () => {
   }
 
   return (
+    <>
+    {error.length > 1 && <div className="error-container">{error}</div>}
     <div className='login-container'>
       <img
         src='/litter.png'
@@ -91,5 +93,6 @@ export const Login = () => {
         </div>
       </form>
     </div>
+    </>
   )
 }
