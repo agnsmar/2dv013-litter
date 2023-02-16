@@ -16,7 +16,7 @@ export const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (password !== confPassword) {
-      console.log('TODO: Flash message...')
+      setError('Password needs to match')
     } else {
       const result = await register({
         variables: {
@@ -38,9 +38,11 @@ export const Register = () => {
   if (loading) return <Loading/>
   if (data?.me?.id) {
     navigate('/')
-  }
+  } 
 
   return (
+    <>
+    {error.length > 1 && <div className="error-container">{error}</div>}
     <div className='register-container'>
       <img
         src='/litter.png'
@@ -54,7 +56,6 @@ export const Register = () => {
       >
         <h1>Register new user</h1>
         <div className='field-holder'>
-          <span>{error}</span>
           <input
             type='text'
             id='username'
@@ -71,7 +72,6 @@ export const Register = () => {
           </label>
         </div>
         <div className='field-holder'>
-          <span>{error}</span>
           <input
             type='text'
             id='email'
@@ -106,7 +106,7 @@ export const Register = () => {
         <div className='field-holder'>
           <input
             type='password'
-            id='psw'
+            id='confirm_psw'
             className='form-input'
             required
             value={confPassword}
@@ -114,7 +114,7 @@ export const Register = () => {
           />
           <label
             className='form-label'
-            htmlFor='psw'
+            htmlFor='confirm_psw'
           >
             Confirm password
           </label>
@@ -133,5 +133,6 @@ export const Register = () => {
         </div>
       </form>
     </div>
+    </>
   )
 }
