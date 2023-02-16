@@ -16,6 +16,31 @@
     color: #fbb023;
 }
 
+.create-lit-container {
+    grid-column: 2;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lit-label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#lit-input {
+    border-radius: 10px;
+    border: 1px black solid;
+    width: 500px;
+    padding: 10px;
+}
+
+.create-lit-container .submit-button {
+    width: 200px;
+}
+
 
 
 body {

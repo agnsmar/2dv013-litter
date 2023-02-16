@@ -69,18 +69,19 @@ export const Home = () => {
     <div className='home-container'>
       <Navigation />
       {meData?.me && (
-        <form onSubmit={handleSubmit}>
-          <label htmlFor='lit-input'>Make a lit</label>
+        <form onSubmit={handleSubmit} className="create-lit-container">
+          <label className='lit-label' htmlFor='lit-input'>Make a lit</label>
           <input
             id='lit-input'
             name='lit-input'
             value={litContent}
+            placeholder='Type something...'
             onChange={handleLitChange}
           />
           {isCreatingLit ? (
             <Loading />
           ) : (
-            <button type='submit'>Lit</button>
+            <button className='submit-button' type='submit'>Create lit</button>
           )}
         </form>
       )}
