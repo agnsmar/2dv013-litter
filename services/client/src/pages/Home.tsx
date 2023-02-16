@@ -43,6 +43,7 @@ export const Home = () => {
     setIsCreatingLit(true)
     await addLit({ variables: { content: litContent } })
     setIsCreatingLit(false)
+    setLitContent('')
   }
 
   const handleLitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
