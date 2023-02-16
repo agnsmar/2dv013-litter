@@ -27,11 +27,7 @@ export const Profile = () => {
   } = useProfileQuery({ variables: { userid: id }, fetchPolicy: 'no-cache' })
   const [follow] = useFollowMutation()
   const [unfollow] = useUnfollowMutation()
-  const {
-    data: isFollowingData,
-    loading: isFollowingLoading,
-    refetch
-  } = useIsFollowingQuery({
+  const { data: isFollowingData, loading: isFollowingLoading } = useIsFollowingQuery({
     variables: { userid: id }
   })
   const [isFollowing, setIsFollowing] = useState(false)
@@ -48,7 +44,6 @@ export const Profile = () => {
       })
       if (result.data?.unfollow.success) {
         setIsFollowing(false)
-        refetch({ userid: id })
       }
     } else {
       const result = await follow({
@@ -56,14 +51,13 @@ export const Profile = () => {
       })
       if (result.data?.follow.success) {
         setIsFollowing(true)
-        refetch({ userid: id })
       }
     }
     setIsLoading(false)
   }
 
   if (isMeLoading || isProfileLoading || isFollowingLoading) {
-    return  <Loading/>
+    return <Loading />
   }
 
   if (error) {
@@ -87,7 +81,9 @@ export const Profile = () => {
               <></>
             ) : (
               <div className='follow'>
-                {isLoading ? <Loading/> : (
+                {isLoading ? (
+                  <Loading />
+                ) : (
                   <button
                     className='follow-button'
                     onClick={() => handleFollow()}

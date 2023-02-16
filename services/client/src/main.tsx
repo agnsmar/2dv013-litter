@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createContext } from 'react'
 import ReactDOM from 'react-dom/client'
 import { AppRouter } from './components/router'
 import {
@@ -8,7 +8,8 @@ import {
   HttpLink,
   ApolloLink,
   fromPromise,
-  concat
+  concat,
+  NormalizedCacheObject
 } from '@apollo/client'
 import './css/index.css'
 import axios from 'axios'
@@ -37,10 +38,14 @@ const client = new ApolloClient({
   link: concat(refreshToken, httpLink)
 })
 
+export const ClientContext = createContext<ApolloClient<NormalizedCacheObject>>(client)
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <AppRouter />
+      <ClientContext.Provider value={client}>
+        <AppRouter />
+      </ClientContext.Provider>
     </ApolloProvider>
   </React.StrictMode>
 )

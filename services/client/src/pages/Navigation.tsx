@@ -1,57 +1,62 @@
 import { useNavigate } from 'react-router'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
 import { Loading } from '../components/Loading'
+import { useContext } from 'react'
+import { ClientContext } from '../main'
+import { Link } from 'react-router-dom'
 
 export const Navigation = () => {
+  const client = useContext(ClientContext)
   const navigate = useNavigate()
   const { data: onlineUser, loading: isMeLoading } = useMeQuery({ fetchPolicy: 'no-cache' })
   const [logout] = useLogoutMutation()
 
   const handleLogout = async () => {
     await logout()
+    await client.resetStore()
     navigate('/login')
   }
 
   return (
     <div className='nav-container'>
       <div className='header'>
-        <a href='/'>
+        <Link to='/'>
           <img
             src='/litter.png'
             alt='litter'
             className='logo'
           />{' '}
-        </a>
+        </Link>
       </div>
       <div className='link-container'>
-        <a
+        <Link
           className='link-item'
-          href='/'
+          to='/'
         >
           Home
-        </a>
+        </Link>
         {isMeLoading ? <Loading/> : onlineUser?.me ? (
           <>
-            <a
+            <Link
               className='link-item'
-              href={`/profile/${onlineUser.me?.id}`}
+              to={`/profile/${onlineUser.me?.id}`}
             >
               Profile
-            </a>
-            <a
+            </Link>
+            <span
               className='link-item'
               onClick={handleLogout}
             >
               Logout
-            </a>
+            </span>
           </>
         ) : (
-          <a
+          <Link
             className='link-item'
-            href='/login'
+            to='/login'
           >
             Login
-          </a>
+          </Link>
         )}
       </div>
     </div>
