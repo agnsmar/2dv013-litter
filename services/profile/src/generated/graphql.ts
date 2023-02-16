@@ -34,9 +34,9 @@ export type FollowResponse = {
 
 export type Lit = {
   __typename?: 'Lit';
-  content: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -59,7 +59,7 @@ export type Profile = {
   __typename?: 'Profile';
   avatar: Scalars['String'];
   content?: Maybe<Scalars['String']>;
-  lits?: Maybe<Array<Maybe<Lit>>>;
+  lits: Array<Maybe<Lit>>;
   username: Scalars['String'];
 };
 
@@ -207,9 +207,9 @@ export type FollowResponseResolvers<ContextType = IContext, ParentType extends R
 };
 
 export type LitResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Lit'] = ResolversParentTypes['Lit']> = {
-  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  created_at?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updated_at?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -221,7 +221,7 @@ export type MutationResolvers<ContextType = IContext, ParentType extends Resolve
 export type ProfileResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Profile'] = ResolversParentTypes['Profile']> = {
   avatar?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lits?: Resolver<Maybe<Array<Maybe<ResolversTypes['Lit']>>>, ParentType, ContextType>;
+  lits?: Resolver<Array<Maybe<ResolversTypes['Lit']>>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

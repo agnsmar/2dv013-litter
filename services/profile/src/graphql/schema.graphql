@@ -35,11 +35,11 @@ type Profile {
   username: String!
   content: String
   avatar: String!
-  lits: [Lit]
+  lits: [Lit]!
 }
 
 type Lit {
-  content: String!
-  createdAt: String!
-  updatedAt: String!
+  content: String
+  created_at: String
+  updated_at: String
 }
