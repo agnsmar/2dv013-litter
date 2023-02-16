@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router'
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
+import { Loading } from '../components/Loading'
 
 export const Navigation = () => {
   const navigate = useNavigate()
@@ -29,9 +30,7 @@ export const Navigation = () => {
         >
           Home
         </a>
-        {isMeLoading ? (
-          <div className='loading'>Loading...</div>
-        ) : onlineUser?.me ? (
+        {isMeLoading ? <Loading/> : onlineUser?.me ? (
           <>
             <a
               className='link-item'

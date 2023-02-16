@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Navigation } from './Navigation'
 import { Lit } from '../components/Lit'
+import { Loading } from '../components/Loading'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
   useCheckFollowingQuery,
@@ -62,7 +63,7 @@ export const Profile = () => {
   }
 
   if (isMeLoading || isProfileLoading || isFollowingLoading) {
-    return <div className='loading'>Loading...</div>
+    return  <Loading/>
   }
 
   if (error) {
@@ -86,9 +87,7 @@ export const Profile = () => {
               <></>
             ) : (
               <div className='follow'>
-                {isLoading ? (
-                  <div className='loading'>Loading...</div>
-                ) : (
+                {isLoading ? <Loading/> : (
                   <button
                     className='follow-button'
                     onClick={() => handleFollow()}

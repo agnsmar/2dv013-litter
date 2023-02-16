@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MeDocument, useLoginMutation, useMeQuery } from '../generated/graphql'
+import { Loading } from '../components/Loading'
 
 export const Login = () => {
   const { data, loading } = useMeQuery({ fetchPolicy: 'no-cache' })
@@ -27,7 +28,7 @@ export const Login = () => {
     }
   }
 
-  if (loading) return <p>Loading...</p>
+  if (loading) return <Loading/>
   if (data?.me?.id) {
     navigate('/')
   }

@@ -1,5 +1,6 @@
 import { Navigation } from './Navigation'
 import { Lit } from '../components/Lit'
+import { Loading } from '../components/Loading'
 import {
   FeedQueryResult,
   ProfileDocument,
@@ -61,7 +62,7 @@ export const Home = () => {
   }, [isFeedLoading, feedData])
 
   if (isMeLoading || isFeedLoading) {
-    return <div className='loading'>Loading...</div>
+    return <Loading />
   }
 
   return (
@@ -77,7 +78,7 @@ export const Home = () => {
             onChange={handleLitChange}
           />
           {isCreatingLit ? (
-            <div className='loading'>Loading...</div>
+            <Loading />
           ) : (
             <button type='submit'>Lit</button>
           )}
@@ -89,7 +90,7 @@ export const Home = () => {
             dataLength={feed.length}
             hasMore={hasMore}
             next={fetchMore}
-            loader={<div className='loading'>Loading...</div>}
+            loader={<Loading />}
             scrollableTarget='lits-container'
             endMessage={<div className='empty'>No more lits to show</div>}
           >
@@ -110,7 +111,7 @@ export const Home = () => {
           </InfiniteScroll>
         </div>
       ) : (
-        <div>
+        <div className="empty-feed-container">
           <span>
             {' '}
             To view your feed please <a href='/login'>login</a>
