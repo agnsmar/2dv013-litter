@@ -1,5 +1,6 @@
 import { Navigation } from './Navigation'
 import { Lit } from '../components/Lit'
+import { Loading } from "../components/Loading"
 import { useFeedLazyQuery } from '../generated/graphql'
 import { useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -27,7 +28,7 @@ export const Home = () => {
           dataLength={feed.length}
           hasMore={hasMore}
           next={fetchMore}
-          loader={<div className="loading">Loading...</div>}
+          loader={<Loading/>}
           scrollableTarget='lits-container'
           endMessage={<div className="empty">No more lits to show</div>}
         >

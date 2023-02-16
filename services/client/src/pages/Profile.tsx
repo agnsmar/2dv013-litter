@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Navigation } from './Navigation'
+import { Loading } from '../components/Loading'
 import { Lit } from '../components/Lit'
 import { useParams } from 'react-router-dom'
 import { useCheckFollowingQuery, useFollowMutation, useMeQuery, useProfileQuery, useUnfollowMutation } from '../generated/graphql'
@@ -39,7 +40,7 @@ export const Profile = () => {
   }
 
   if (isMeLoading || isProfileLoading || isFollowingLoading) {
-    return <div className="loading">Loading...</div>
+    return <Loading />
   } 
   
   if (!profile || !followingData || !onlineUser) {
@@ -57,7 +58,7 @@ export const Profile = () => {
             <p className="username">{profile?.profile?.profile?.username}</p>
             <div className="follow">
               {onlineUser.me?.id?.toString() === id ? '' : 
-                isLoading ? <div className="loading">Loading...</div> :
+                isLoading ? <Loading /> :
                 <button 
                   className="follow-button"
                   onClick={() => handleFollow()}

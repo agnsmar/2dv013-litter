@@ -1,9 +1,10 @@
 import { useLogoutMutation, useMeQuery } from '../generated/graphql'
+import { Loading } from '../components/Loading'
 
 export const Navigation = () => {
-  const { data: onlineUser, loading: isMeLoading } = useMeQuery({ fetchPolicy: 'no-cache'})
+  let { data: onlineUser, loading: isMeLoading } = useMeQuery({ fetchPolicy: 'no-cache'})
   const [logout] = useLogoutMutation()
-  
+
   return ( 
     <div className="nav-container">
       <div className="header">
@@ -15,7 +16,7 @@ export const Navigation = () => {
       </div>
       <div className="link-container">
         <a className="link-item" href="/">Home</a>
-        {isMeLoading ? <div className="loading">Loading...</div> : 
+        {isMeLoading ? <Loading /> : 
         onlineUser ? (
           <>
             <a className="link-item" href={`/profile/${onlineUser.me?.id}`}>Profile</a>
