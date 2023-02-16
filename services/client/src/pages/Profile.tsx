@@ -4,8 +4,8 @@ import { Lit } from '../components/Lit'
 import { Loading } from '../components/Loading'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
-  useCheckFollowingQuery,
   useFollowMutation,
+  useIsFollowingQuery,
   useMeQuery,
   useProfileQuery,
   useUnfollowMutation
@@ -28,17 +28,17 @@ export const Profile = () => {
   const [follow] = useFollowMutation()
   const [unfollow] = useUnfollowMutation()
   const {
-    data: followingData,
+    data: isFollowingData,
     loading: isFollowingLoading,
     refetch
-  } = useCheckFollowingQuery({
-    variables: { followeeId: id }
+  } = useIsFollowingQuery({
+    variables: { userid: id }
   })
   const [isFollowing, setIsFollowing] = useState(false)
 
   useEffect(() => {
-    followingData?.checkFollowing && setIsFollowing(followingData.checkFollowing.isFollowing)
-  }, [followingData])
+    isFollowingData && setIsFollowing(isFollowingData.isFollowing)
+  }, [isFollowingData])
 
   const handleFollow = async () => {
     setIsLoading(true)
@@ -48,7 +48,7 @@ export const Profile = () => {
       })
       if (result.data?.unfollow.success) {
         setIsFollowing(false)
-        refetch({ followeeId: id })
+        refetch({ userid: id })
       }
     } else {
       const result = await follow({
@@ -56,7 +56,7 @@ export const Profile = () => {
       })
       if (result.data?.follow.success) {
         setIsFollowing(true)
-        refetch({ followeeId: id })
+        refetch({ userid: id })
       }
     }
     setIsLoading(false)
@@ -105,9 +105,6 @@ export const Profile = () => {
                     : 0}{' '}
                   lits
                 </p>
-              </div>
-              <div className='followers'>
-                <p>{followingData?.checkFollowing?.followerCount} followers</p>
               </div>
             </div>
             <div className='text-container'>{profileData?.profile?.profile?.content}</div>
