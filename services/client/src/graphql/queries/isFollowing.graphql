@@ -1,0 +1,3 @@
+query IsFollowing($userid: String!) {
+  isFollowing(userid: $userid)
+}
