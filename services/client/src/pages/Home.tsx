@@ -48,8 +48,8 @@ export const Home = () => {
   }
 
   const handleLitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const maxLitLength = 14
-    if (litContent.length >= maxLitLength) {
+    const maxLitLength = 42
+    if (e.currentTarget.value.length > maxLitLength) {
       return
     }
     setLitContent(e.currentTarget.value)
