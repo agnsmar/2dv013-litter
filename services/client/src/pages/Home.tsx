@@ -3,14 +3,13 @@ import { Lit } from '../components/Lit'
 import { Loading } from '../components/Loading'
 import {
   FeedQueryResult,
-  ProfileDocument,
   useAddLitMutation,
   useFeedLazyQuery,
-  useFeedQuery,
   useMeQuery
 } from '../generated/graphql'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { Link } from 'react-router-dom'
 
 type TFeed = NonNullable<NonNullable<FeedQueryResult['data']>['feed']>
 
@@ -21,22 +20,19 @@ export const Home = () => {
   const [feed, setFeed] = useState<TFeed>([])
   const [addLit] = useAddLitMutation()
   const [isCreatingLit, setIsCreatingLit] = useState(false)
-  const { data: feedData, loading: isFeedLoading } = useFeedQuery({
-    variables: { offset, take: 20 }
-  })
   const [getFeed] = useFeedLazyQuery()
   const [litContent, setLitContent] = useState('')
 
   const fetchMore = async () => {
     const take = 20
-    setOffset(offset + take)
-    const { data } = await getFeed({ variables: { offset, take } })
+    const { data } = await getFeed({ variables: { offset, take }, fetchPolicy: 'no-cache' })
     if (data && data.feed) {
       if (data?.feed?.length < take) {
         setHasMore(false)
       }
       setFeed([...feed, ...data.feed])
     }
+    setOffset(offset + take)
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,18 +52,10 @@ export const Home = () => {
   }
 
   useEffect(() => {
-    if (feedData && feedData.feed) {
-      setFeed([...feedData.feed])
-      if (feedData.feed.length === 0) {
-        setHasMore(false)
-      }
-    }
-    if (!feedData || !feedData.feed) {
-      setHasMore(false)
-    }
-  }, [isFeedLoading, feedData])
+    fetchMore()
+  }, [])
 
-  if (isMeLoading || isFeedLoading) {
+  if (isMeLoading) {
     return <Loading />
   }
 
@@ -75,8 +63,16 @@ export const Home = () => {
     <div className='home-container'>
       <Navigation />
       {meData?.me && (
-        <form onSubmit={handleSubmit} className="create-lit-container">
-          <label className='lit-label' htmlFor='lit-input'>Make a lit</label>
+        <form
+          onSubmit={handleSubmit}
+          className='create-lit-container'
+        >
+          <label
+            className='lit-label'
+            htmlFor='lit-input'
+          >
+            Make a lit
+          </label>
           <input
             id='lit-input'
             name='lit-input'
@@ -87,18 +83,26 @@ export const Home = () => {
           {isCreatingLit ? (
             <Loading />
           ) : (
-            <button className='submit-button' type='submit'>Create lit</button>
+            <button
+              className='submit-button'
+              type='submit'
+            >
+              Create lit
+            </button>
           )}
         </form>
       )}
       {meData?.me ? (
-        <div className='lits-container'>
+        <div
+          className='lits-container'
+          id='scrollableDiv'
+        >
           <InfiniteScroll
             dataLength={feed.length}
             hasMore={hasMore}
             next={fetchMore}
             loader={<Loading />}
-            scrollableTarget='lits-container'
+            scrollableTarget='scrollableDiv'
             endMessage={<div className='empty'>No more lits to show</div>}
           >
             {feed.map((lit, i) => {
@@ -118,10 +122,10 @@ export const Home = () => {
           </InfiniteScroll>
         </div>
       ) : (
-        <div className="empty-feed-container">
+        <div className='empty-feed-container'>
           <span>
             {' '}
-            To view your feed please <a href='/login'>login</a>
+            To view your feed please <Link to='/login'>login</Link>
           </span>{' '}
         </div>
       )}
