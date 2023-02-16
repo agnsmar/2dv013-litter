@@ -296,8 +296,8 @@ export const FeedDocument = gql`
     query Feed($offset: Int!, $take: Int!) {
   feed(offset: $offset, take: $take) {
     content
-    createdAt
-    updatedAt
+    created_at
+    updated_at
     user_id
     username
   }
@@ -382,8 +382,8 @@ export const ProfileDocument = gql`
       content
       lits {
         content
-        createdAt
-        updatedAt
+        created_at
+        updated_at
       }
       username
     }
@@ -442,8 +442,8 @@ export type CheckFollowingResponse = {
 export type Feed = {
   __typename?: 'Feed';
   content: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
+  created_at: Scalars['String'];
+  updated_at?: Maybe<Scalars['String']>;
   user_id: Scalars['Int'];
   username: Scalars['String'];
 };
@@ -466,9 +466,9 @@ export type FollowResponse = {
 
 export type Lit = {
   __typename?: 'Lit';
-  content: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  content?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['String']>;
 };
 
 export type LitError = {
@@ -525,7 +525,7 @@ export type Profile = {
   __typename?: 'Profile';
   avatar: Scalars['String'];
   content?: Maybe<Scalars['String']>;
-  lits?: Maybe<Array<Maybe<Lit>>>;
+  lits: Array<Maybe<Lit>>;
   username: Scalars['String'];
 };
 
@@ -649,7 +649,7 @@ export type FeedQueryVariables = Exact<{
 }>;
 
 
-export type FeedQuery = { __typename?: 'Query', feed?: Array<{ __typename?: 'Feed', content: string, createdAt: string, updatedAt?: string | null, user_id: number, username: string } | null> | null };
+export type FeedQuery = { __typename?: 'Query', feed?: Array<{ __typename?: 'Feed', content: string, created_at: string, updated_at?: string | null, user_id: number, username: string } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -661,4 +661,4 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'ProfileResponse', error?: { __typename?: 'ProfileError', message: string } | null, profile?: { __typename?: 'Profile', avatar: string, content?: string | null, username: string, lits?: Array<{ __typename?: 'Lit', content: string, createdAt: string, updatedAt: string } | null> | null } | null } | null };
+export type ProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'ProfileResponse', error?: { __typename?: 'ProfileError', message: string } | null, profile?: { __typename?: 'Profile', avatar: string, content?: string | null, username: string, lits: Array<{ __typename?: 'Lit', content?: string | null, created_at?: string | null, updated_at?: string | null } | null> } | null } | null };

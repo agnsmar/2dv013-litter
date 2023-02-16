@@ -1,8 +1,8 @@
 query Feed($offset: Int!, $take: Int!) {
   feed(offset: $offset, take: $take) {
     content
-    createdAt
-    updatedAt
+    created_at
+    updated_at
     user_id
     username
   }

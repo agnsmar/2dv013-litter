@@ -17,21 +17,20 @@ export const Register = () => {
     if (password !== confPassword) {
       console.log('TODO: Flash message...')
     } else {
+      const result = await register({
+        variables: {
+          username,
+          email,
+          password
+        },
+        refetchQueries: [{ query: MeDocument }]
+      })
 
-    const result = await register({
-      variables: {
-        username,
-        email,
-        password
-      },
-      refetchQueries: [{ query: MeDocument }]
-    })
-    
-    if (result.data?.register?.success) {
-      navigate('/')
-    } else {
-      setError(result.data?.register?.error?.message || 'Something went wrong')
-    }
+      if (result.data?.register?.success) {
+        navigate('/login')
+      } else {
+        setError(result.data?.register?.error?.message || 'Something went wrong')
+      }
     }
   }
 
@@ -61,7 +60,7 @@ export const Register = () => {
             className='form-input'
             required
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <label
             className='form-label'
@@ -78,7 +77,7 @@ export const Register = () => {
             className='form-input'
             required
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <label
             className='form-label'
@@ -94,7 +93,7 @@ export const Register = () => {
             className='form-input'
             required
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <label
             className='form-label'
@@ -110,7 +109,7 @@ export const Register = () => {
             className='form-input'
             required
             value={confPassword}
-            onChange={e => setConfPassword(e.target.value)}
+            onChange={(e) => setConfPassword(e.target.value)}
           />
           <label
             className='form-label'
@@ -127,7 +126,9 @@ export const Register = () => {
             register
           </button>
           <p className='small'>Already have an account?</p>
-          <p><Link to='/login'>Login</Link></p>
+          <p>
+            <Link to='/login'>Login</Link>
+          </p>
         </div>
       </form>
     </div>

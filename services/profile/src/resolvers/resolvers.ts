@@ -32,7 +32,7 @@ const resolvers: Resolvers = {
             avatar: profile.data.profile.avatar,
             username: user.data.user.username,
             content: profile.data.profile.content,
-            lits: lits.data
+            lits: lits.data ? [...lits.data] : []
           }
         }
       } catch (e) {

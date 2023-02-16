@@ -1,106 +1,133 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigation } from './Navigation'
 import { Lit } from '../components/Lit'
-import { useParams } from 'react-router-dom'
-
-const litter = '../../public/litter.png'
-
-// TODO: hämta user
-const getUser = (id: string) => {
-  // Get the user info
-  return {
-    username: 'testuser',
-    id: id,
-    profile_img: litter,
-    lits: [{
-      id: 1,
-      text: 'test1'
-    }, {
-      id: 2,
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-    }],
-    followers: ['1', '2', '3'],
-    following: ['1', '2', '3'],
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-  }
-} 
-
-// TODO: hämta inloggad user
-const onlineUser = {
-  username: 'testuser',
-  id: '1',
-  profile_img: litter,
-  lits: [{
-    id: 1,
-    text: 'test1'
-  }, {
-    id: 2,
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-  }],
-  followers: ['1', '2', '3'],
-  following: ['1', '2', '3'],
-  description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quas culpa officia earum veniam maiores quisquam, delectus totam. Nobis reprehenderit, quia placeat quidem vero maxime ipsa blanditiis ullam architecto atque!'
-}
+import { useNavigate, useParams } from 'react-router-dom'
+import {
+  useCheckFollowingQuery,
+  useFollowMutation,
+  useMeQuery,
+  useProfileQuery,
+  useUnfollowMutation
+} from '../generated/graphql'
 
 export const Profile = () => {
-  let { id } = useParams() 
-  if (id === undefined) {
+  const navigate = useNavigate()
+  const { data: onlineUser, loading: isMeLoading } = useMeQuery({ fetchPolicy: 'no-cache' })
+  const [isLoading, setIsLoading] = useState(false)
+  let { id } = useParams()
+
+  if (!id) {
     id = ''
   }
-  const user = getUser(id)
-  const isOnline = true // TODO: kolla om är online
-  let [isFollowing, setIsFollowing] = useState(onlineUser.following.includes(user.id))
+  const {
+    data: profileData,
+    loading: isProfileLoading,
+    error
+  } = useProfileQuery({ variables: { userid: id }, fetchPolicy: 'no-cache' })
+  const [follow] = useFollowMutation()
+  const [unfollow] = useUnfollowMutation()
+  const {
+    data: followingData,
+    loading: isFollowingLoading,
+    refetch
+  } = useCheckFollowingQuery({
+    variables: { followeeId: id }
+  })
+  const [isFollowing, setIsFollowing] = useState(false)
 
-  const handleFollow = () => {
-    // TODO: ändra followers i DB
-    isFollowing ? setIsFollowing(false) : setIsFollowing(true)
+  useEffect(() => {
+    followingData?.checkFollowing && setIsFollowing(followingData.checkFollowing.isFollowing)
+  }, [followingData])
+
+  const handleFollow = async () => {
+    setIsLoading(true)
+    if (isFollowing) {
+      const result = await unfollow({
+        variables: { followeeId: id || '' }
+      })
+      if (result.data?.unfollow.success) {
+        setIsFollowing(false)
+        refetch({ followeeId: id })
+      }
+    } else {
+      const result = await follow({
+        variables: { followeeId: id || '' }
+      })
+      if (result.data?.follow.success) {
+        setIsFollowing(true)
+        refetch({ followeeId: id })
+      }
+    }
+    setIsLoading(false)
   }
 
-  return ( 
-    <div className="home-container">
-      <Navigation isOnline={isOnline} id={onlineUser.id}/>
-      <div className="profile-container">
-        <div className="info-container">
-          <div className="profile-image">
-            <img src={user.profile_img} alt="profile"/>
+  if (isMeLoading || isProfileLoading || isFollowingLoading) {
+    return <div className='loading'>Loading...</div>
+  }
+
+  if (error) {
+    navigate('/error-404')
+  }
+
+  return (
+    <div className='home-container'>
+      <Navigation />
+      <div className='profile-container'>
+        <div className='info-container'>
+          <div className='profile-image'>
+            <img
+              src={profileData?.profile?.profile?.avatar}
+              alt='profile'
+            />
           </div>
-          <div className="profile-info-container">
-            <p className="username">{user.username}</p>
-            <div className="follow">
-              {onlineUser.id === user.id ? '' : 
-                <button 
-                  className="follow-button"
-                  onClick={() => handleFollow()}
-                > 
-                {isFollowing ? 'following' : 'follow' }
-                </button>}
+          <div className='profile-info-container'>
+            <p className='username'>{profileData?.profile?.profile?.username}</p>
+            {onlineUser?.me?.id === parseInt(id) || !onlineUser?.me ? (
+              <></>
+            ) : (
+              <div className='follow'>
+                {isLoading ? (
+                  <div className='loading'>Loading...</div>
+                ) : (
+                  <button
+                    className='follow-button'
+                    onClick={() => handleFollow()}
+                  >
+                    {isFollowing ? 'following' : 'follow'}
+                  </button>
+                )}
+              </div>
+            )}
+            <div className='profile-info'>
+              <div className='lits-nmr'>
+                <p>
+                  {profileData?.profile?.profile?.lits
+                    ? profileData.profile?.profile?.lits.length
+                    : 0}{' '}
+                  lits
+                </p>
+              </div>
+              <div className='followers'>
+                <p>{followingData?.checkFollowing?.followerCount} followers</p>
+              </div>
             </div>
-            <div className="profile-info">
-              <div className="lits-nmr">
-                <p>{user.lits.length} lits</p>
-              </div>
-              <div className="followers">
-                <p>{user.followers} followers</p>
-              </div>
-              <div className="following">
-                <p>{user.following} following</p>
-              </div>
-            </div>
-            <div className="text-container">{user.description}</div>
+            <div className='text-container'>{profileData?.profile?.profile?.content}</div>
           </div>
         </div>
-        <div className="lits-container">
-          {user.lits.map(lit => 
-            <Lit 
-              isLiked={false}
-              image={user.profile_img}
-              username={user.username}
-              text={lit.text}
-              key={lit.id}
-            />)}
+        <div className='lits-container'>
+          {profileData?.profile?.profile?.lits &&
+            profileData?.profile?.profile?.lits.map((lit, i) => (
+              <Lit
+                image={profileData?.profile?.profile?.avatar || ''}
+                username={profileData?.profile?.profile?.username || ''}
+                text={lit?.content || ''}
+                createdAt={lit?.created_at || ''}
+                userid={id || ''}
+                key={i}
+              />
+            ))}
         </div>
       </div>
     </div>
-    
   )
 }

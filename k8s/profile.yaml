@@ -40,6 +40,8 @@ spec:
           value: "http://user-read:8895/api"
         - name: LIT_READ_SERVICE
           value: "http://lit-read:8892/api"
+        - name: USER_WRITE_SERVICE
+          value: http://user-write:8894/api
         - name: REFRESH_TOKEN_SECRET
           valueFrom: 
             secretKeyRef:
