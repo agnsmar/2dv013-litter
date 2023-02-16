@@ -10,7 +10,7 @@ const resolvers: Resolvers = {
 
       try {
         const { data: following } = await axios({
-          url: `${process.env.USER_READ_SERVICE}/followings`,
+          url: `${process.env.USER_READ_SERVICE}/followings/${context.token?.userid}`,
           method: 'GET',
           headers: {
             'Authorization': req.headers['x-access-token'] || ''

@@ -28,6 +28,14 @@ export class UserController {
         }
       })
 
+      // A user always follows themselves
+      const following = await prisma.following.create({ 
+        data: {
+          followee_id: user.id,
+          follower_id: user.id
+        }
+      })
+
       res
       .status(201)
       .json(user.id)
