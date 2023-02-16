@@ -256,42 +256,6 @@ export function useUnfollowMutation(baseOptions?: Apollo.MutationHookOptions<Unf
 export type UnfollowMutationHookResult = ReturnType<typeof useUnfollowMutation>;
 export type UnfollowMutationResult = Apollo.MutationResult<UnfollowMutation>;
 export type UnfollowMutationOptions = Apollo.BaseMutationOptions<UnfollowMutation, UnfollowMutationVariables>;
-export const CheckFollowingDocument = gql`
-    query CheckFollowing($followeeId: String!) {
-  checkFollowing(followeeId: $followeeId) {
-    followerCount
-    isFollowing
-  }
-}
-    `;
-
-/**
- * __useCheckFollowingQuery__
- *
- * To run a query within a React component, call `useCheckFollowingQuery` and pass it any options that fit your needs.
- * When your component renders, `useCheckFollowingQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCheckFollowingQuery({
- *   variables: {
- *      followeeId: // value for 'followeeId'
- *   },
- * });
- */
-export function useCheckFollowingQuery(baseOptions: Apollo.QueryHookOptions<CheckFollowingQuery, CheckFollowingQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CheckFollowingQuery, CheckFollowingQueryVariables>(CheckFollowingDocument, options);
-      }
-export function useCheckFollowingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckFollowingQuery, CheckFollowingQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CheckFollowingQuery, CheckFollowingQueryVariables>(CheckFollowingDocument, options);
-        }
-export type CheckFollowingQueryHookResult = ReturnType<typeof useCheckFollowingQuery>;
-export type CheckFollowingLazyQueryHookResult = ReturnType<typeof useCheckFollowingLazyQuery>;
-export type CheckFollowingQueryResult = Apollo.QueryResult<CheckFollowingQuery, CheckFollowingQueryVariables>;
 export const FeedDocument = gql`
     query Feed($offset: Int!, $take: Int!) {
   feed(offset: $offset, take: $take) {
@@ -332,6 +296,39 @@ export function useFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FeedQ
 export type FeedQueryHookResult = ReturnType<typeof useFeedQuery>;
 export type FeedLazyQueryHookResult = ReturnType<typeof useFeedLazyQuery>;
 export type FeedQueryResult = Apollo.QueryResult<FeedQuery, FeedQueryVariables>;
+export const IsFollowingDocument = gql`
+    query IsFollowing($userid: String!) {
+  isFollowing(userid: $userid)
+}
+    `;
+
+/**
+ * __useIsFollowingQuery__
+ *
+ * To run a query within a React component, call `useIsFollowingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIsFollowingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIsFollowingQuery({
+ *   variables: {
+ *      userid: // value for 'userid'
+ *   },
+ * });
+ */
+export function useIsFollowingQuery(baseOptions: Apollo.QueryHookOptions<IsFollowingQuery, IsFollowingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IsFollowingQuery, IsFollowingQueryVariables>(IsFollowingDocument, options);
+      }
+export function useIsFollowingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IsFollowingQuery, IsFollowingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IsFollowingQuery, IsFollowingQueryVariables>(IsFollowingDocument, options);
+        }
+export type IsFollowingQueryHookResult = ReturnType<typeof useIsFollowingQuery>;
+export type IsFollowingLazyQueryHookResult = ReturnType<typeof useIsFollowingLazyQuery>;
+export type IsFollowingQueryResult = Apollo.QueryResult<IsFollowingQuery, IsFollowingQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -431,12 +428,6 @@ export type AddLitResponse = {
   __typename?: 'AddLitResponse';
   error?: Maybe<LitError>;
   success: Scalars['Boolean'];
-};
-
-export type CheckFollowingResponse = {
-  __typename?: 'CheckFollowingResponse';
-  followerCount: Scalars['Int'];
-  isFollowing: Scalars['Boolean'];
 };
 
 export type Feed = {
@@ -542,21 +533,21 @@ export type ProfileResponse = {
 
 export type Query = {
   __typename?: 'Query';
-  checkFollowing?: Maybe<CheckFollowingResponse>;
   feed?: Maybe<Array<Maybe<Feed>>>;
+  isFollowing: Scalars['Boolean'];
   me?: Maybe<User>;
   profile?: Maybe<ProfileResponse>;
-};
-
-
-export type QueryCheckFollowingArgs = {
-  followeeId: Scalars['String'];
 };
 
 
 export type QueryFeedArgs = {
   offset: Scalars['Int'];
   take: Scalars['Int'];
+};
+
+
+export type QueryIsFollowingArgs = {
+  userid: Scalars['String'];
 };
 
 
@@ -636,13 +627,6 @@ export type UnfollowMutationVariables = Exact<{
 
 export type UnfollowMutation = { __typename?: 'Mutation', unfollow: { __typename?: 'FollowResponse', success: boolean, error?: { __typename?: 'FollowError', message: string } | null } };
 
-export type CheckFollowingQueryVariables = Exact<{
-  followeeId: Scalars['String'];
-}>;
-
-
-export type CheckFollowingQuery = { __typename?: 'Query', checkFollowing?: { __typename?: 'CheckFollowingResponse', followerCount: number, isFollowing: boolean } | null };
-
 export type FeedQueryVariables = Exact<{
   offset: Scalars['Int'];
   take: Scalars['Int'];
@@ -650,6 +634,13 @@ export type FeedQueryVariables = Exact<{
 
 
 export type FeedQuery = { __typename?: 'Query', feed?: Array<{ __typename?: 'Feed', content: string, created_at: string, updated_at?: string | null, user_id: number, username: string } | null> | null };
+
+export type IsFollowingQueryVariables = Exact<{
+  userid: Scalars['String'];
+}>;
+
+
+export type IsFollowingQuery = { __typename?: 'Query', isFollowing: boolean };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 

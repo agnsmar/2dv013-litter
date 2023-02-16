@@ -1,16 +1,11 @@
 type Query {
   profile(userid: String!): ProfileResponse
-  checkFollowing(followeeId: String!): CheckFollowingResponse
+  isFollowing(userid: String!): Boolean!
 }
 
 type Mutation {
   follow(followeeId: String!): FollowResponse!
   unfollow(followeeId: String!): FollowResponse!
-}
-
-type CheckFollowingResponse {
-  followerCount: Int!
-  isFollowing: Boolean!
 }
 
 type FollowResponse {

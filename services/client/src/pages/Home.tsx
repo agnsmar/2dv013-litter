@@ -62,6 +62,9 @@ export const Home = () => {
         setHasMore(false)
       }
     }
+    if (!feedData || !feedData.feed) {
+      setHasMore(false)
+    }
   }, [isFeedLoading, feedData])
 
   if (isMeLoading || isFeedLoading) {

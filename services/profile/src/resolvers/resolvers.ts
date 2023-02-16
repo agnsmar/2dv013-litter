@@ -51,15 +51,15 @@ const resolvers: Resolvers = {
         }
       }
     },
-    async checkFollowing(_, params, context) {
-      const { followeeId } = params
+    async isFollowing(_, params, context) {
+      const { userid } = params
       const ath = new AuthTokenHelper()
       const accessToken = context.req.headers['x-access-token'] as string | undefined
-      const token = ath.verifyAccessToken(accessToken)
+      const token = ath.verifyAccessToken(accessToken?.split(' ')[1])
 
       try {
-        const { data: followers } = await axios({
-          url: `${process.env.USER_READ_SERVICE}/followings/${followeeId}`,
+        const { data: followings } = await axios({
+          url: `${process.env.USER_READ_SERVICE}/followings/${token?.userid}`,
           method: 'GET',
           headers: {
             'Authorization': accessToken ?? ''
@@ -67,24 +67,15 @@ const resolvers: Resolvers = {
           responseType: 'json'
         })
 
-        for (const follower of followers) {
-          if (follower.id === token?.userid) {
-            return {
-              followerCount: followers.length,
-              isFollowing: true
-            }
+        for (const follower of followings) {
+          if (follower.id === parseInt(userid)) {
+            return true
           }
         }
 
-        return {
-          followerCount: followers.length,
-          isFollowing: false
-        }
+        return false
       } catch (e) {
-        return {
-          followerCount: 0,
-          isFollowing: false
-        }
+        return false
       }
     }
   },

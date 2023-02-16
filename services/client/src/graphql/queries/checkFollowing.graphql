@@ -1,6 +1,0 @@
-query CheckFollowing($followeeId: String!) {
-  checkFollowing(followeeId: $followeeId) {
-    followerCount
-    isFollowing
-  }
-}
