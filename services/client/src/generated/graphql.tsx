@@ -329,6 +329,50 @@ export function useIsFollowingLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type IsFollowingQueryHookResult = ReturnType<typeof useIsFollowingQuery>;
 export type IsFollowingLazyQueryHookResult = ReturnType<typeof useIsFollowingLazyQuery>;
 export type IsFollowingQueryResult = Apollo.QueryResult<IsFollowingQuery, IsFollowingQueryVariables>;
+export const LitsDocument = gql`
+    query Lits($userid: String!, $take: Int!, $offset: Int!) {
+  lits(userid: $userid, offset: $offset, take: $take) {
+    error {
+      message
+    }
+    data {
+      content
+      created_at
+      updated_at
+    }
+  }
+}
+    `;
+
+/**
+ * __useLitsQuery__
+ *
+ * To run a query within a React component, call `useLitsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLitsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLitsQuery({
+ *   variables: {
+ *      userid: // value for 'userid'
+ *      take: // value for 'take'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useLitsQuery(baseOptions: Apollo.QueryHookOptions<LitsQuery, LitsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LitsQuery, LitsQueryVariables>(LitsDocument, options);
+      }
+export function useLitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LitsQuery, LitsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LitsQuery, LitsQueryVariables>(LitsDocument, options);
+        }
+export type LitsQueryHookResult = ReturnType<typeof useLitsQuery>;
+export type LitsLazyQueryHookResult = ReturnType<typeof useLitsLazyQuery>;
+export type LitsQueryResult = Apollo.QueryResult<LitsQuery, LitsQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -374,14 +418,9 @@ export const ProfileDocument = gql`
     error {
       message
     }
-    profile {
+    data {
       avatar
       content
-      lits {
-        content
-        created_at
-        updated_at
-      }
       username
     }
   }
@@ -457,14 +496,20 @@ export type FollowResponse = {
 
 export type Lit = {
   __typename?: 'Lit';
-  content?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['String']>;
+  content: Scalars['String'];
+  created_at: Scalars['String'];
   updated_at?: Maybe<Scalars['String']>;
 };
 
 export type LitError = {
   __typename?: 'LitError';
   message?: Maybe<Scalars['String']>;
+};
+
+export type LitsResponse = {
+  __typename?: 'LitsResponse';
+  data?: Maybe<Array<Maybe<Lit>>>;
+  error?: Maybe<FollowError>;
 };
 
 export type Mutation = {
@@ -516,7 +561,6 @@ export type Profile = {
   __typename?: 'Profile';
   avatar: Scalars['String'];
   content?: Maybe<Scalars['String']>;
-  lits: Array<Maybe<Lit>>;
   username: Scalars['String'];
 };
 
@@ -527,16 +571,17 @@ export type ProfileError = {
 
 export type ProfileResponse = {
   __typename?: 'ProfileResponse';
+  data?: Maybe<Profile>;
   error?: Maybe<ProfileError>;
-  profile?: Maybe<Profile>;
 };
 
 export type Query = {
   __typename?: 'Query';
   feed?: Maybe<Array<Maybe<Feed>>>;
   isFollowing: Scalars['Boolean'];
+  lits: LitsResponse;
   me?: Maybe<User>;
-  profile?: Maybe<ProfileResponse>;
+  profile: ProfileResponse;
 };
 
 
@@ -547,6 +592,13 @@ export type QueryFeedArgs = {
 
 
 export type QueryIsFollowingArgs = {
+  userid: Scalars['String'];
+};
+
+
+export type QueryLitsArgs = {
+  offset: Scalars['Int'];
+  take: Scalars['Int'];
   userid: Scalars['String'];
 };
 
@@ -642,6 +694,15 @@ export type IsFollowingQueryVariables = Exact<{
 
 export type IsFollowingQuery = { __typename?: 'Query', isFollowing: boolean };
 
+export type LitsQueryVariables = Exact<{
+  userid: Scalars['String'];
+  take: Scalars['Int'];
+  offset: Scalars['Int'];
+}>;
+
+
+export type LitsQuery = { __typename?: 'Query', lits: { __typename?: 'LitsResponse', error?: { __typename?: 'FollowError', message: string } | null, data?: Array<{ __typename?: 'Lit', content: string, created_at: string, updated_at?: string | null } | null> | null } };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -652,4 +713,4 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'ProfileResponse', error?: { __typename?: 'ProfileError', message: string } | null, profile?: { __typename?: 'Profile', avatar: string, content?: string | null, username: string, lits: Array<{ __typename?: 'Lit', content?: string | null, created_at?: string | null, updated_at?: string | null } | null> } | null } | null };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'ProfileResponse', error?: { __typename?: 'ProfileError', message: string } | null, data?: { __typename?: 'Profile', avatar: string, content?: string | null, username: string } | null } };
