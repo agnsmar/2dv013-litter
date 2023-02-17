@@ -1,6 +1,12 @@
 type Query {
-  profile(userid: String!): ProfileResponse
+  profile(userid: String!): ProfileResponse!
+  lits(userid: String!, offset: Int!, take: Int!): LitsResponse!
   isFollowing(userid: String!): Boolean!
+}
+
+type LitsResponse {
+  data: [Lit]
+  error: FollowError
 }
 
 type Mutation {
@@ -22,7 +28,7 @@ type ProfileError {
 }
 
 type ProfileResponse {
-  profile: Profile
+  data: Profile
   error: ProfileError
 }
 
@@ -30,11 +36,10 @@ type Profile {
   username: String!
   content: String
   avatar: String!
-  lits: [Lit]!
 }
 
 type Lit {
-  content: String
-  created_at: String
+  content: String!
+  created_at: String!
   updated_at: String
 }
