@@ -80,6 +80,7 @@ export const Home = () => {
             value={litContent}
             placeholder='Type something...'
             onChange={handleLitChange}
+            required
           />
           {isCreatingLit ? (
             <Loading />

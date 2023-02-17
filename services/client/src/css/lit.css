@@ -1,15 +1,18 @@
 .lit-container {
-    margin: 10px;
+    margin-bottom: 10px;
     width: 98%;
     border: 1px solid rgb(70, 70, 70);
     display: grid;
     grid-template-columns: 60px auto;
+    padding-left: 10px;
 }
 
 .timestamp {
     width: auto;
     padding: 5px;
     white-space: nowrap;
+    color: darkgrey;
+    font-size: 0.8em;
 }
 
 .lit-image {
