@@ -19,6 +19,8 @@
 .feed-container {
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    background-color: rgb(33, 32, 32);
 }
 
 .create-lit-container {
@@ -56,7 +58,9 @@
 #scrollableDiv {
     overflow: scroll;
     grid-column: 2;
-    height: 80%;
+    height: 82%;
+    overflow-x: hidden;
+    padding: 1em;
 }
 
 

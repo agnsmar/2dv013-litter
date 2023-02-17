@@ -122,8 +122,6 @@ export const Profile = () => {
                 )}
               </div>
             )}
-            <div className='profile-info'></div>
-            <div className='text-container'>{profileData?.profile?.data?.content}</div>
           </div>
         </div>
         <div
