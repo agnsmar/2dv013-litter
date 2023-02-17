@@ -6,6 +6,12 @@
     grid-template-columns: 60px auto;
 }
 
+.timestamp {
+    width: auto;
+    padding: 5px;
+    white-space: nowrap;
+}
+
 .lit-image {
     display: flex;
     align-items: center;

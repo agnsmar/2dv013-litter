@@ -33,7 +33,7 @@ export const Lit: React.FC<LitProps> = (props) => {
         </Link>
         <div className='lit-text'>{props.text}</div>
       </div>
-      <span>{moment(props.createdAt).fromNow()}</span>
+      <span className='timestamp'>{moment(props.createdAt).fromNow()}</span>
     </div>
   )
 }
