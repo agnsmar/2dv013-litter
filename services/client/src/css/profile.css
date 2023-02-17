@@ -1,11 +1,11 @@
 .profile-container {
-  display: grid;
-  grid-template-rows: 200px auto;
+  display: flex;
+  flex-direction: column;
   background-color: rgb(33, 32, 32);
 }
 
 .info-container {
-  display: flex;
+  display: grid;
   border-bottom: black 1px solid;
 }
 
@@ -53,4 +53,3 @@
   text-align: left;
   min-height: 50px;
 }
-
