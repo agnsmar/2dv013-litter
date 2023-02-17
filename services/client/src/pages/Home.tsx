@@ -109,7 +109,7 @@ export const Home = () => {
             {feed.map((lit, i) => {
               return lit ? (
                 <Lit
-                  image={/* TODO: add image*/ ''}
+                  image={/* TODO: add image*/ '/litter.png'}
                   username={lit.username}
                   text={lit.content}
                   createdAt={lit.created_at}
