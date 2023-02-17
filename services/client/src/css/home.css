@@ -48,14 +48,15 @@
 }
 
 .lits-container {
-    overflow: auto;
+    overflow: scroll;
     height: 200px;
     grid-column: 2;
 }
 
 #scrollableDiv {
+    overflow: scroll;
     grid-column: 2;
-    border: red solid;
+    height: 80%;
 }
 
 
