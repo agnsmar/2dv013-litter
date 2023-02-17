@@ -62,6 +62,7 @@ export const Home = () => {
   return (
     <div className='home-container'>
       <Navigation />
+      <div className='feed-container'>
       {meData?.me && (
         <form
           onSubmit={handleSubmit}
@@ -129,6 +130,7 @@ export const Home = () => {
           </span>{' '}
         </div>
       )}
+      </div>
     </div>
   )
 }
