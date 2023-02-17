@@ -62,6 +62,7 @@ export const Home = () => {
   return (
     <div className='home-container'>
       <Navigation />
+      <div className='feed-container'>
       {meData?.me && (
         <form
           onSubmit={handleSubmit}
@@ -108,7 +109,7 @@ export const Home = () => {
             {feed.map((lit, i) => {
               return lit ? (
                 <Lit
-                  image={/* TODO: add image*/ ''}
+                  image={/* TODO: add image*/ '/litter.png'}
                   username={lit.username}
                   text={lit.content}
                   createdAt={lit.created_at}
@@ -129,6 +130,7 @@ export const Home = () => {
           </span>{' '}
         </div>
       )}
+      </div>
     </div>
   )
 }

@@ -16,8 +16,14 @@
     color: #fbb023;
 }
 
+.feed-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .create-lit-container {
     grid-column: 2;
+    height: 150px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -42,8 +48,15 @@
 }
 
 .lits-container {
-    overflow: auto;
+    overflow: scroll;
     height: 200px;
+    grid-column: 2;
+}
+
+#scrollableDiv {
+    overflow: scroll;
+    grid-column: 2;
+    height: 80%;
 }
 
 
