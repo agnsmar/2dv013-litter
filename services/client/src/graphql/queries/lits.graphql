@@ -1,0 +1,12 @@
+query Lits($userid: String!, $take: Int!, $offset: Int!) {
+  lits(userid: $userid, offset: $offset, take: $take) {
+    error {
+      message
+    }
+    data {
+      content
+      created_at
+      updated_at
+    }
+  }
+}

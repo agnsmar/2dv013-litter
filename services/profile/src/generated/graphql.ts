@@ -28,9 +28,15 @@ export type FollowResponse = {
 
 export type Lit = {
   __typename?: 'Lit';
-  content?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['String']>;
+  content: Scalars['String'];
+  created_at: Scalars['String'];
   updated_at?: Maybe<Scalars['String']>;
+};
+
+export type LitsResponse = {
+  __typename?: 'LitsResponse';
+  data?: Maybe<Array<Maybe<Lit>>>;
+  error?: Maybe<FollowError>;
 };
 
 export type Mutation = {
@@ -53,7 +59,6 @@ export type Profile = {
   __typename?: 'Profile';
   avatar: Scalars['String'];
   content?: Maybe<Scalars['String']>;
-  lits: Array<Maybe<Lit>>;
   username: Scalars['String'];
 };
 
@@ -64,18 +69,26 @@ export type ProfileError = {
 
 export type ProfileResponse = {
   __typename?: 'ProfileResponse';
+  data?: Maybe<Profile>;
   error?: Maybe<ProfileError>;
-  profile?: Maybe<Profile>;
 };
 
 export type Query = {
   __typename?: 'Query';
   isFollowing: Scalars['Boolean'];
-  profile?: Maybe<ProfileResponse>;
+  lits: LitsResponse;
+  profile: ProfileResponse;
 };
 
 
 export type QueryIsFollowingArgs = {
+  userid: Scalars['String'];
+};
+
+
+export type QueryLitsArgs = {
+  offset: Scalars['Int'];
+  take: Scalars['Int'];
   userid: Scalars['String'];
 };
 
@@ -156,7 +169,9 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   FollowError: ResolverTypeWrapper<FollowError>;
   FollowResponse: ResolverTypeWrapper<FollowResponse>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Lit: ResolverTypeWrapper<Lit>;
+  LitsResponse: ResolverTypeWrapper<LitsResponse>;
   Mutation: ResolverTypeWrapper<{}>;
   Profile: ResolverTypeWrapper<Profile>;
   ProfileError: ResolverTypeWrapper<ProfileError>;
@@ -170,7 +185,9 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   FollowError: FollowError;
   FollowResponse: FollowResponse;
+  Int: Scalars['Int'];
   Lit: Lit;
+  LitsResponse: LitsResponse;
   Mutation: {};
   Profile: Profile;
   ProfileError: ProfileError;
@@ -191,9 +208,15 @@ export type FollowResponseResolvers<ContextType = IContext, ParentType extends R
 };
 
 export type LitResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Lit'] = ResolversParentTypes['Lit']> = {
-  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  created_at?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  created_at?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updated_at?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LitsResponseResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['LitsResponse'] = ResolversParentTypes['LitsResponse']> = {
+  data?: Resolver<Maybe<Array<Maybe<ResolversTypes['Lit']>>>, ParentType, ContextType>;
+  error?: Resolver<Maybe<ResolversTypes['FollowError']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -205,7 +228,6 @@ export type MutationResolvers<ContextType = IContext, ParentType extends Resolve
 export type ProfileResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Profile'] = ResolversParentTypes['Profile']> = {
   avatar?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lits?: Resolver<Array<Maybe<ResolversTypes['Lit']>>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -216,20 +238,22 @@ export type ProfileErrorResolvers<ContextType = IContext, ParentType extends Res
 };
 
 export type ProfileResponseResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['ProfileResponse'] = ResolversParentTypes['ProfileResponse']> = {
+  data?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   error?: Resolver<Maybe<ResolversTypes['ProfileError']>, ParentType, ContextType>;
-  profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = IContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   isFollowing?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryIsFollowingArgs, 'userid'>>;
-  profile?: Resolver<Maybe<ResolversTypes['ProfileResponse']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'userid'>>;
+  lits?: Resolver<ResolversTypes['LitsResponse'], ParentType, ContextType, RequireFields<QueryLitsArgs, 'offset' | 'take' | 'userid'>>;
+  profile?: Resolver<ResolversTypes['ProfileResponse'], ParentType, ContextType, RequireFields<QueryProfileArgs, 'userid'>>;
 };
 
 export type Resolvers<ContextType = IContext> = {
   FollowError?: FollowErrorResolvers<ContextType>;
   FollowResponse?: FollowResponseResolvers<ContextType>;
   Lit?: LitResolvers<ContextType>;
+  LitsResponse?: LitsResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Profile?: ProfileResolvers<ContextType>;
   ProfileError?: ProfileErrorResolvers<ContextType>;

@@ -9,7 +9,7 @@ const resolvers: Resolvers = {
       const { userid } = params
 
       try {
-        const [user, profile, lits] = await Promise.all([
+        const [user, profile] = await Promise.all([
           axios({
             url: `${process.env.USER_READ_SERVICE}/users/${userid}`,
             method: 'GET',
@@ -19,21 +19,48 @@ const resolvers: Resolvers = {
             url: `${process.env.USER_READ_SERVICE}/profiles/${userid}`,
             method: 'GET',
             responseType: 'json'
-          }),
-          axios({
-            url: `${process.env.LIT_READ_SERVICE}/lits/${userid}`,
-            method: 'GET',
-            responseType: 'json'
           })
         ])
 
         return {
-          profile: {
+          data: {
             avatar: profile.data.profile.avatar,
             username: user.data.user.username,
-            content: profile.data.profile.content,
-            lits: lits.data ? [...lits.data] : []
+            content: profile.data.profile.content
           }
+        }
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          return {
+            error: {
+              message: e.response!.data.message
+            }
+          }
+        } else {
+          return {
+            error: {
+              message: 'Internal server error'
+            }
+          }
+        }
+      }
+    },
+    async lits(_, params, context) {
+      const { userid, offset, take } = params
+
+      try {
+        const lits = await axios({
+          url: `${process.env.LIT_READ_SERVICE}/lits/${userid}`,
+          method: 'GET',
+          responseType: 'json',
+          params: {
+            skip: offset,
+            take
+          }
+        })
+
+        return {
+          data: lits.data ? [...lits.data] : []
         }
       } catch (e) {
         if (e instanceof AxiosError) {
@@ -62,7 +89,7 @@ const resolvers: Resolvers = {
           url: `${process.env.USER_READ_SERVICE}/followings/${token?.userid}`,
           method: 'GET',
           headers: {
-            'Authorization': accessToken ?? ''
+            Authorization: accessToken ?? ''
           },
           responseType: 'json'
         })
@@ -89,7 +116,7 @@ const resolvers: Resolvers = {
           url: `${process.env.USER_WRITE_SERVICE}/followings/${followeeId}`,
           method: 'POST',
           headers: {
-            'Authorization': req.headers['x-access-token'] || ''
+            Authorization: req.headers['x-access-token'] || ''
           },
           responseType: 'json'
         })
@@ -124,7 +151,7 @@ const resolvers: Resolvers = {
           url: `${process.env.USER_WRITE_SERVICE}/followings/${followeeId}`,
           method: 'DELETE',
           headers: {
-            'Authorization': req.headers['x-access-token'] || ''
+            Authorization: req.headers['x-access-token'] || ''
           },
           responseType: 'json'
         })

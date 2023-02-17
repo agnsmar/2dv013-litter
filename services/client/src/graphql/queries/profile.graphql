@@ -3,14 +3,9 @@ query Profile($userid: String!) {
     error {
       message
     }
-    profile {
+    data {
       avatar
       content
-      lits {
-        content
-        created_at
-        updated_at
-      }
       username
     }
   }
